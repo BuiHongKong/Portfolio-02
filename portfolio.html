@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Developer Portfolio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#8DA291",
+                        "background-light": "#F9F7F2",
+                        "background-dark": "#1A1A1A",
+                        charcoal: "#2A2A2A",
+                        "charcoal-light": "#4A4A4A",
+                        "text-main": "#2A2A2A",
+                        "text-muted": "#4A4A4A",
+                        "text-light": "#2A2A2A",
+                        "text-dark": "#e5e7eb",
+                        "code-bg": "#2A2A2A"
+                    },
+                    fontFamily: {
+                        display: ["Manrope", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                        mono: ["JetBrains Mono", "monospace"]
+                    },
+                    letterSpacing: {
+                        superwide: '0.2em',
+                    }
+                },
+            },
+        };
+    </script>
+<style>
+    .code-syntax-keyword { color: #8DA291; }
+    .code-syntax-string { color: #A3B18A; }
+    .code-syntax-function { color: #E5E7EB; }
+    .code-syntax-comment { color: #6B7280; font-style: italic; }
+</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-charcoal dark:text-gray-200 font-sans transition-colors duration-300 min-h-screen flex flex-col">
+<nav class="bg-white dark:bg-charcoal py-6 shadow-sm relative z-10 w-full">
+<div class="container mx-auto px-6 lg:px-16 flex justify-between items-center">
+<div class="flex flex-col">
+<span class="font-display text-2xl font-extrabold text-charcoal dark:text-white tracking-tighter">John Doe</span>
+<span class="text-[0.65rem] text-charcoal-light dark:text-gray-400 tracking-superwide uppercase mt-1 font-semibold">Full Stack Developer</span>
+</div>
+<div class="hidden md:flex space-x-8 text-sm font-semibold tracking-superwide uppercase">
+<a class="text-charcoal dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="home.html">HOME</a>
+<a class="text-charcoal dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="about.html">ABOUT</a>
+<a class="text-charcoal dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="portfolio.html">PORTFOLIO</a>
+<a class="text-charcoal dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="contact.html">CONTACT</a>
+</div>
+<button class="md:hidden text-charcoal dark:text-white">
+<span class="material-icons">menu</span>
+</button>
+</div>
+</nav>
+
+<header class="bg-background-light dark:bg-background-dark py-40 border-b border-gray-100 dark:border-gray-900 relative">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-left">
+<div class="font-mono text-primary text-sm font-bold uppercase tracking-widest mb-8 flex items-center gap-4">
+<span class="w-12 h-px bg-primary"></span> Case Study
+            </div>
+<h1 class="text-5xl md:text-7xl font-display font-extrabold tracking-tighter text-charcoal dark:text-white mb-10 uppercase tracking-tighter leading-none">Eco-Friendly<br/>E-Commerce</h1>
+<p class="text-lg md:text-2xl text-gray-500 dark:text-gray-400 max-w-3xl font-medium leading-relaxed">
+                A sustainable shopping experience built from the ground up to reduce digital carbon footprint while maximizing conversions.
+            </p>
+</div>
+</header>
+<section class="py-32">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-20">
+<div class="col-span-1 lg:col-span-2 text-charcoal dark:text-white">
+<div class="mb-20">
+<h2 class="font-display font-extrabold tracking-tighter text-4xl mb-8 uppercase tracking-tight">The Challenge</h2>
+<p class="text-lg leading-loose text-gray-600 dark:text-gray-300">
+                        The client needed a high-performance e-commerce platform that aligned with their sustainability goals. The existing solution was bloated, resulting in slow load times and a high server energy consumption. The challenge was to deliver a rich user experience while strictly adhering to a carbon budget per page load.
+                    </p>
+</div>
+<div>
+<h2 class="font-display font-extrabold tracking-tighter text-4xl mb-8 uppercase tracking-tight">The Solution</h2>
+<p class="text-lg leading-loose text-gray-600 dark:text-gray-300">
+                        We architected a headless solution using a static site generator coupled with a lightweight API layer. By optimizing asset delivery, implementing aggressive caching strategies, and adopting a minimalist design system, we achieved a 75% reduction in page weight and a significant decrease in TTFB (Time to First Byte).
+                    </p>
+</div>
+</div>
+<div class="col-span-1">
+<div class="bg-white dark:bg-gray-900 p-10 rounded-3xl border border-gray-200 dark:border-gray-800">
+<h3 class="font-display font-extrabold tracking-tighter text-2xl mb-10 pb-6 border-b border-gray-200 dark:border-gray-800 text-charcoal dark:text-white uppercase tracking-tight">Project Data</h3>
+<ul class="space-y-10">
+<li>
+<span class="block text-xs uppercase tracking-widest text-gray-400 font-mono font-bold mb-3">Role</span>
+<span class="block text-lg font-semibold text-charcoal dark:text-white">Lead Frontend</span>
+</li>
+<li>
+<span class="block text-xs uppercase tracking-widest text-gray-400 font-mono font-bold mb-3">Timeline</span>
+<span class="block text-lg font-semibold text-charcoal dark:text-white">12 Weeks</span>
+</li>
+<li>
+<span class="block text-xs uppercase tracking-widest text-gray-400 font-mono font-bold mb-4">Tech Stack</span>
+<div class="flex flex-col gap-3">
+<span class="font-mono text-sm text-charcoal dark:text-white border-l-2 border-primary pl-3">Next.js</span>
+<span class="font-mono text-sm text-charcoal dark:text-white border-l-2 border-primary pl-3">Tailwind CSS</span>
+<span class="font-mono text-sm text-charcoal dark:text-white border-l-2 border-primary pl-3">GraphQL</span>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-32 bg-white dark:bg-background-dark border-y border-gray-100 dark:border-gray-900">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="font-display font-extrabold tracking-tighter text-4xl mb-20 text-center text-charcoal dark:text-white uppercase tracking-tight">Interface Architecture</h2>
+<div class="space-y-24">
+<div class="border border-gray-200 dark:border-gray-800 bg-white dark:bg-black p-4 md:p-8 shadow-2xl rounded-3xl">
+<img alt="Abstract interface showing dashboard analytics" class="w-full h-auto object-cover border border-gray-100 dark:border-gray-900" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNcMFVIOydkEzscGQ8WaxJAFLI1vakpghsFGjTSqjdyI-xKnVel5u_ZaCijMOsDUASrWf4gbUssQTH9GfPaxKoaj2avEafALWEySrRRvjaRy53DsS6mSUs9q8PoZmY3w-W9po5_-d_uJ8QyDPLevqNqKgsfBzhBRHn4HYWZdiCt5jz6m55B0qj1GdD1_ZE4g2jcFmYYD9AQyP8XWRaX4rXDQRWkWm6E-y2RMbIR3u2VJiUJrUk0qzYFaKLIeWsOd0u5vXStc3tT1F7"/>
+</div>
+<div class="border border-gray-200 dark:border-gray-800 bg-white dark:bg-black p-4 md:p-8 shadow-2xl rounded-3xl">
+<img alt="Abstract interface showing a product detail page layout" class="w-full h-auto object-cover border border-gray-100 dark:border-gray-900" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmz7c-F-0mz8N5w-hMBSg1Q5ShJZ8WmcfBOp4nDa9fhga5k176F3_104vwhmvN3WCfNQUNqMan21Xl1PUuAalgC6a_Qo4KbRXrQxSy6HbsYE5UZLd-BbgU5WiradpjzBPfXpd8N7PBkzLRMGNkd-38K-OU0h41CbWy2edDdpOfWZBCLjPMxqerOQbS4gl5po_XSG4xZniR2_fEcQVqNnWQmuYD5cZibyaNYgSptT6eK0ArdU5MjeGZ8v28ruGLlGVbRQibt7bmFhPa"/>
+</div>
+</div>
+</div>
+</section>
+<section class="py-32">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="font-display font-extrabold tracking-tighter text-4xl mb-10 text-charcoal dark:text-white uppercase tracking-tight">Technical Implementation</h2>
+<p class="text-lg leading-loose mb-12 text-gray-600 dark:text-gray-300">
+                To achieve the aggressive performance targets, we implemented a custom lazy-loading mechanism that defers non-critical assets and drastically reduces initial payload.
+            </p>
+<div class="border border-gray-200 dark:border-gray-800 bg-code-bg shadow-2xl">
+<div class="px-6 py-4 border-b border-gray-800 flex justify-between items-center bg-black/50">
+<div class="flex items-center gap-3">
+<svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="text-xs font-mono font-bold text-gray-300 uppercase tracking-widest">ImageLoader.js</span>
+</div>
+<button class="text-gray-500 hover:text-white transition-colors">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<div class="p-8 overflow-x-auto">
+<pre class="font-mono text-sm leading-loose text-gray-300"><span class="code-syntax-keyword">import</span> { useState, useEffect } <span class="code-syntax-keyword">from</span> <span class="code-syntax-string">'react'</span>;
+<span class="code-syntax-keyword">const</span> <span class="code-syntax-function">useLazyImage</span> = (src) =&gt; {
+  <span class="code-syntax-keyword">const</span> [sourceLoaded, setSourceLoaded] = <span class="code-syntax-function">useState</span>(<span class="code-syntax-keyword">null</span>);
+  <span class="code-syntax-function">useEffect</span>(() =&gt; {
+    <span class="code-syntax-keyword">const</span> img = <span class="code-syntax-keyword">new</span> Image();
+    img.src = src;
+    img.onload = () =&gt; <span class="code-syntax-function">setSourceLoaded</span>(src);
+  }, [src]);
+  <span class="code-syntax-comment">// Return placeholder until actual image loads</span>
+  <span class="code-syntax-keyword">return</span> sourceLoaded;
+};
+<span class="code-syntax-keyword">export default</span> <span class="code-syntax-function">useLazyImage</span>;
+</pre>
+</div>
+</div>
+</div>
+</section>
+<section class="py-40 border-t border-gray-100 dark:border-gray-900 text-center">
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="font-display font-extrabold tracking-tighter text-5xl mb-8 text-charcoal dark:text-white uppercase tracking-tighter">Ready to Deploy?</h2>
+<p class="text-xl mb-16 text-gray-500 dark:text-gray-400 font-medium">Let's build a robust, high-performance solution for your next project.</p>
+<a class="inline-block bg-text-light dark:bg-text-dark text-background-light dark:text-background-dark font-mono font-bold uppercase tracking-widest text-sm px-12 py-5 hover:bg-primary dark:hover:bg-primary hover:text-white transition-colors duration-300" href="#">
+                Initialize Project
+            </a>
+</div>
+</section>
+<footer class="bg-background-light dark:bg-background-dark py-16 border-t border-gray-200 dark:border-gray-800 mt-auto">
+<div class="container mx-auto px-6 lg:px-16 text-center">
+<h2 class="font-display text-2xl font-extrabold tracking-tight mb-8 text-charcoal dark:text-white">Let's build something together.</h2>
+<div class="flex justify-center space-x-8 mb-10">
+<a class="text-charcoal-light dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors" href="contact.html">
+<span class="sr-only">Contact</span>
+<span class="material-icons">email</span>
+</a>
+<a class="text-charcoal-light dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="sr-only">LinkedIn</span>
+<span class="material-icons">link</span>
+</a>
+<a class="text-charcoal-light dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="sr-only">GitHub</span>
+<span class="material-icons">code</span>
+</a>
+<a class="text-charcoal-light dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="sr-only">Twitter</span>
+<span class="material-icons">chat</span>
+</a>
+</div>
+<p class="text-xs font-medium tracking-widest uppercase text-charcoal-light dark:text-gray-500">
+                © 2024 John Doe. All rights reserved.
+            </p>
+</div>
+</footer>
+</body></html>

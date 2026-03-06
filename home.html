@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KB Portfolio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#8DA291",
+                        "background-light": "#F9F7F2",
+                        "background-dark": "#1A1A1A",
+                        charcoal: "#2A2A2A",
+                        "charcoal-light": "#4A4A4A",
+                        "text-main": "#2A2A2A",
+                        "text-muted": "#4A4A4A",
+                        "text-light": "#2A2A2A",
+                        "text-dark": "#e5e7eb",
+                        "code-bg": "#2A2A2A"
+                    },
+                    fontFamily: {
+                        display: ["Manrope", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                        mono: ["JetBrains Mono", "monospace"]
+                    },
+                    letterSpacing: {
+                        superwide: '0.2em',
+                    },
+                    animation: {
+                        'light-swipe': 'lightSwipe 8s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        lightSwipe: {
+                            '0%': { transform: 'translateX(-200%) skewX(-25deg)' },
+                            '15%': { transform: 'translateX(600%) skewX(-25deg)' },
+                            '100%': { transform: 'translateX(600%) skewX(-25deg)' },
+                        }
+                    }
+                },
+            },
+        };
+    </script>
+<style>
+    .code-syntax-keyword { color: #8DA291; }
+    .code-syntax-string { color: #A3B18A; }
+    .code-syntax-function { color: #E5E7EB; }
+    .code-syntax-comment { color: #6B7280; font-style: italic; }
+</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-charcoal dark:text-gray-200 font-sans transition-colors duration-300 min-h-screen flex flex-col">
+<nav class="bg-white dark:bg-charcoal py-6 shadow-md drop-shadow-sm border-b border-gray-100 dark:border-gray-800 relative z-10 w-full">
+<div class="container mx-auto px-6 lg:px-16 flex justify-between items-center">
+<div class="flex flex-col drop-shadow-sm">
+<span class="font-display text-2xl font-extrabold text-charcoal dark:text-white tracking-tighter">John Doe</span>
+<span class="text-[0.65rem] text-charcoal-light dark:text-gray-400 tracking-superwide uppercase mt-1 font-semibold">Full Stack Developer</span>
+</div>
+<div class="hidden md:flex space-x-8 text-sm font-semibold tracking-superwide uppercase">
+<a class="text-charcoal dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors drop-shadow-sm" href="home.html">HOME</a>
+<a class="text-charcoal dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors drop-shadow-sm" href="about.html">ABOUT</a>
+<a class="text-charcoal dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors drop-shadow-sm" href="portfolio.html">PORTFOLIO</a>
+<a class="text-charcoal dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors drop-shadow-sm" href="contact.html">CONTACT</a>
+</div>
+<button class="md:hidden text-charcoal dark:text-white drop-shadow-sm">
+<span class="material-icons">menu</span>
+</button>
+</div>
+</nav>
+
+<header class="relative overflow-hidden py-20 lg:py-32">
+<div class="container mx-auto px-6 lg:px-16 relative z-10">
+<div class="flex flex-col lg:flex-row items-center">
+<div class="lg:w-1/2 pr-0 lg:pr-16 z-20 drop-shadow-sm">
+<h1 class="font-display text-5xl lg:text-10xl font-extrabold tracking-tighter leading-[1.1] mb-6 text-charcoal dark:text-white">
+                        Automating infrastructure. Simplifying complexity. Delivering reliability.
+                    </h1>
+<p class="text-lg text-charcoal-light dark:text-gray-300 mb-10 leading-relaxed max-w-lg font-medium">
+                        DevOps Engineer focused on building reliable infrastructure, automated CI/CD pipelin
+                        es, and observable systems. My background as a Technical Artist in the game industry trained me to think in pipelines, debug complex production environments, and optimize performance under real-time constraints.                    </p>
+<a class="inline-block bg-primary hover:bg-opacity-90 text-white font-bold px-8 py-6 tracking-superwide uppercase text-xs transition-all duration-300 shadow-lg drop-shadow-lg hover:drop-shadow-xl hover:scale-105 origin-center rounded-2xl" href="#">
+                        View Projects
+                    </a>
+</div>
+<div class="lg:w-1/2 mt-16 lg:mt-0 relative flex justify-center z-20">
+<div class="relative overflow-hidden rounded-2xl shadow-2xl drop-shadow-xl w-full max-w-md z-20 group" style="height: 600px;">
+<img alt="Professional portrait of developer" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdZKEySrL4uGa_z5CiWeSDI8JiDXDNu297_5QBo2ZTRoSbH4E0STJCHfjpOP6AXt3VTZ7hwSkQitnYFJto5cpuPhQxrDxSXNn9n20GsGF3ArmoPa0VtfqZx5e2gahrZoqIE7IZZmx6WB2aWC2gCgP_nE7m_jWiN2bTfzbRTANY80gBh-STRd0pgOgaZ0FnGJEIysg8Ha0xI6O3VjdWa-WUvIrXftzbIKpGNu9F1PQWp417DtPvIBxT6Zymx-IzaFvIIXfAXhaIVF4z"/>
+<div class="absolute inset-y-0 w-32 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-light-swipe pointer-events-none"></div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- DevOps Section -->
+<!-- NOTE: The 'mb-8 lg:mb-12' classes on the section below control the spacing between this section and the next -->
+<section class="relative w-full overflow-hidden group bg-charcoal mb-8 lg:mb-1 shadow-sm">
+    <div class="absolute inset-0">
+        <img src="devops_bg.png" alt="DevOps Background" class="w-full h-full object-cover opacity-30 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+    </div>
+    <!-- NOTE: The 'py-32 md:py-48' (padding vertical) and 'min-h-[550px] lg:min-h-[650px]' (minimum height) classes below control the thickness/height of this section -->
+    <div class="relative z-10 container mx-auto px-6 lg:px-16 flex flex-col justify-center py-32 md:py-48 min-h-[550px] lg:min-h-[650px]">
+        <h2 class="font-display text-5xl md:text-6xl font-extrabold tracking-tighter text-white mb-4 uppercase tracking-superwide drop-shadow-xl">DevOps</h2>
+        <p class="text-gray-300 text-base md:text-lg max-w-2xl mb-8 leading-relaxed font-medium">
+            Architecting robust, scalable cloud infrastructure and zero-downtime CI/CD pipelines. Transforming complex delivery systems into automated, observable, and highly reliable operations.
+        </p>
+        <div>
+            <a href="portfolio.html#devops" class="inline-block bg-white text-charcoal hover:bg-primary hover:text-white font-bold px-8 py-4 tracking-superwide uppercase text-xs transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 origin-center rounded-full">
+                Explore More
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Technical Art Section -->
+<section class="relative w-full overflow-hidden group bg-charcoal mb-16 lg:mb-24 shadow-sm">
+    <div class="absolute inset-0">
+        <img src="tech_art_bg.png" alt="Technical Art Background" class="w-full h-full object-cover opacity-30 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+    </div>
+    <!-- NOTE: The 'py-32 md:py-48' (padding vertical) and 'min-h-[550px] lg:min-h-[650px]' (minimum height) classes below control the thickness/height of this section -->
+    <div class="relative z-10 container mx-auto px-6 lg:px-16 flex flex-col justify-center py-32 md:py-48 min-h-[550px] lg:min-h-[650px]">
+        <h2 class="font-display text-5xl md:text-6xl font-extrabold tracking-tighter text-white mb-4 uppercase tracking-superwide drop-shadow-xl">Tech Art</h2>
+        <p class="text-gray-300 text-base md:text-lg max-w-2xl mb-8 leading-relaxed font-medium">
+            Bridging the gap between art and code. Building procedural generation pipelines in Houdini, crafting highly optimized real-time shaders for Unity and Unreal, and developing custom tooling to empower artistic vision.
+        </p>
+        <div>
+            <a href="portfolio.html#techart" class="inline-block bg-white text-charcoal hover:bg-primary hover:text-white font-bold px-8 py-4 tracking-superwide uppercase text-xs transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 origin-center rounded-full">
+                Explore More
+            </a>
+        </div>
+    </div>
+</section>
+<footer class="bg-background-light dark:bg-background-dark py-16 border-t border-gray-200 dark:border-gray-800 mt-auto">
+<div class="container mx-auto px-6 lg:px-16 text-center">
+<h2 class="font-display text-2xl font-extrabold tracking-tight mb-8 text-charcoal dark:text-white">Let's build something together.</h2>
+<div class="flex justify-center space-x-8 mb-10">
+<a class="text-charcoal-light dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors" href="contact.html">
+<span class="sr-only">Contact</span>
+<span class="material-icons">email</span>
+</a>
+<a class="text-charcoal-light dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="sr-only">LinkedIn</span>
+<span class="material-icons">link</span>
+</a>
+<a class="text-charcoal-light dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="sr-only">GitHub</span>
+<span class="material-icons">code</span>
+</a>
+<a class="text-charcoal-light dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="sr-only">Twitter</span>
+<span class="material-icons">chat</span>
+</a>
+</div>
+<p class="text-xs font-medium tracking-widest uppercase text-charcoal-light dark:text-gray-500">
+                © 2024 John Doe. All rights reserved.
+            </p>
+</div>
+</footer>
+</body></html>
