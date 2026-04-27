@@ -1,728 +1,899 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plush Haven — Project Diagrams</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plush Haven — Project Diagrams</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-:root {
-  --bg:        #f6f4f0;
-  --surface:   #ffffff;
-  --border:    #e4ddd4;
+    :root {
+      --bg: #f6f4f0;
+      --surface: #ffffff;
+      --border: #e4ddd4;
 
-  --text-1:    #1a1714;
-  --text-2:    #5a524a;
-  --text-3:    #9a9088;
+      --text-1: #1a1714;
+      --text-2: #5a524a;
+      --text-3: #9a9088;
 
-  --green:     #3d8f6e;
-  --green-bg:  #edf7f2;
-  --blue:      #2f72b8;
-  --blue-bg:   #eaf2fb;
-  --amber:     #b86b1a;
-  --amber-bg:  #fdf4e7;
-  --teal:      #1f8fa0;
-  --teal-bg:   #e7f6f9;
-  --purple:    #6b4faa;
-  --purple-bg: #f0ecf9;
-  --coral:     #c4433a;
-  --coral-bg:  #fdecea;
+      --green: #3d8f6e;
+      --green-bg: #edf7f2;
+      --blue: #2f72b8;
+      --blue-bg: #eaf2fb;
+      --amber: #b86b1a;
+      --amber-bg: #fdf4e7;
+      --teal: #1f8fa0;
+      --teal-bg: #e7f6f9;
+      --purple: #6b4faa;
+      --purple-bg: #f0ecf9;
+      --coral: #c4433a;
+      --coral-bg: #fdecea;
 
-  --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
-}
+      --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.06);
+    }
 
-body {
-  font-family: 'Sora', sans-serif;
-  background: var(--bg);
-  color: var(--text-1);
-  min-height: 100vh;
-  font-size: 14px;
-}
+    body {
+      font-family: 'Sora', sans-serif;
+      background: var(--bg);
+      color: var(--text-1);
+      min-height: 100vh;
+      font-size: 14px;
+    }
 
-header {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 20px 40px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: var(--shadow-sm);
-}
-.logo { font-size: 1.8rem; line-height: 1; }
-.header-title { font-size: 1rem; font-weight: 600; letter-spacing: -0.01em; }
-.header-sub {
-  font-size: 0.72rem;
-  color: var(--text-3);
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-top: 2px;
-}
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
 
-.tabs-bar {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 0 40px;
-  display: flex;
-}
-.tab-btn {
-  padding: 12px 20px 11px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-family: 'Sora', sans-serif;
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: var(--text-3);
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  transition: all 0.15s;
-}
-.tab-btn:hover { color: var(--text-2); }
-.tab-btn.active { color: var(--text-1); border-bottom-color: var(--text-1); font-weight: 600; }
+    .logo {
+      font-size: 1.8rem;
+      line-height: 1;
+    }
 
-.tab-panel { display: none; padding: 36px 40px 64px; max-width: 1100px; margin: 0 auto; }
-.tab-panel.active { display: block; }
+    .header-title {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
 
-.panel-intro {
-  font-size: 0.82rem;
-  color: var(--text-2);
-  margin-bottom: 28px;
-  line-height: 1.8;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--border);
-}
-.panel-intro strong { color: var(--text-1); font-weight: 600; }
+    .header-sub {
+      font-size: 0.72rem;
+      color: var(--text-3);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
 
-.diagram-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 32px;
-  box-shadow: var(--shadow-sm);
-  overflow-x: auto;
-}
-.diagram-card svg { display: block; margin: 0 auto; }
+    .tabs-bar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      display: flex;
+    }
 
-.legend {
-  margin-top: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 24px;
-  padding: 14px 20px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  align-items: center;
-}
-.legend-label {
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: var(--text-3);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  width: 100%;
-  margin-bottom: 2px;
-}
-.legend-item { display: flex; align-items: center; gap: 7px; font-size: 0.78rem; color: var(--text-2); }
-.li-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
-.li-dash { width: 20px; height: 10px; border-radius: 3px; border: 1.5px dashed var(--purple); flex-shrink: 0; }
+    .tab-btn {
+      padding: 12px 20px 11px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-family: 'Sora', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-3);
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.15s;
+    }
 
-.note { margin-top: 10px; font-size: 0.75rem; color: var(--text-3); font-style: italic; }
-code { font-family: 'JetBrains Mono', monospace; font-size: 0.75em; background: var(--bg); padding: 1px 5px; border-radius: 3px; color: var(--text-2); }
-</style>
+    .tab-btn:hover {
+      color: var(--text-2);
+    }
+
+    .tab-btn.active {
+      color: var(--text-1);
+      border-bottom-color: var(--text-1);
+      font-weight: 600;
+    }
+
+    .tab-panel {
+      display: none;
+      padding: 36px 40px 64px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .panel-intro {
+      font-size: 0.82rem;
+      color: var(--text-2);
+      margin-bottom: 28px;
+      line-height: 1.8;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-intro strong {
+      color: var(--text-1);
+      font-weight: 600;
+    }
+
+    .diagram-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: var(--shadow-sm);
+      overflow-x: auto;
+    }
+
+    .diagram-card svg {
+      display: block;
+      margin: 0 auto;
+    }
+
+    .legend {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 24px;
+      padding: 14px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      align-items: center;
+    }
+
+    .legend-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      width: 100%;
+      margin-bottom: 2px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.78rem;
+      color: var(--text-2);
+    }
+
+    .li-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .li-dash {
+      width: 20px;
+      height: 10px;
+      border-radius: 3px;
+      border: 1.5px dashed var(--purple);
+      flex-shrink: 0;
+    }
+
+    .note {
+      margin-top: 10px;
+      font-size: 0.75rem;
+      color: var(--text-3);
+      font-style: italic;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75em;
+      background: var(--bg);
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: var(--text-2);
+    }
+  </style>
 </head>
+
 <body>
 
-<header>
-  <div class="logo">🧸</div>
-  <div>
-    <div class="header-title">Plush Haven — Project Diagrams</div>
-    <div class="header-sub">Architecture · CI/CD Workflow · Tech Stack</div>
-  </div>
-</header>
+  <header>
+    <div class="logo">🧸</div>
+    <div>
+      <div class="header-title">Plush Haven — Project Diagrams</div>
+      <div class="header-sub">Architecture · CI/CD Workflow · Tech Stack</div>
+    </div>
+  </header>
 
-<div class="tabs-bar">
-  <button class="tab-btn active" onclick="switchTab('arch',this)">Architecture</button>
-  <button class="tab-btn" onclick="switchTab('cicd',this)">CI/CD Workflow</button>
-  <button class="tab-btn" onclick="switchTab('stack',this)">Tech Stack</button>
-</div>
-
-<!-- ══════════════════════════ TAB 1: ARCHITECTURE ══════════════════════════ -->
-<div id="tab-arch" class="tab-panel active">
-  <p class="panel-intro">
-    System deployed on <strong>AWS</strong> inside a VPC. An Application Load Balancer routes traffic to <strong>ECS Fargate</strong> services — 1 frontend and 5 backend. Data persisted in <strong>RDS PostgreSQL</strong> via Prisma ORM. Items marked ⭐ exist in <strong>production only</strong> (dashed outline).
-  </p>
-
-  <div class="diagram-card">
-    <svg viewBox="0 0 980 680" width="980" height="680" xmlns="http://www.w3.org/2000/svg" font-family="Sora, sans-serif">
-
-      <!-- ── USER ── -->
-      <rect x="390" y="12" width="200" height="52" rx="8" fill="#eaf2fb" stroke="#2f72b8" stroke-width="1.4"/>
-      <text x="490" y="34" text-anchor="middle" font-size="11" fill="#2f72b8" font-weight="600">User / Browser</text>
-      <text x="490" y="51" text-anchor="middle" font-size="9.5" fill="#2f72b8" opacity=".75">Web · Mobile</text>
-
-      <!-- stub -->
-      <line x1="490" y1="64" x2="490" y2="82" stroke="#c8bdb5" stroke-width="1.2"/>
-      <polygon points="486,80 494,80 490,86" fill="#c8bdb5"/>
-
-      <!-- ── ALB ── -->
-      <rect x="290" y="88" width="400" height="52" rx="8" fill="#f0ecf9" stroke="#6b4faa" stroke-width="1.4"/>
-      <text x="490" y="110" text-anchor="middle" font-size="11" fill="#6b4faa" font-weight="600">Application Load Balancer</text>
-      <text x="490" y="128" text-anchor="middle" font-size="9" fill="#6b4faa" opacity=".75">Path-based routing · HTTPS termination</text>
-
-      <!-- ALB → Frontend (angled down-left) -->
-      <line x1="360" y1="140" x2="215" y2="185" stroke="#c8bdb5" stroke-width="1.2"/>
-      <polygon points="211,182 219,182 215,189" fill="#c8bdb5"/>
-
-      <!-- ALB → Backend (angled down-right) -->
-      <line x1="620" y1="140" x2="700" y2="185" stroke="#c8bdb5" stroke-width="1.2"/>
-      <polygon points="696,183 704,183 700,190" fill="#c8bdb5"/>
-
-      <!-- ══ FRONTEND ══ -->
-      <rect x="30" y="190" width="340" height="142" rx="8" fill="#edf7f2" stroke="#3d8f6e" stroke-width="1.4"/>
-      <!-- header strip -->
-      <rect x="30" y="190" width="340" height="26" rx="8" fill="#3d8f6e"/>
-      <rect x="30" y="204" width="340" height="12" fill="#3d8f6e"/>
-      <text x="200" y="207" text-anchor="middle" font-size="9" fill="white" font-weight="600" letter-spacing="0.06em">ECS FARGATE — FRONTEND</text>
-
-      <text x="200" y="238" text-anchor="middle" font-size="12" fill="#1a1714" font-weight="600">React · Vite · TypeScript</text>
-      <text x="200" y="256" text-anchor="middle" font-size="9.5" fill="#5a524a">Internationalisation: en / vi</text>
-
-      <!-- prod autoscale badge -->
-      <rect x="48" y="268" width="304" height="32" rx="6" fill="none" stroke="#6b4faa" stroke-width="1.2" stroke-dasharray="5,3"/>
-      <text x="200" y="282" text-anchor="middle" font-size="8.5" fill="#6b4faa" font-weight="600">⭐ Auto Scaling (prod)</text>
-      <text x="200" y="295" text-anchor="middle" font-size="8.5" fill="#6b4faa">CPU 70% · min 1 · max 6 tasks</text>
-
-      <!-- ══ BACKEND CLUSTER ══ -->
-      <rect x="430" y="190" width="520" height="142" rx="8" fill="#fdf4e7" stroke="#b86b1a" stroke-width="1.4"/>
-      <rect x="430" y="190" width="520" height="26" rx="8" fill="#b86b1a"/>
-      <rect x="430" y="204" width="520" height="12" fill="#b86b1a"/>
-      <text x="690" y="207" text-anchor="middle" font-size="9" fill="white" font-weight="600" letter-spacing="0.06em">ECS FARGATE — BACKEND SERVICES</text>
-
-      <!-- 5 service cards -->
-      <!-- Main -->
-      <rect x="444" y="224" width="88" height="64" rx="6" fill="white" stroke="#e4ddd4" stroke-width="1"/>
-      <text x="488" y="247" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">Main</text>
-      <text x="488" y="262" text-anchor="middle" font-size="8" fill="#9a9088">products · likes</text>
-      <text x="488" y="279" text-anchor="middle" font-size="7.5" fill="#b86b1a" font-weight="500">min 1 · max 6</text>
-
-      <!-- Cart -->
-      <rect x="542" y="224" width="80" height="64" rx="6" fill="white" stroke="#e4ddd4" stroke-width="1"/>
-      <text x="582" y="247" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">Cart</text>
-      <text x="582" y="262" text-anchor="middle" font-size="8" fill="#9a9088">shopping basket</text>
-      <text x="582" y="279" text-anchor="middle" font-size="7.5" fill="#b86b1a" font-weight="500">min 1 · max 6</text>
-
-      <!-- Checkout -->
-      <rect x="632" y="224" width="90" height="64" rx="6" fill="white" stroke="#e4ddd4" stroke-width="1"/>
-      <text x="677" y="247" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">Checkout</text>
-      <text x="677" y="262" text-anchor="middle" font-size="8" fill="#9a9088">orders · payments</text>
-      <text x="677" y="279" text-anchor="middle" font-size="7.5" fill="#b86b1a" font-weight="500">min 1 · max 6</text>
-
-      <!-- Auth -->
-      <rect x="732" y="224" width="80" height="64" rx="6" fill="white" stroke="#e4ddd4" stroke-width="1"/>
-      <text x="772" y="247" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">Auth</text>
-      <text x="772" y="262" text-anchor="middle" font-size="8" fill="#9a9088">JWT · bcrypt</text>
-      <text x="772" y="279" text-anchor="middle" font-size="7.5" fill="#b86b1a" font-weight="500">min 1 · max 2</text>
-
-      <!-- Admin -->
-      <rect x="822" y="224" width="112" height="64" rx="6" fill="white" stroke="#e4ddd4" stroke-width="1"/>
-      <text x="878" y="247" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">Admin</text>
-      <text x="878" y="262" text-anchor="middle" font-size="8" fill="#9a9088">CMS · uploads</text>
-      <text x="878" y="279" text-anchor="middle" font-size="7.5" fill="#b86b1a" font-weight="500">min 1 · max 2</text>
-
-      <!-- prod autoscale + Cloud Map badge -->
-      <rect x="444" y="298" width="490" height="22" rx="5" fill="none" stroke="#6b4faa" stroke-width="1.2" stroke-dasharray="5,3"/>
-      <text x="689" y="313" text-anchor="middle" font-size="8.5" fill="#6b4faa" font-weight="600">⭐ Auto Scaling (prod) · CPU 70% · scale-out 60 s · scale-in 180 s · Cloud Map: *.retail-store.local</text>
-
-      <!-- ── connectors both → RDS ── -->
-      <line x1="200" y1="332" x2="200" y2="376" stroke="#c8bdb5" stroke-width="1.2"/>
-      <line x1="200" y1="376" x2="490" y2="376" stroke="#c8bdb5" stroke-width="1.2"/>
-      <line x1="690" y1="332" x2="690" y2="376" stroke="#c8bdb5" stroke-width="1.2"/>
-      <line x1="690" y1="376" x2="490" y2="376" stroke="#c8bdb5" stroke-width="1.2"/>
-      <line x1="490" y1="376" x2="490" y2="392" stroke="#c8bdb5" stroke-width="1.2"/>
-      <polygon points="486,390 494,390 490,396" fill="#c8bdb5"/>
-
-      <!-- ══ ROW 3 DATA ══ -->
-      <!-- RDS centre -->
-      <rect x="320" y="398" width="260" height="64" rx="8" fill="#e7f6f9" stroke="#1f8fa0" stroke-width="1.4"/>
-      <rect x="320" y="398" width="260" height="24" rx="8" fill="#1f8fa0"/>
-      <rect x="320" y="410" width="260" height="12" fill="#1f8fa0"/>
-      <text x="450" y="414" text-anchor="middle" font-size="9" fill="white" font-weight="600" letter-spacing="0.05em">RDS POSTGRESQL</text>
-      <text x="450" y="443" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">Prisma ORM · Shared Schema</text>
-      <text x="450" y="458" text-anchor="middle" font-size="8.5" fill="#5a524a">Staging + production instances</text>
-
-      <!-- ECR left -->
-      <rect x="30" y="398" width="256" height="64" rx="8" fill="#fdecea" stroke="#c4433a" stroke-width="1.4"/>
-      <rect x="30" y="398" width="256" height="24" rx="8" fill="#c4433a"/>
-      <rect x="30" y="410" width="256" height="12" fill="#c4433a"/>
-      <text x="158" y="414" text-anchor="middle" font-size="9" fill="white" font-weight="600" letter-spacing="0.05em">ECR — DOCKER REGISTRY</text>
-      <text x="158" y="443" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">Frontend + 5 Backend Images</text>
-      <text x="158" y="458" text-anchor="middle" font-size="8.5" fill="#5a524a">Staging · Production registries</text>
-
-      <!-- S3 right prod -->
-      <rect x="612" y="398" width="180" height="64" rx="8" fill="none" stroke="#6b4faa" stroke-width="1.4" stroke-dasharray="6,3"/>
-      <rect x="612" y="398" width="180" height="64" rx="8" fill="#f0ecf9" opacity=".55"/>
-      <text x="702" y="416" text-anchor="middle" font-size="8.5" fill="#6b4faa" font-weight="600" letter-spacing="0.04em">⭐ S3 BUCKET (PROD)</text>
-      <text x="702" y="443" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">Admin Image Uploads</text>
-      <text x="702" y="458" text-anchor="middle" font-size="8.5" fill="#6b4faa">Admin service → S3</text>
-
-      <!-- ECR far right -->
-      <rect x="824" y="398" width="136" height="64" rx="8" fill="#f0f1f4" stroke="#c8bdb5" stroke-width="1.4"/>
-      <text x="892" y="416" text-anchor="middle" font-size="8.5" fill="#4a5568" font-weight="600" letter-spacing="0.04em">AWS VPC</text>
-      <text x="892" y="435" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="600">Terraform IaC</text>
-      <text x="892" y="450" text-anchor="middle" font-size="8.5" fill="#9a9088">ALB · ECS · RDS</text>
-      <text x="892" y="463" text-anchor="middle" font-size="8.5" fill="#9a9088">ECR · S3 · NAT</text>
-
-      <!-- ══ OBSERVABILITY (prod) ══ -->
-      <rect x="30" y="498" width="930" height="160" rx="8" fill="none" stroke="#6b4faa" stroke-width="1.4" stroke-dasharray="7,4"/>
-      <rect x="30" y="498" width="930" height="160" rx="8" fill="#f0ecf9" opacity=".3"/>
-      <text x="50" y="516" font-size="9" fill="#6b4faa" font-weight="700" letter-spacing="0.07em">⭐ OBSERVABILITY STACK — PRODUCTION ONLY</text>
-
-      <!-- 5 obs tiles -->
-      <!-- Prometheus -->
-      <rect x="48" y="524" width="160" height="112" rx="7" fill="white" stroke="#e4ddd4" stroke-width="1"/>
-      <rect x="48" y="524" width="160" height="22" rx="7" fill="#f0ecf9"/>
-      <rect x="48" y="534" width="160" height="12" fill="#f0ecf9"/>
-      <text x="128" y="538" text-anchor="middle" font-size="9" fill="#6b4faa" font-weight="600">Prometheus</text>
-      <text x="128" y="562" text-anchor="middle" font-size="9" fill="#5a524a">Scrapes /metrics</text>
-      <text x="128" y="576" text-anchor="middle" font-size="9" fill="#5a524a">via Cloud Map DNS</text>
-      <text x="128" y="624" text-anchor="middle" font-size="8" fill="#9a9088">pulls from all backend services</text>
-
-      <!-- Grafana -->
-      <rect x="224" y="524" width="160" height="112" rx="7" fill="white" stroke="#e4ddd4" stroke-width="1"/>
-      <rect x="224" y="524" width="160" height="22" rx="7" fill="#f0ecf9"/>
-      <rect x="224" y="534" width="160" height="12" fill="#f0ecf9"/>
-      <text x="304" y="538" text-anchor="middle" font-size="9" fill="#6b4faa" font-weight="600">Grafana</text>
-      <text x="304" y="562" text-anchor="middle" font-size="9" fill="#5a524a">Dashboards</text>
-      <text x="304" y="576" text-anchor="middle" font-size="9" fill="#5a524a">Exposed via ALB</text>
-      <text x="304" y="624" text-anchor="middle" font-size="8" fill="#9a9088">reads Prometheus datasource</text>
-
-      <!-- Loki + Promtail -->
-      <rect x="400" y="524" width="160" height="112" rx="7" fill="white" stroke="#e4ddd4" stroke-width="1"/>
-      <rect x="400" y="524" width="160" height="22" rx="7" fill="#f0ecf9"/>
-      <rect x="400" y="534" width="160" height="12" fill="#f0ecf9"/>
-      <text x="480" y="538" text-anchor="middle" font-size="9" fill="#6b4faa" font-weight="600">Loki + Promtail</text>
-      <text x="480" y="562" text-anchor="middle" font-size="9" fill="#5a524a">Log aggregation</text>
-      <text x="480" y="576" text-anchor="middle" font-size="9" fill="#5a524a">Container log shipping</text>
-      <text x="480" y="624" text-anchor="middle" font-size="8" fill="#9a9088">collects ECS container logs</text>
-
-      <!-- Node Exporter -->
-      <rect x="576" y="524" width="160" height="112" rx="7" fill="white" stroke="#e4ddd4" stroke-width="1"/>
-      <rect x="576" y="524" width="160" height="22" rx="7" fill="#f0ecf9"/>
-      <rect x="576" y="534" width="160" height="12" fill="#f0ecf9"/>
-      <text x="656" y="538" text-anchor="middle" font-size="9" fill="#6b4faa" font-weight="600">Node Exporter</text>
-      <text x="656" y="562" text-anchor="middle" font-size="9" fill="#5a524a">Host-level metrics</text>
-      <text x="656" y="576" text-anchor="middle" font-size="9" fill="#5a524a">CPU · Memory · Disk</text>
-      <text x="656" y="624" text-anchor="middle" font-size="8" fill="#9a9088">scraped by Prometheus</text>
-
-      <!-- k6 -->
-      <rect x="752" y="524" width="192" height="112" rx="7" fill="white" stroke="#e4ddd4" stroke-width="1"/>
-      <rect x="752" y="524" width="192" height="22" rx="7" fill="#f0ecf9"/>
-      <rect x="752" y="534" width="192" height="12" fill="#f0ecf9"/>
-      <text x="848" y="538" text-anchor="middle" font-size="9" fill="#6b4faa" font-weight="600">k6 Load Tests</text>
-      <text x="848" y="562" text-anchor="middle" font-size="9" fill="#5a524a">register → login</text>
-      <text x="848" y="576" text-anchor="middle" font-size="9" fill="#5a524a">product → cart → checkout</text>
-      <text x="848" y="624" text-anchor="middle" font-size="8" fill="#9a9088">targets production ALB</text>
-
-    </svg>
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="switchTab('arch',this)">Architecture</button>
+    <button class="tab-btn" onclick="switchTab('cicd',this)">CI/CD Workflow</button>
+    <button class="tab-btn" onclick="switchTab('stack',this)">Tech Stack</button>
   </div>
 
-  <div class="legend">
-    <div class="legend-label">Legend</div>
-    <div class="legend-item"><div class="li-dot" style="background:#3d8f6e"></div>Frontend (ECS Fargate)</div>
-    <div class="legend-item"><div class="li-dot" style="background:#b86b1a"></div>Backend Services (ECS Fargate)</div>
-    <div class="legend-item"><div class="li-dot" style="background:#1f8fa0"></div>Database (RDS PostgreSQL)</div>
-    <div class="legend-item"><div class="li-dot" style="background:#c4433a"></div>Docker Registry (ECR)</div>
-    <div class="legend-item"><div class="li-dot" style="background:#6b4faa"></div>Network / Load Balancer</div>
-    <div class="legend-item"><div class="li-dash"></div>⭐ Production-only resources</div>
-  </div>
-  <p class="note">⭐ = production environment only. Auto Scaling applies to all 6 ECS services with CPU 70% target tracking.</p>
-</div>
+  <!-- ══════════════════════════ TAB 1: ARCHITECTURE ══════════════════════════ -->
+  <div id="tab-arch" class="tab-panel active">
+    <p class="panel-intro">
+      System deployed on <strong>AWS</strong> inside a VPC. An Application Load Balancer routes traffic to <strong>ECS
+        Fargate</strong> services — 1 frontend and 5 backend. Data persisted in <strong>RDS PostgreSQL</strong> via
+      Prisma ORM. Items marked ⭐ exist in <strong>production only</strong> (dashed outline).
+    </p>
 
-<!-- ══════════════════════════ TAB 2: CI/CD ══════════════════════════ -->
-<div id="tab-cicd" class="tab-panel">
-  <p class="panel-intro">
-    Two separate GitHub repositories manage deployments. <strong>Staging</strong> deploys automatically on every push to <code>main</code>. <strong>Production</strong> requires a manual promote step, plus separate manual workflows for rollback, database seed, and load testing.
-  </p>
+    <div class="diagram-card">
+      <svg viewBox="0 0 980 680" width="980" height="680" xmlns="http://www.w3.org/2000/svg"
+        font-family="Sora, sans-serif">
 
-  <div class="diagram-card">
-    <svg viewBox="0 0 980 560" width="980" height="560" xmlns="http://www.w3.org/2000/svg" font-family="Sora, sans-serif">
+        <!-- ── USER ── -->
+        <rect x="390" y="12" width="200" height="52" rx="8" fill="#eaf2fb" stroke="#2f72b8" stroke-width="1.4" />
+        <text x="490" y="34" text-anchor="middle" font-size="11" fill="#2f72b8" font-weight="600">User / Browser</text>
+        <text x="490" y="51" text-anchor="middle" font-size="9.5" fill="#2f72b8" opacity=".75">Web · Mobile</text>
 
-      <!-- ── STAGING LANE ── -->
-      <rect x="16" y="16" width="590" height="166" rx="8" fill="#edf7f2" stroke="#3d8f6e" stroke-width="1.4"/>
-      <rect x="16" y="16" width="590" height="26" rx="8" fill="#3d8f6e"/>
-      <rect x="16" y="30" width="590" height="12" fill="#3d8f6e"/>
-      <text x="32" y="33" font-size="9" fill="white" font-weight="600" letter-spacing="0.07em">STAGING REPO — AUTO-DEPLOY ON PUSH TO MAIN</text>
+        <!-- stub -->
+        <line x1="490" y1="64" x2="490" y2="82" stroke="#c8bdb5" stroke-width="1.2" />
+        <polygon points="486,80 494,80 490,86" fill="#c8bdb5" />
 
-      <!-- Step cards inline -->
-      <!-- Step 1 -->
-      <rect x="28" y="52" width="120" height="112" rx="7" fill="white" stroke="#c8e6d8" stroke-width="1"/>
-      <circle cx="44" cy="68" r="10" fill="#3d8f6e"/>
-      <text x="44" y="72" text-anchor="middle" font-size="9" fill="white" font-weight="700">1</text>
-      <text x="88" y="70" text-anchor="middle" font-size="9.5" fill="#3d8f6e" font-weight="600">Push to main</text>
-      <text x="88" y="92" text-anchor="middle" font-size="8.5" fill="#5a524a">Developer</text>
-      <text x="88" y="106" text-anchor="middle" font-size="8.5" fill="#5a524a">commits to</text>
-      <text x="88" y="120" text-anchor="middle" font-size="8.5" fill="#5a524a">staging repo</text>
-      <text x="88" y="152" text-anchor="middle" font-size="8" fill="#9a9088">GitHub trigger</text>
+        <!-- ── ALB ── -->
+        <rect x="290" y="88" width="400" height="52" rx="8" fill="#f0ecf9" stroke="#6b4faa" stroke-width="1.4" />
+        <text x="490" y="110" text-anchor="middle" font-size="11" fill="#6b4faa" font-weight="600">Application Load
+          Balancer</text>
+        <text x="490" y="128" text-anchor="middle" font-size="9" fill="#6b4faa" opacity=".75">Path-based routing · HTTPS
+          termination</text>
 
-      <!-- → -->
-      <line x1="148" y1="108" x2="168" y2="108" stroke="#a8c8b8" stroke-width="1.3"/>
-      <polygon points="166,104 174,108 166,112" fill="#a8c8b8"/>
+        <!-- ALB → Frontend (angled down-left) -->
+        <line x1="360" y1="140" x2="215" y2="185" stroke="#c8bdb5" stroke-width="1.2" />
+        <polygon points="211,182 219,182 215,189" fill="#c8bdb5" />
 
-      <!-- Step 2 -->
-      <rect x="174" y="52" width="120" height="112" rx="7" fill="white" stroke="#c8e6d8" stroke-width="1"/>
-      <circle cx="190" cy="68" r="10" fill="#3d8f6e"/>
-      <text x="190" y="72" text-anchor="middle" font-size="9" fill="white" font-weight="700">2</text>
-      <text x="234" y="70" text-anchor="middle" font-size="9.5" fill="#3d8f6e" font-weight="600">Build</text>
-      <text x="234" y="92" text-anchor="middle" font-size="8.5" fill="#5a524a">Vite build</text>
-      <text x="234" y="106" text-anchor="middle" font-size="8.5" fill="#5a524a">Docker × 6</text>
-      <text x="234" y="120" text-anchor="middle" font-size="8.5" fill="#5a524a">images</text>
-      <text x="234" y="152" text-anchor="middle" font-size="8" fill="#9a9088">parallel matrix</text>
+        <!-- ALB → Backend (angled down-right) -->
+        <line x1="620" y1="140" x2="700" y2="185" stroke="#c8bdb5" stroke-width="1.2" />
+        <polygon points="696,183 704,183 700,190" fill="#c8bdb5" />
 
-      <!-- → -->
-      <line x1="294" y1="108" x2="314" y2="108" stroke="#a8c8b8" stroke-width="1.3"/>
-      <polygon points="312,104 320,108 312,112" fill="#a8c8b8"/>
+        <!-- ══ FRONTEND ══ -->
+        <rect x="30" y="190" width="340" height="142" rx="8" fill="#edf7f2" stroke="#3d8f6e" stroke-width="1.4" />
+        <!-- header strip -->
+        <rect x="30" y="190" width="340" height="26" rx="8" fill="#3d8f6e" />
+        <rect x="30" y="204" width="340" height="12" fill="#3d8f6e" />
+        <text x="200" y="207" text-anchor="middle" font-size="9" fill="white" font-weight="600"
+          letter-spacing="0.06em">ECS FARGATE — FRONTEND</text>
 
-      <!-- Step 3 -->
-      <rect x="320" y="52" width="124" height="112" rx="7" fill="white" stroke="#c8e6d8" stroke-width="1"/>
-      <circle cx="336" cy="68" r="10" fill="#3d8f6e"/>
-      <text x="336" y="72" text-anchor="middle" font-size="9" fill="white" font-weight="700">3</text>
-      <text x="382" y="70" text-anchor="middle" font-size="9.5" fill="#3d8f6e" font-weight="600">Push → ECR</text>
-      <text x="382" y="92" text-anchor="middle" font-size="8.5" fill="#5a524a">Tag + push</text>
-      <text x="382" y="106" text-anchor="middle" font-size="8.5" fill="#5a524a">all 6 images</text>
-      <text x="382" y="120" text-anchor="middle" font-size="8.5" fill="#5a524a">to staging ECR</text>
-      <text x="382" y="152" text-anchor="middle" font-size="8" fill="#9a9088">staging registry</text>
+        <text x="200" y="238" text-anchor="middle" font-size="12" fill="#1a1714" font-weight="600">React · Vite ·
+          TypeScript</text>
+        <text x="200" y="256" text-anchor="middle" font-size="9.5" fill="#5a524a">Internationalisation: en / vi</text>
 
-      <!-- → -->
-      <line x1="444" y1="108" x2="464" y2="108" stroke="#a8c8b8" stroke-width="1.3"/>
-      <polygon points="462,104 470,108 462,112" fill="#a8c8b8"/>
+        <!-- prod autoscale badge -->
+        <rect x="48" y="268" width="304" height="32" rx="6" fill="none" stroke="#6b4faa" stroke-width="1.2"
+          stroke-dasharray="5,3" />
+        <text x="200" y="282" text-anchor="middle" font-size="8.5" fill="#6b4faa" font-weight="600">⭐ Auto Scaling
+          (prod)</text>
+        <text x="200" y="295" text-anchor="middle" font-size="8.5" fill="#6b4faa">CPU 70% · min 1 · max 6 tasks</text>
 
-      <!-- Step 4 -->
-      <rect x="470" y="52" width="124" height="112" rx="7" fill="white" stroke="#c8e6d8" stroke-width="1"/>
-      <circle cx="486" cy="68" r="10" fill="#3d8f6e"/>
-      <text x="486" y="72" text-anchor="middle" font-size="9" fill="white" font-weight="700">4</text>
-      <text x="532" y="70" text-anchor="middle" font-size="9.5" fill="#3d8f6e" font-weight="600">Deploy ECS</text>
-      <text x="532" y="92" text-anchor="middle" font-size="8.5" fill="#5a524a">Rolling update</text>
-      <text x="532" y="106" text-anchor="middle" font-size="8.5" fill="#5a524a">all 6 ECS</text>
-      <text x="532" y="120" text-anchor="middle" font-size="8.5" fill="#5a524a">services</text>
-      <text x="532" y="152" text-anchor="middle" font-size="8" fill="#9a9088">staging cluster</text>
+        <!-- ══ BACKEND CLUSTER ══ -->
+        <rect x="430" y="190" width="520" height="142" rx="8" fill="#fdf4e7" stroke="#b86b1a" stroke-width="1.4" />
+        <rect x="430" y="190" width="520" height="26" rx="8" fill="#b86b1a" />
+        <rect x="430" y="204" width="520" height="12" fill="#b86b1a" />
+        <text x="690" y="207" text-anchor="middle" font-size="9" fill="white" font-weight="600"
+          letter-spacing="0.06em">ECS FARGATE — BACKEND SERVICES</text>
 
-      <!-- ── PROMOTE BRIDGE ── -->
-      <rect x="16" y="206" width="590" height="68" rx="8" fill="#fdf4e7" stroke="#b86b1a" stroke-width="1.4" stroke-dasharray="6,3"/>
-      <text x="32" y="224" font-size="9" fill="#b86b1a" font-weight="700" letter-spacing="0.05em">🤲  MANUAL PROMOTE — staging repo → production repo</text>
-      <text x="32" y="244" font-size="9" fill="#5a524a">Engineer manually promotes tested code. This is an explicit human gate — not automated.</text>
-      <text x="32" y="260" font-size="8.5" fill="#9a9088">Approach: PR, tag, or copy workflow file · No auto-trigger</text>
+        <!-- 5 service cards -->
+        <!-- Main -->
+        <rect x="444" y="224" width="88" height="64" rx="6" fill="white" stroke="#e4ddd4" stroke-width="1" />
+        <text x="488" y="247" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">Main</text>
+        <text x="488" y="262" text-anchor="middle" font-size="8" fill="#9a9088">products · likes</text>
+        <text x="488" y="279" text-anchor="middle" font-size="7.5" fill="#b86b1a" font-weight="500">min 1 · max 6</text>
 
-      <!-- ── PRODUCTION LANE ── -->
-      <rect x="16" y="294" width="590" height="120" rx="8" fill="#f0ecf9" stroke="#6b4faa" stroke-width="1.4"/>
-      <rect x="16" y="294" width="590" height="26" rx="8" fill="#6b4faa"/>
-      <rect x="16" y="308" width="590" height="12" fill="#6b4faa"/>
-      <text x="32" y="311" font-size="9" fill="white" font-weight="600" letter-spacing="0.07em">PRODUCTION REPO — MANUAL DEPLOY</text>
+        <!-- Cart -->
+        <rect x="542" y="224" width="80" height="64" rx="6" fill="white" stroke="#e4ddd4" stroke-width="1" />
+        <text x="582" y="247" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">Cart</text>
+        <text x="582" y="262" text-anchor="middle" font-size="8" fill="#9a9088">shopping basket</text>
+        <text x="582" y="279" text-anchor="middle" font-size="7.5" fill="#b86b1a" font-weight="500">min 1 · max 6</text>
 
-      <!-- Deploy to Prod box -->
-      <rect x="28" y="330" width="280" height="72" rx="7" fill="white" stroke="#d0c4f0" stroke-width="1"/>
-      <text x="168" y="352" text-anchor="middle" font-size="10" fill="#6b4faa" font-weight="600">🖐  Deploy to Production</text>
-      <text x="168" y="372" text-anchor="middle" font-size="8.5" fill="#5a524a">Build → push to ECR prod → ECS rolling update</text>
-      <text x="168" y="390" text-anchor="middle" font-size="8.5" fill="#9a9088">workflow_dispatch · manual trigger only</text>
+        <!-- Checkout -->
+        <rect x="632" y="224" width="90" height="64" rx="6" fill="white" stroke="#e4ddd4" stroke-width="1" />
+        <text x="677" y="247" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">Checkout</text>
+        <text x="677" y="262" text-anchor="middle" font-size="8" fill="#9a9088">orders · payments</text>
+        <text x="677" y="279" text-anchor="middle" font-size="7.5" fill="#b86b1a" font-weight="500">min 1 · max 6</text>
 
-      <!-- ── ADDITIONAL MANUAL WORKFLOWS ── -->
-      <rect x="16" y="434" width="590" height="110" rx="8" fill="#fdecea" stroke="#c4433a" stroke-width="1.4" stroke-dasharray="5,3"/>
-      <text x="32" y="452" font-size="9" fill="#c4433a" font-weight="700" letter-spacing="0.05em">ADDITIONAL PRODUCTION WORKFLOWS — ALL MANUAL (workflow_dispatch)</text>
+        <!-- Auth -->
+        <rect x="732" y="224" width="80" height="64" rx="6" fill="white" stroke="#e4ddd4" stroke-width="1" />
+        <text x="772" y="247" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">Auth</text>
+        <text x="772" y="262" text-anchor="middle" font-size="8" fill="#9a9088">JWT · bcrypt</text>
+        <text x="772" y="279" text-anchor="middle" font-size="7.5" fill="#b86b1a" font-weight="500">min 1 · max 2</text>
 
-      <!-- 3 boxes -->
-      <rect x="28" y="462" width="172" height="64" rx="7" fill="white" stroke="#f0c4c2" stroke-width="1"/>
-      <text x="114" y="484" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">🔄  Rollback Prod</text>
-      <text x="114" y="500" text-anchor="middle" font-size="8.5" fill="#9a9088">Revert ECS to previous</text>
-      <text x="114" y="514" text-anchor="middle" font-size="8.5" fill="#9a9088">task definition</text>
+        <!-- Admin -->
+        <rect x="822" y="224" width="112" height="64" rx="6" fill="white" stroke="#e4ddd4" stroke-width="1" />
+        <text x="878" y="247" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">Admin</text>
+        <text x="878" y="262" text-anchor="middle" font-size="8" fill="#9a9088">CMS · uploads</text>
+        <text x="878" y="279" text-anchor="middle" font-size="7.5" fill="#b86b1a" font-weight="500">min 1 · max 2</text>
 
-      <rect x="216" y="462" width="172" height="64" rx="7" fill="white" stroke="#f0c4c2" stroke-width="1"/>
-      <text x="302" y="484" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">🌱  Seed Prod DB</text>
-      <text x="302" y="500" text-anchor="middle" font-size="8.5" fill="#9a9088">Run seed script on</text>
-      <text x="302" y="514" text-anchor="middle" font-size="8.5" fill="#9a9088">production RDS</text>
+        <!-- prod autoscale + Cloud Map badge -->
+        <rect x="444" y="298" width="490" height="22" rx="5" fill="none" stroke="#6b4faa" stroke-width="1.2"
+          stroke-dasharray="5,3" />
+        <text x="689" y="313" text-anchor="middle" font-size="8.5" fill="#6b4faa" font-weight="600">⭐ Auto Scaling
+          (prod) · CPU 70% · scale-out 60 s · scale-in 180 s · Cloud Map: *.retail-store.local</text>
 
-      <rect x="404" y="462" width="186" height="64" rx="7" fill="white" stroke="#f0c4c2" stroke-width="1"/>
-      <text x="497" y="484" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">🔥  Load Test Prod</text>
-      <text x="497" y="500" text-anchor="middle" font-size="8.5" fill="#9a9088">k6: register → login</text>
-      <text x="497" y="514" text-anchor="middle" font-size="8.5" fill="#9a9088">→ cart → checkout</text>
+        <!-- ── connectors both → RDS ── -->
+        <line x1="200" y1="332" x2="200" y2="376" stroke="#c8bdb5" stroke-width="1.2" />
+        <line x1="200" y1="376" x2="490" y2="376" stroke="#c8bdb5" stroke-width="1.2" />
+        <line x1="690" y1="332" x2="690" y2="376" stroke="#c8bdb5" stroke-width="1.2" />
+        <line x1="690" y1="376" x2="490" y2="376" stroke="#c8bdb5" stroke-width="1.2" />
+        <line x1="490" y1="376" x2="490" y2="392" stroke="#c8bdb5" stroke-width="1.2" />
+        <polygon points="486,390 494,390 490,396" fill="#c8bdb5" />
 
-      <!-- ── RIGHT PANEL: Workflow file summary ── -->
-      <rect x="628" y="16" width="336" height="528" rx="10" fill="white" stroke="#e4ddd4" stroke-width="1.2"/>
-      <rect x="628" y="16" width="336" height="28" rx="10" fill="#f6f4f0"/>
-      <rect x="628" y="30" width="336" height="14" fill="#f6f4f0"/>
-      <text x="796" y="34" text-anchor="middle" font-size="9" fill="#5a524a" font-weight="700" letter-spacing="0.06em">GITHUB ACTIONS WORKFLOWS</text>
+        <!-- ══ ROW 3 DATA ══ -->
+        <!-- RDS centre -->
+        <rect x="320" y="398" width="260" height="64" rx="8" fill="#e7f6f9" stroke="#1f8fa0" stroke-width="1.4" />
+        <rect x="320" y="398" width="260" height="24" rx="8" fill="#1f8fa0" />
+        <rect x="320" y="410" width="260" height="12" fill="#1f8fa0" />
+        <text x="450" y="414" text-anchor="middle" font-size="9" fill="white" font-weight="600"
+          letter-spacing="0.05em">RDS POSTGRESQL</text>
+        <text x="450" y="443" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">Prisma ORM · Shared
+          Schema</text>
+        <text x="450" y="458" text-anchor="middle" font-size="8.5" fill="#5a524a">Staging + production instances</text>
 
-      <!-- entries -->
-      <text x="648" y="68" font-size="8.5" fill="#9a9088" font-weight="600" letter-spacing="0.07em">STAGING</text>
-      <rect x="648" y="76" width="298" height="38" rx="6" fill="#edf7f2" stroke="#c8e6d8" stroke-width="1"/>
-      <text x="662" y="93" font-size="9" fill="#3d8f6e" font-weight="600">staging-deploy.yml</text>
-      <text x="662" y="107" font-size="8.5" fill="#5a524a">on: push to main → auto</text>
+        <!-- ECR left -->
+        <rect x="30" y="398" width="256" height="64" rx="8" fill="#fdecea" stroke="#c4433a" stroke-width="1.4" />
+        <rect x="30" y="398" width="256" height="24" rx="8" fill="#c4433a" />
+        <rect x="30" y="410" width="256" height="12" fill="#c4433a" />
+        <text x="158" y="414" text-anchor="middle" font-size="9" fill="white" font-weight="600"
+          letter-spacing="0.05em">ECR — DOCKER REGISTRY</text>
+        <text x="158" y="443" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">Frontend + 5 Backend
+          Images</text>
+        <text x="158" y="458" text-anchor="middle" font-size="8.5" fill="#5a524a">Staging · Production registries</text>
 
-      <text x="648" y="134" font-size="8.5" fill="#9a9088" font-weight="600" letter-spacing="0.07em">PRODUCTION</text>
-      <rect x="648" y="142" width="298" height="38" rx="6" fill="#f0ecf9" stroke="#d0c4f0" stroke-width="1"/>
-      <text x="662" y="159" font-size="9" fill="#6b4faa" font-weight="600">prod-deploy.yml</text>
-      <text x="662" y="173" font-size="8.5" fill="#5a524a">on: workflow_dispatch · manual</text>
+        <!-- S3 right prod -->
+        <rect x="612" y="398" width="180" height="64" rx="8" fill="none" stroke="#6b4faa" stroke-width="1.4"
+          stroke-dasharray="6,3" />
+        <rect x="612" y="398" width="180" height="64" rx="8" fill="#f0ecf9" opacity=".55" />
+        <text x="702" y="416" text-anchor="middle" font-size="8.5" fill="#6b4faa" font-weight="600"
+          letter-spacing="0.04em">⭐ S3 BUCKET (PROD)</text>
+        <text x="702" y="443" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">Admin Image
+          Uploads</text>
+        <text x="702" y="458" text-anchor="middle" font-size="8.5" fill="#6b4faa">Admin service → S3</text>
 
-      <rect x="648" y="188" width="298" height="38" rx="6" fill="#f0ecf9" stroke="#d0c4f0" stroke-width="1"/>
-      <text x="662" y="205" font-size="9" fill="#6b4faa" font-weight="600">prod-rollback.yml</text>
-      <text x="662" y="219" font-size="8.5" fill="#5a524a">on: workflow_dispatch · manual</text>
+        <!-- ECR far right -->
+        <rect x="824" y="398" width="136" height="64" rx="8" fill="#f0f1f4" stroke="#c8bdb5" stroke-width="1.4" />
+        <text x="892" y="416" text-anchor="middle" font-size="8.5" fill="#4a5568" font-weight="600"
+          letter-spacing="0.04em">AWS VPC</text>
+        <text x="892" y="435" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="600">Terraform IaC</text>
+        <text x="892" y="450" text-anchor="middle" font-size="8.5" fill="#9a9088">ALB · ECS · RDS</text>
+        <text x="892" y="463" text-anchor="middle" font-size="8.5" fill="#9a9088">ECR · S3 · NAT</text>
 
-      <rect x="648" y="234" width="298" height="38" rx="6" fill="#f0ecf9" stroke="#d0c4f0" stroke-width="1"/>
-      <text x="662" y="251" font-size="9" fill="#6b4faa" font-weight="600">prod-seed.yml</text>
-      <text x="662" y="265" font-size="8.5" fill="#5a524a">on: workflow_dispatch · manual</text>
+        <!-- ══ OBSERVABILITY (prod) ══ -->
+        <rect x="30" y="498" width="930" height="160" rx="8" fill="none" stroke="#6b4faa" stroke-width="1.4"
+          stroke-dasharray="7,4" />
+        <rect x="30" y="498" width="930" height="160" rx="8" fill="#f0ecf9" opacity=".3" />
+        <text x="50" y="516" font-size="9" fill="#6b4faa" font-weight="700" letter-spacing="0.07em">⭐ OBSERVABILITY
+          STACK — PRODUCTION ONLY</text>
 
-      <rect x="648" y="280" width="298" height="38" rx="6" fill="#f0ecf9" stroke="#d0c4f0" stroke-width="1"/>
-      <text x="662" y="297" font-size="9" fill="#6b4faa" font-weight="600">prod-load-test.yml</text>
-      <text x="662" y="311" font-size="8.5" fill="#5a524a">on: workflow_dispatch · manual</text>
+        <!-- 5 obs tiles -->
+        <!-- Prometheus -->
+        <rect x="48" y="524" width="160" height="112" rx="7" fill="white" stroke="#e4ddd4" stroke-width="1" />
+        <rect x="48" y="524" width="160" height="22" rx="7" fill="#f0ecf9" />
+        <rect x="48" y="534" width="160" height="12" fill="#f0ecf9" />
+        <text x="128" y="538" text-anchor="middle" font-size="9" fill="#6b4faa" font-weight="600">Prometheus</text>
+        <text x="128" y="562" text-anchor="middle" font-size="9" fill="#5a524a">Scrapes /metrics</text>
+        <text x="128" y="576" text-anchor="middle" font-size="9" fill="#5a524a">via Cloud Map DNS</text>
+        <text x="128" y="624" text-anchor="middle" font-size="8" fill="#9a9088">pulls from all backend services</text>
 
-      <text x="648" y="342" font-size="8.5" fill="#9a9088" font-weight="600" letter-spacing="0.07em">SHARED CONFIG</text>
-      <rect x="648" y="350" width="298" height="76" rx="6" fill="#f6f4f0" stroke="#e4ddd4" stroke-width="1"/>
-      <text x="662" y="368" font-size="8.5" fill="#5a524a">AWS credentials via GitHub Secrets</text>
-      <text x="662" y="383" font-size="8.5" fill="#9a9088">ECR push · ECS update-service</text>
-      <text x="662" y="398" font-size="8.5" fill="#9a9088">RDS access via VPC + Secrets Manager</text>
-      <text x="662" y="413" font-size="8.5" fill="#9a9088">Terraform state: S3 + DynamoDB lock</text>
+        <!-- Grafana -->
+        <rect x="224" y="524" width="160" height="112" rx="7" fill="white" stroke="#e4ddd4" stroke-width="1" />
+        <rect x="224" y="524" width="160" height="22" rx="7" fill="#f0ecf9" />
+        <rect x="224" y="534" width="160" height="12" fill="#f0ecf9" />
+        <text x="304" y="538" text-anchor="middle" font-size="9" fill="#6b4faa" font-weight="600">Grafana</text>
+        <text x="304" y="562" text-anchor="middle" font-size="9" fill="#5a524a">Dashboards</text>
+        <text x="304" y="576" text-anchor="middle" font-size="9" fill="#5a524a">Exposed via ALB</text>
+        <text x="304" y="624" text-anchor="middle" font-size="8" fill="#9a9088">reads Prometheus datasource</text>
 
-      <text x="648" y="450" font-size="8.5" fill="#9a9088" font-weight="600" letter-spacing="0.07em">REGISTRIES</text>
-      <rect x="648" y="458" width="140" height="52" rx="6" fill="#fdecea" stroke="#f0c4c2" stroke-width="1"/>
-      <text x="718" y="477" text-anchor="middle" font-size="9" fill="#c4433a" font-weight="600">ECR Staging</text>
-      <text x="718" y="493" text-anchor="middle" font-size="8.5" fill="#9a9088">auto on push</text>
+        <!-- Loki + Promtail -->
+        <rect x="400" y="524" width="160" height="112" rx="7" fill="white" stroke="#e4ddd4" stroke-width="1" />
+        <rect x="400" y="524" width="160" height="22" rx="7" fill="#f0ecf9" />
+        <rect x="400" y="534" width="160" height="12" fill="#f0ecf9" />
+        <text x="480" y="538" text-anchor="middle" font-size="9" fill="#6b4faa" font-weight="600">Loki + Promtail</text>
+        <text x="480" y="562" text-anchor="middle" font-size="9" fill="#5a524a">Log aggregation</text>
+        <text x="480" y="576" text-anchor="middle" font-size="9" fill="#5a524a">Container log shipping</text>
+        <text x="480" y="624" text-anchor="middle" font-size="8" fill="#9a9088">collects ECS container logs</text>
 
-      <rect x="804" y="458" width="142" height="52" rx="6" fill="#f0ecf9" stroke="#d0c4f0" stroke-width="1"/>
-      <text x="875" y="477" text-anchor="middle" font-size="9" fill="#6b4faa" font-weight="600">ECR Production</text>
-      <text x="875" y="493" text-anchor="middle" font-size="8.5" fill="#9a9088">manual promote</text>
+        <!-- Node Exporter -->
+        <rect x="576" y="524" width="160" height="112" rx="7" fill="white" stroke="#e4ddd4" stroke-width="1" />
+        <rect x="576" y="524" width="160" height="22" rx="7" fill="#f0ecf9" />
+        <rect x="576" y="534" width="160" height="12" fill="#f0ecf9" />
+        <text x="656" y="538" text-anchor="middle" font-size="9" fill="#6b4faa" font-weight="600">Node Exporter</text>
+        <text x="656" y="562" text-anchor="middle" font-size="9" fill="#5a524a">Host-level metrics</text>
+        <text x="656" y="576" text-anchor="middle" font-size="9" fill="#5a524a">CPU · Memory · Disk</text>
+        <text x="656" y="624" text-anchor="middle" font-size="8" fill="#9a9088">scraped by Prometheus</text>
 
-    </svg>
-  </div>
+        <!-- k6 -->
+        <rect x="752" y="524" width="192" height="112" rx="7" fill="white" stroke="#e4ddd4" stroke-width="1" />
+        <rect x="752" y="524" width="192" height="22" rx="7" fill="#f0ecf9" />
+        <rect x="752" y="534" width="192" height="12" fill="#f0ecf9" />
+        <text x="848" y="538" text-anchor="middle" font-size="9" fill="#6b4faa" font-weight="600">k6 Load Tests</text>
+        <text x="848" y="562" text-anchor="middle" font-size="9" fill="#5a524a">register → login</text>
+        <text x="848" y="576" text-anchor="middle" font-size="9" fill="#5a524a">product → cart → checkout</text>
+        <text x="848" y="624" text-anchor="middle" font-size="8" fill="#9a9088">targets production ALB</text>
 
-  <div class="legend">
-    <div class="legend-label">Legend</div>
-    <div class="legend-item"><div class="li-dot" style="background:#3d8f6e"></div>Staging — auto on push to main</div>
-    <div class="legend-item"><div class="li-dot" style="background:#6b4faa"></div>Production — manual deploy</div>
-    <div class="legend-item"><div class="li-dot" style="background:#b86b1a;opacity:.5"></div>Manual promote gate</div>
-    <div class="legend-item"><div class="li-dot" style="background:#c4433a;opacity:.7"></div>Additional manual workflows</div>
-  </div>
-  <p class="note">All production workflows use <code>workflow_dispatch</code> — no auto-triggers. The promote step is an explicit human gate between staging and production.</p>
-</div>
+      </svg>
+    </div>
 
-<!-- ══════════════════════════ TAB 3: TECH STACK ══════════════════════════ -->
-<div id="tab-stack" class="tab-panel">
-  <p class="panel-intro">
-    Full-stack overview arranged in vertical layers from user interface down to infrastructure. Each row represents a logical tier with its technologies. Production-only components are marked ⭐ with a dashed border.
-  </p>
-
-  <div class="diagram-card">
-    <svg viewBox="0 0 980 648" width="980" height="648" xmlns="http://www.w3.org/2000/svg" font-family="Sora, sans-serif">
-
-      <!-- column rule header -->
-      <line x1="12" y1="20" x2="968" y2="20" stroke="#e4ddd4" stroke-width="1"/>
-      <text x="14" y="14" font-size="7.5" fill="#c8bdb5" font-weight="600" letter-spacing="0.08em">LAYER</text>
-      <text x="152" y="14" font-size="7.5" fill="#c8bdb5" font-weight="600" letter-spacing="0.08em">TECHNOLOGIES</text>
-      <text x="726" y="14" font-size="7.5" fill="#c8bdb5" font-weight="600" letter-spacing="0.08em">DEPLOYMENT / NOTES</text>
-      <!-- vertical divider -->
-      <line x1="140" y1="20" x2="140" y2="628" stroke="#f0ebe4" stroke-width="1"/>
-      <line x1="714" y1="20" x2="714" y2="628" stroke="#f0ebe4" stroke-width="1"/>
-
-      <!-- ── ROW 1: FRONTEND ── -->
-      <rect x="12" y="24" width="956" height="74" rx="7" fill="#edf7f2" stroke="#3d8f6e" stroke-width="1.3"/>
-      <rect x="20" y="33" width="112" height="46" rx="6" fill="#3d8f6e"/>
-      <text x="76" y="53" text-anchor="middle" font-size="10" fill="white" font-weight="700">Frontend</text>
-      <text x="76" y="68" text-anchor="middle" font-size="8" fill="white" opacity=".8">React · Vite</text>
-
-      <rect x="152" y="40" width="74" height="24" rx="12" fill="white" stroke="#c8e6d8" stroke-width="1"/>
-      <text x="189" y="56" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">React 19</text>
-      <rect x="234" y="40" width="58" height="24" rx="12" fill="white" stroke="#c8e6d8" stroke-width="1"/>
-      <text x="263" y="56" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Vite 7</text>
-      <rect x="300" y="40" width="86" height="24" rx="12" fill="white" stroke="#c8e6d8" stroke-width="1"/>
-      <text x="343" y="56" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">TypeScript</text>
-      <rect x="394" y="40" width="98" height="24" rx="12" fill="white" stroke="#c8e6d8" stroke-width="1"/>
-      <text x="443" y="56" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">React Router</text>
-      <rect x="500" y="40" width="108" height="24" rx="12" fill="white" stroke="#c8e6d8" stroke-width="1"/>
-      <text x="554" y="56" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">i18n (en / vi)</text>
-
-      <text x="726" y="45" font-size="9" fill="#3d8f6e" font-weight="600">ECS Fargate</text>
-      <text x="726" y="60" font-size="8.5" fill="#9a9088">Auto Scaling · min 1 · max 6 · CPU 70%</text>
-      <text x="726" y="75" font-size="8.5" fill="#9a9088">Rolling deployment · React SPA served via ALB</text>
-
-      <!-- tick -->
-      <line x1="490" y1="98" x2="490" y2="108" stroke="#ddd5cc" stroke-width="1"/>
-      <polygon points="487,107 493,107 490,112" fill="#ddd5cc"/>
-
-      <!-- ── ROW 2: BACKEND ── -->
-      <rect x="12" y="114" width="956" height="74" rx="7" fill="#fdf4e7" stroke="#b86b1a" stroke-width="1.3"/>
-      <rect x="20" y="123" width="112" height="46" rx="6" fill="#b86b1a"/>
-      <text x="76" y="143" text-anchor="middle" font-size="10" fill="white" font-weight="700">Backend</text>
-      <text x="76" y="158" text-anchor="middle" font-size="8" fill="white" opacity=".8">Node · Express</text>
-
-      <rect x="152" y="130" width="70" height="24" rx="12" fill="white" stroke="#f0d5b0" stroke-width="1"/>
-      <text x="187" y="146" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Node.js</text>
-      <rect x="230" y="130" width="70" height="24" rx="12" fill="white" stroke="#f0d5b0" stroke-width="1"/>
-      <text x="265" y="146" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Express</text>
-      <rect x="308" y="130" width="60" height="24" rx="12" fill="white" stroke="#f0d5b0" stroke-width="1"/>
-      <text x="338" y="146" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Prisma</text>
-
-      <!-- service chips -->
-      <rect x="382" y="130" width="52" height="24" rx="12" fill="#fdf4e7" stroke="#b86b1a" stroke-width="1"/>
-      <text x="408" y="146" text-anchor="middle" font-size="8.5" fill="#7a4a10" font-weight="600">Main</text>
-      <rect x="442" y="130" width="46" height="24" rx="12" fill="#fdf4e7" stroke="#b86b1a" stroke-width="1"/>
-      <text x="465" y="146" text-anchor="middle" font-size="8.5" fill="#7a4a10" font-weight="600">Cart</text>
-      <rect x="496" y="130" width="70" height="24" rx="12" fill="#fdf4e7" stroke="#b86b1a" stroke-width="1"/>
-      <text x="531" y="146" text-anchor="middle" font-size="8.5" fill="#7a4a10" font-weight="600">Checkout</text>
-      <rect x="574" y="130" width="46" height="24" rx="12" fill="#fdf4e7" stroke="#b86b1a" stroke-width="1"/>
-      <text x="597" y="146" text-anchor="middle" font-size="8.5" fill="#7a4a10" font-weight="600">Auth</text>
-      <rect x="628" y="130" width="56" height="24" rx="12" fill="#fdf4e7" stroke="#b86b1a" stroke-width="1"/>
-      <text x="656" y="146" text-anchor="middle" font-size="8.5" fill="#7a4a10" font-weight="600">Admin</text>
-
-      <text x="726" y="135" font-size="9" fill="#b86b1a" font-weight="600">ECS Fargate · 5 services</text>
-      <text x="726" y="150" font-size="8.5" fill="#9a9088">Main / Cart / Checkout: max 6 tasks</text>
-      <text x="726" y="165" font-size="8.5" fill="#9a9088">Auth / Admin: max 2 tasks · ⭐ Cloud Map DNS</text>
-
-      <line x1="490" y1="188" x2="490" y2="198" stroke="#ddd5cc" stroke-width="1"/>
-      <polygon points="487,197 493,197 490,202" fill="#ddd5cc"/>
-
-      <!-- ── ROW 3: AUTH ── -->
-      <rect x="12" y="204" width="956" height="66" rx="7" fill="#eaf2fb" stroke="#2f72b8" stroke-width="1.3"/>
-      <rect x="20" y="213" width="112" height="40" rx="6" fill="#2f72b8"/>
-      <text x="76" y="232" text-anchor="middle" font-size="10" fill="white" font-weight="700">Auth</text>
-      <text x="76" y="247" text-anchor="middle" font-size="8" fill="white" opacity=".8">Stateless</text>
-
-      <rect x="152" y="221" width="114" height="24" rx="12" fill="white" stroke="#b8d4f0" stroke-width="1"/>
-      <text x="209" y="237" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">JWT (stateless)</text>
-      <rect x="274" y="221" width="148" height="24" rx="12" fill="white" stroke="#b8d4f0" stroke-width="1"/>
-      <text x="348" y="237" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">bcrypt (password hashing)</text>
-
-      <text x="726" y="229" font-size="9" fill="#2f72b8" font-weight="600">Auth ECS service</text>
-      <text x="726" y="244" font-size="8.5" fill="#9a9088">Token issued on login · validated per request</text>
-      <text x="726" y="259" font-size="8.5" fill="#9a9088">Stateless — no server-side sessions</text>
-
-      <line x1="490" y1="270" x2="490" y2="280" stroke="#ddd5cc" stroke-width="1"/>
-      <polygon points="487,279 493,279 490,284" fill="#ddd5cc"/>
-
-      <!-- ── ROW 4: DATA ── -->
-      <rect x="12" y="286" width="956" height="66" rx="7" fill="#e7f6f9" stroke="#1f8fa0" stroke-width="1.3"/>
-      <rect x="20" y="295" width="112" height="40" rx="6" fill="#1f8fa0"/>
-      <text x="76" y="314" text-anchor="middle" font-size="10" fill="white" font-weight="700">Data</text>
-      <text x="76" y="329" text-anchor="middle" font-size="8" fill="white" opacity=".8">PostgreSQL</text>
-
-      <rect x="152" y="303" width="144" height="24" rx="12" fill="white" stroke="#a4dce6" stroke-width="1"/>
-      <text x="224" y="319" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">PostgreSQL (RDS)</text>
-      <rect x="304" y="303" width="92" height="24" rx="12" fill="white" stroke="#a4dce6" stroke-width="1"/>
-      <text x="350" y="319" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Prisma ORM</text>
-      <rect x="404" y="303" width="108" height="24" rx="12" fill="white" stroke="#a4dce6" stroke-width="1"/>
-      <text x="458" y="319" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Shared Schema</text>
-      <rect x="520" y="303" width="130" height="24" rx="12" fill="none" stroke="#6b4faa" stroke-width="1" stroke-dasharray="4,2"/>
-      <text x="585" y="319" text-anchor="middle" font-size="9" fill="#6b4faa" font-weight="500">⭐ S3 (images)</text>
-
-      <text x="726" y="311" font-size="9" fill="#1f8fa0" font-weight="600">RDS PostgreSQL · managed</text>
-      <text x="726" y="326" font-size="8.5" fill="#9a9088">Prisma migrations · shared schema across services</text>
-      <text x="726" y="341" font-size="8.5" fill="#9a9088">S3 for admin uploads (prod only)</text>
-
-      <line x1="490" y1="352" x2="490" y2="362" stroke="#ddd5cc" stroke-width="1"/>
-      <polygon points="487,361 493,361 490,366" fill="#ddd5cc"/>
-
-      <!-- ── ROW 5: INFRASTRUCTURE ── -->
-      <rect x="12" y="368" width="956" height="74" rx="7" fill="#f0ecf9" stroke="#6b4faa" stroke-width="1.3"/>
-      <rect x="20" y="378" width="112" height="47" rx="6" fill="#6b4faa"/>
-      <text x="76" y="398" text-anchor="middle" font-size="10" fill="white" font-weight="700">Infra</text>
-      <text x="76" y="413" text-anchor="middle" font-size="8" fill="white" opacity=".8">AWS · Terraform</text>
-
-      <rect x="152" y="384" width="44" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1"/>
-      <text x="174" y="400" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">VPC</text>
-      <rect x="204" y="384" width="40" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1"/>
-      <text x="224" y="400" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">ALB</text>
-      <rect x="252" y="384" width="88" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1"/>
-      <text x="296" y="400" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">ECS Fargate</text>
-      <rect x="348" y="384" width="40" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1"/>
-      <text x="368" y="400" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">RDS</text>
-      <rect x="396" y="384" width="40" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1"/>
-      <text x="416" y="400" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">ECR</text>
-      <rect x="444" y="384" width="32" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1"/>
-      <text x="460" y="400" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">S3</text>
-      <rect x="484" y="384" width="100" height="24" rx="12" fill="none" stroke="#6b4faa" stroke-width="1" stroke-dasharray="4,2"/>
-      <text x="534" y="400" text-anchor="middle" font-size="9" fill="#6b4faa" font-weight="500">⭐ Cloud Map</text>
-      <rect x="592" y="384" width="114" height="24" rx="12" fill="none" stroke="#6b4faa" stroke-width="1" stroke-dasharray="4,2"/>
-      <text x="649" y="400" text-anchor="middle" font-size="9" fill="#6b4faa" font-weight="500">⭐ Auto Scaling</text>
-
-      <text x="726" y="389" font-size="9" fill="#6b4faa" font-weight="600">Terraform IaC</text>
-      <text x="726" y="404" font-size="8.5" fill="#9a9088">Staging + Production environments</text>
-      <text x="726" y="419" font-size="8.5" fill="#9a9088">Optional NAT Gateway · Secrets Manager</text>
-      <text x="726" y="434" font-size="8.5" fill="#6b4faa">⭐ App Auto Scaling · CPU 70% target</text>
-
-      <line x1="490" y1="442" x2="490" y2="452" stroke="#ddd5cc" stroke-width="1"/>
-      <polygon points="487,451 493,451 490,456" fill="#ddd5cc"/>
-
-      <!-- ── ROW 6: CI/CD ── -->
-      <rect x="12" y="458" width="956" height="66" rx="7" fill="#fdecea" stroke="#c4433a" stroke-width="1.3"/>
-      <rect x="20" y="467" width="112" height="40" rx="6" fill="#c4433a"/>
-      <text x="76" y="487" text-anchor="middle" font-size="10" fill="white" font-weight="700">CI / CD</text>
-      <text x="76" y="502" text-anchor="middle" font-size="8" fill="white" opacity=".8">GitHub Actions</text>
-
-      <rect x="152" y="475" width="118" height="24" rx="12" fill="white" stroke="#f0b8b5" stroke-width="1"/>
-      <text x="211" y="491" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Staging auto-deploy</text>
-      <rect x="278" y="475" width="134" height="24" rx="12" fill="white" stroke="#f0b8b5" stroke-width="1"/>
-      <text x="345" y="491" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Prod promote + deploy</text>
-      <rect x="420" y="475" width="106" height="24" rx="12" fill="white" stroke="#f0b8b5" stroke-width="1"/>
-      <text x="473" y="491" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Rollback · Seed</text>
-      <rect x="534" y="475" width="98" height="24" rx="12" fill="white" stroke="#f0b8b5" stroke-width="1"/>
-      <text x="583" y="491" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Load Test (k6)</text>
-
-      <text x="726" y="483" font-size="9" fill="#c4433a" font-weight="600">workflow_dispatch (manual)</text>
-      <text x="726" y="498" font-size="8.5" fill="#9a9088">Staging: push trigger · Prod: manual only</text>
-      <text x="726" y="513" font-size="8.5" fill="#9a9088">Secrets: AWS creds · DB URL · ECR access</text>
-
-      <line x1="490" y1="524" x2="490" y2="534" stroke="#ddd5cc" stroke-width="1"/>
-      <polygon points="487,533 493,533 490,538" fill="#ddd5cc"/>
-
-      <!-- ── ROW 7: OBSERVABILITY (prod) ── -->
-      <rect x="12" y="540" width="956" height="66" rx="7" fill="none" stroke="#6b4faa" stroke-width="1.3" stroke-dasharray="7,4"/>
-      <rect x="12" y="540" width="956" height="66" rx="7" fill="#f0ecf9" opacity=".4"/>
-      <rect x="20" y="549" width="112" height="40" rx="6" fill="none" stroke="#6b4faa" stroke-width="1.2" stroke-dasharray="5,3"/>
-      <rect x="20" y="549" width="112" height="40" rx="6" fill="#f0ecf9" opacity=".7"/>
-      <text x="76" y="569" text-anchor="middle" font-size="9.5" fill="#6b4faa" font-weight="700">Observability</text>
-      <text x="76" y="584" text-anchor="middle" font-size="8" fill="#6b4faa">⭐ Prod only</text>
-
-      <rect x="152" y="557" width="92" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1"/>
-      <text x="198" y="573" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Prometheus</text>
-      <rect x="252" y="557" width="74" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1"/>
-      <text x="289" y="573" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Grafana</text>
-      <rect x="334" y="557" width="114" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1"/>
-      <text x="391" y="573" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Loki + Promtail</text>
-      <rect x="456" y="557" width="108" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1"/>
-      <text x="510" y="573" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Node Exporter</text>
-      <rect x="572" y="557" width="36" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1"/>
-      <text x="590" y="573" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">k6</text>
-
-      <text x="726" y="565" font-size="9" fill="#6b4faa" font-weight="600">Production only ⭐</text>
-      <text x="726" y="580" font-size="8.5" fill="#9a9088">Prometheus scrapes via Cloud Map · Grafana on ALB</text>
-      <text x="726" y="595" font-size="8.5" fill="#9a9088">Loki aggregates logs · k6 targets prod ALB</text>
-
-    </svg>
+    <div class="legend">
+      <div class="legend-label">Legend</div>
+      <div class="legend-item">
+        <div class="li-dot" style="background:#3d8f6e"></div>Frontend (ECS Fargate)
+      </div>
+      <div class="legend-item">
+        <div class="li-dot" style="background:#b86b1a"></div>Backend Services (ECS Fargate)
+      </div>
+      <div class="legend-item">
+        <div class="li-dot" style="background:#1f8fa0"></div>Database (RDS PostgreSQL)
+      </div>
+      <div class="legend-item">
+        <div class="li-dot" style="background:#c4433a"></div>Docker Registry (ECR)
+      </div>
+      <div class="legend-item">
+        <div class="li-dot" style="background:#6b4faa"></div>Network / Load Balancer
+      </div>
+      <div class="legend-item">
+        <div class="li-dash"></div>⭐ Production-only resources
+      </div>
+    </div>
+    <p class="note">⭐ = production environment only. Auto Scaling applies to all 6 ECS services with CPU 70% target
+      tracking.</p>
   </div>
 
-  <div class="legend">
-    <div class="legend-label">Layers</div>
-    <div class="legend-item"><div class="li-dot" style="background:#3d8f6e"></div>Frontend</div>
-    <div class="legend-item"><div class="li-dot" style="background:#b86b1a"></div>Backend</div>
-    <div class="legend-item"><div class="li-dot" style="background:#2f72b8"></div>Auth</div>
-    <div class="legend-item"><div class="li-dot" style="background:#1f8fa0"></div>Data</div>
-    <div class="legend-item"><div class="li-dot" style="background:#6b4faa"></div>Infrastructure</div>
-    <div class="legend-item"><div class="li-dot" style="background:#c4433a"></div>CI/CD</div>
-    <div class="legend-item"><div class="li-dash"></div>⭐ Observability (prod only)</div>
-  </div>
-  <p class="note">⭐ = production environment only. Small connectors show data flow from user-facing layer down to infrastructure.</p>
-</div>
+  <!-- ══════════════════════════ TAB 2: CI/CD ══════════════════════════ -->
+  <div id="tab-cicd" class="tab-panel">
+    <p class="panel-intro">
+      Two separate GitHub repositories manage deployments. <strong>Staging</strong> deploys automatically on every push
+      to <code>main</code>. <strong>Production</strong> requires a manual promote step, plus separate manual workflows
+      for rollback, database seed, and load testing.
+    </p>
 
-<script>
-  function switchTab(name, btn) {
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('tab-' + name).classList.add('active');
-    btn.classList.add('active');
-  }
-</script>
+    <div class="diagram-card">
+      <svg viewBox="0 0 980 560" width="980" height="560" xmlns="http://www.w3.org/2000/svg"
+        font-family="Sora, sans-serif">
+
+        <!-- ── STAGING LANE ── -->
+        <rect x="16" y="16" width="590" height="166" rx="8" fill="#edf7f2" stroke="#3d8f6e" stroke-width="1.4" />
+        <rect x="16" y="16" width="590" height="26" rx="8" fill="#3d8f6e" />
+        <rect x="16" y="30" width="590" height="12" fill="#3d8f6e" />
+        <text x="32" y="33" font-size="9" fill="white" font-weight="600" letter-spacing="0.07em">STAGING REPO —
+          AUTO-DEPLOY ON PUSH TO MAIN</text>
+
+        <!-- Step cards inline -->
+        <!-- Step 1 -->
+        <rect x="28" y="52" width="120" height="112" rx="7" fill="white" stroke="#c8e6d8" stroke-width="1" />
+        <circle cx="44" cy="68" r="10" fill="#3d8f6e" />
+        <text x="44" y="72" text-anchor="middle" font-size="9" fill="white" font-weight="700">1</text>
+        <text x="88" y="70" text-anchor="middle" font-size="9.5" fill="#3d8f6e" font-weight="600">Push to main</text>
+        <text x="88" y="92" text-anchor="middle" font-size="8.5" fill="#5a524a">Developer</text>
+        <text x="88" y="106" text-anchor="middle" font-size="8.5" fill="#5a524a">commits to</text>
+        <text x="88" y="120" text-anchor="middle" font-size="8.5" fill="#5a524a">staging repo</text>
+        <text x="88" y="152" text-anchor="middle" font-size="8" fill="#9a9088">GitHub trigger</text>
+
+        <!-- → -->
+        <line x1="148" y1="108" x2="168" y2="108" stroke="#a8c8b8" stroke-width="1.3" />
+        <polygon points="166,104 174,108 166,112" fill="#a8c8b8" />
+
+        <!-- Step 2 -->
+        <rect x="174" y="52" width="120" height="112" rx="7" fill="white" stroke="#c8e6d8" stroke-width="1" />
+        <circle cx="190" cy="68" r="10" fill="#3d8f6e" />
+        <text x="190" y="72" text-anchor="middle" font-size="9" fill="white" font-weight="700">2</text>
+        <text x="234" y="70" text-anchor="middle" font-size="9.5" fill="#3d8f6e" font-weight="600">Build</text>
+        <text x="234" y="92" text-anchor="middle" font-size="8.5" fill="#5a524a">Vite build</text>
+        <text x="234" y="106" text-anchor="middle" font-size="8.5" fill="#5a524a">Docker × 6</text>
+        <text x="234" y="120" text-anchor="middle" font-size="8.5" fill="#5a524a">images</text>
+        <text x="234" y="152" text-anchor="middle" font-size="8" fill="#9a9088">parallel matrix</text>
+
+        <!-- → -->
+        <line x1="294" y1="108" x2="314" y2="108" stroke="#a8c8b8" stroke-width="1.3" />
+        <polygon points="312,104 320,108 312,112" fill="#a8c8b8" />
+
+        <!-- Step 3 -->
+        <rect x="320" y="52" width="124" height="112" rx="7" fill="white" stroke="#c8e6d8" stroke-width="1" />
+        <circle cx="336" cy="68" r="10" fill="#3d8f6e" />
+        <text x="336" y="72" text-anchor="middle" font-size="9" fill="white" font-weight="700">3</text>
+        <text x="382" y="70" text-anchor="middle" font-size="9.5" fill="#3d8f6e" font-weight="600">Push → ECR</text>
+        <text x="382" y="92" text-anchor="middle" font-size="8.5" fill="#5a524a">Tag + push</text>
+        <text x="382" y="106" text-anchor="middle" font-size="8.5" fill="#5a524a">all 6 images</text>
+        <text x="382" y="120" text-anchor="middle" font-size="8.5" fill="#5a524a">to staging ECR</text>
+        <text x="382" y="152" text-anchor="middle" font-size="8" fill="#9a9088">staging registry</text>
+
+        <!-- → -->
+        <line x1="444" y1="108" x2="464" y2="108" stroke="#a8c8b8" stroke-width="1.3" />
+        <polygon points="462,104 470,108 462,112" fill="#a8c8b8" />
+
+        <!-- Step 4 -->
+        <rect x="470" y="52" width="124" height="112" rx="7" fill="white" stroke="#c8e6d8" stroke-width="1" />
+        <circle cx="486" cy="68" r="10" fill="#3d8f6e" />
+        <text x="486" y="72" text-anchor="middle" font-size="9" fill="white" font-weight="700">4</text>
+        <text x="532" y="70" text-anchor="middle" font-size="9.5" fill="#3d8f6e" font-weight="600">Deploy ECS</text>
+        <text x="532" y="92" text-anchor="middle" font-size="8.5" fill="#5a524a">Rolling update</text>
+        <text x="532" y="106" text-anchor="middle" font-size="8.5" fill="#5a524a">all 6 ECS</text>
+        <text x="532" y="120" text-anchor="middle" font-size="8.5" fill="#5a524a">services</text>
+        <text x="532" y="152" text-anchor="middle" font-size="8" fill="#9a9088">staging cluster</text>
+
+        <!-- ── PROMOTE BRIDGE ── -->
+        <rect x="16" y="206" width="590" height="68" rx="8" fill="#fdf4e7" stroke="#b86b1a" stroke-width="1.4"
+          stroke-dasharray="6,3" />
+        <text x="32" y="224" font-size="9" fill="#b86b1a" font-weight="700" letter-spacing="0.05em">🤲 MANUAL PROMOTE —
+          staging repo → production repo</text>
+        <text x="32" y="244" font-size="9" fill="#5a524a">Engineer manually promotes tested code. This is an explicit
+          human gate — not automated.</text>
+        <text x="32" y="260" font-size="8.5" fill="#9a9088">Approach: PR, tag, or copy workflow file · No
+          auto-trigger</text>
+
+        <!-- ── PRODUCTION LANE ── -->
+        <rect x="16" y="294" width="590" height="120" rx="8" fill="#f0ecf9" stroke="#6b4faa" stroke-width="1.4" />
+        <rect x="16" y="294" width="590" height="26" rx="8" fill="#6b4faa" />
+        <rect x="16" y="308" width="590" height="12" fill="#6b4faa" />
+        <text x="32" y="311" font-size="9" fill="white" font-weight="600" letter-spacing="0.07em">PRODUCTION REPO —
+          MANUAL DEPLOY</text>
+
+        <!-- Deploy to Prod box -->
+        <rect x="28" y="330" width="280" height="72" rx="7" fill="white" stroke="#d0c4f0" stroke-width="1" />
+        <text x="168" y="352" text-anchor="middle" font-size="10" fill="#6b4faa" font-weight="600">🖐 Deploy to
+          Production</text>
+        <text x="168" y="372" text-anchor="middle" font-size="8.5" fill="#5a524a">Build → push to ECR prod → ECS rolling
+          update</text>
+        <text x="168" y="390" text-anchor="middle" font-size="8.5" fill="#9a9088">workflow_dispatch · manual trigger
+          only</text>
+
+        <!-- ── ADDITIONAL MANUAL WORKFLOWS ── -->
+        <rect x="16" y="434" width="590" height="110" rx="8" fill="#fdecea" stroke="#c4433a" stroke-width="1.4"
+          stroke-dasharray="5,3" />
+        <text x="32" y="452" font-size="9" fill="#c4433a" font-weight="700" letter-spacing="0.05em">ADDITIONAL
+          PRODUCTION WORKFLOWS — ALL MANUAL (workflow_dispatch)</text>
+
+        <!-- 3 boxes -->
+        <rect x="28" y="462" width="172" height="64" rx="7" fill="white" stroke="#f0c4c2" stroke-width="1" />
+        <text x="114" y="484" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">🔄 Rollback
+          Prod</text>
+        <text x="114" y="500" text-anchor="middle" font-size="8.5" fill="#9a9088">Revert ECS to previous</text>
+        <text x="114" y="514" text-anchor="middle" font-size="8.5" fill="#9a9088">task definition</text>
+
+        <rect x="216" y="462" width="172" height="64" rx="7" fill="white" stroke="#f0c4c2" stroke-width="1" />
+        <text x="302" y="484" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">🌱 Seed Prod
+          DB</text>
+        <text x="302" y="500" text-anchor="middle" font-size="8.5" fill="#9a9088">Run seed script on</text>
+        <text x="302" y="514" text-anchor="middle" font-size="8.5" fill="#9a9088">production RDS</text>
+
+        <rect x="404" y="462" width="186" height="64" rx="7" fill="white" stroke="#f0c4c2" stroke-width="1" />
+        <text x="497" y="484" text-anchor="middle" font-size="10" fill="#1a1714" font-weight="600">🔥 Load Test
+          Prod</text>
+        <text x="497" y="500" text-anchor="middle" font-size="8.5" fill="#9a9088">k6: register → login</text>
+        <text x="497" y="514" text-anchor="middle" font-size="8.5" fill="#9a9088">→ cart → checkout</text>
+
+        <!-- ── RIGHT PANEL: Workflow file summary ── -->
+        <rect x="628" y="16" width="336" height="528" rx="10" fill="white" stroke="#e4ddd4" stroke-width="1.2" />
+        <rect x="628" y="16" width="336" height="28" rx="10" fill="#f6f4f0" />
+        <rect x="628" y="30" width="336" height="14" fill="#f6f4f0" />
+        <text x="796" y="34" text-anchor="middle" font-size="9" fill="#5a524a" font-weight="700"
+          letter-spacing="0.06em">GITHUB ACTIONS WORKFLOWS</text>
+
+        <!-- entries -->
+        <text x="648" y="68" font-size="8.5" fill="#9a9088" font-weight="600" letter-spacing="0.07em">STAGING</text>
+        <rect x="648" y="76" width="298" height="38" rx="6" fill="#edf7f2" stroke="#c8e6d8" stroke-width="1" />
+        <text x="662" y="93" font-size="9" fill="#3d8f6e" font-weight="600">staging-deploy.yml</text>
+        <text x="662" y="107" font-size="8.5" fill="#5a524a">on: push to main → auto</text>
+
+        <text x="648" y="134" font-size="8.5" fill="#9a9088" font-weight="600" letter-spacing="0.07em">PRODUCTION</text>
+        <rect x="648" y="142" width="298" height="38" rx="6" fill="#f0ecf9" stroke="#d0c4f0" stroke-width="1" />
+        <text x="662" y="159" font-size="9" fill="#6b4faa" font-weight="600">prod-deploy.yml</text>
+        <text x="662" y="173" font-size="8.5" fill="#5a524a">on: workflow_dispatch · manual</text>
+
+        <rect x="648" y="188" width="298" height="38" rx="6" fill="#f0ecf9" stroke="#d0c4f0" stroke-width="1" />
+        <text x="662" y="205" font-size="9" fill="#6b4faa" font-weight="600">prod-rollback.yml</text>
+        <text x="662" y="219" font-size="8.5" fill="#5a524a">on: workflow_dispatch · manual</text>
+
+        <rect x="648" y="234" width="298" height="38" rx="6" fill="#f0ecf9" stroke="#d0c4f0" stroke-width="1" />
+        <text x="662" y="251" font-size="9" fill="#6b4faa" font-weight="600">prod-seed.yml</text>
+        <text x="662" y="265" font-size="8.5" fill="#5a524a">on: workflow_dispatch · manual</text>
+
+        <rect x="648" y="280" width="298" height="38" rx="6" fill="#f0ecf9" stroke="#d0c4f0" stroke-width="1" />
+        <text x="662" y="297" font-size="9" fill="#6b4faa" font-weight="600">prod-load-test.yml</text>
+        <text x="662" y="311" font-size="8.5" fill="#5a524a">on: workflow_dispatch · manual</text>
+
+        <text x="648" y="342" font-size="8.5" fill="#9a9088" font-weight="600" letter-spacing="0.07em">SHARED
+          CONFIG</text>
+        <rect x="648" y="350" width="298" height="76" rx="6" fill="#f6f4f0" stroke="#e4ddd4" stroke-width="1" />
+        <text x="662" y="368" font-size="8.5" fill="#5a524a">AWS credentials via GitHub Secrets</text>
+        <text x="662" y="383" font-size="8.5" fill="#9a9088">ECR push · ECS update-service</text>
+        <text x="662" y="398" font-size="8.5" fill="#9a9088">RDS access via VPC + Secrets Manager</text>
+        <text x="662" y="413" font-size="8.5" fill="#9a9088">Terraform state: S3 + DynamoDB lock</text>
+
+        <text x="648" y="450" font-size="8.5" fill="#9a9088" font-weight="600" letter-spacing="0.07em">REGISTRIES</text>
+        <rect x="648" y="458" width="140" height="52" rx="6" fill="#fdecea" stroke="#f0c4c2" stroke-width="1" />
+        <text x="718" y="477" text-anchor="middle" font-size="9" fill="#c4433a" font-weight="600">ECR Staging</text>
+        <text x="718" y="493" text-anchor="middle" font-size="8.5" fill="#9a9088">auto on push</text>
+
+        <rect x="804" y="458" width="142" height="52" rx="6" fill="#f0ecf9" stroke="#d0c4f0" stroke-width="1" />
+        <text x="875" y="477" text-anchor="middle" font-size="9" fill="#6b4faa" font-weight="600">ECR Production</text>
+        <text x="875" y="493" text-anchor="middle" font-size="8.5" fill="#9a9088">manual promote</text>
+
+      </svg>
+    </div>
+
+    <div class="legend">
+      <div class="legend-label">Legend</div>
+      <div class="legend-item">
+        <div class="li-dot" style="background:#3d8f6e"></div>Staging — auto on push to main
+      </div>
+      <div class="legend-item">
+        <div class="li-dot" style="background:#6b4faa"></div>Production — manual deploy
+      </div>
+      <div class="legend-item">
+        <div class="li-dot" style="background:#b86b1a;opacity:.5"></div>Manual promote gate
+      </div>
+      <div class="legend-item">
+        <div class="li-dot" style="background:#c4433a;opacity:.7"></div>Additional manual workflows
+      </div>
+    </div>
+    <p class="note">All production workflows use <code>workflow_dispatch</code> — no auto-triggers. The promote step is
+      an explicit human gate between staging and production.</p>
+  </div>
+
+  <!-- ══════════════════════════ TAB 3: TECH STACK ══════════════════════════ -->
+  <div id="tab-stack" class="tab-panel">
+    <p class="panel-intro">
+      Full-stack overview arranged in vertical layers from user interface down to infrastructure. Each row represents a
+      logical tier with its technologies. Production-only components are marked ⭐ with a dashed border.
+    </p>
+
+    <div class="diagram-card">
+      <svg viewBox="0 0 980 648" width="980" height="648" xmlns="http://www.w3.org/2000/svg"
+        font-family="Sora, sans-serif">
+
+        <!-- column rule header -->
+        <line x1="12" y1="20" x2="968" y2="20" stroke="#e4ddd4" stroke-width="1" />
+        <text x="14" y="14" font-size="7.5" fill="#c8bdb5" font-weight="600" letter-spacing="0.08em">LAYER</text>
+        <text x="152" y="14" font-size="7.5" fill="#c8bdb5" font-weight="600"
+          letter-spacing="0.08em">TECHNOLOGIES</text>
+        <text x="726" y="14" font-size="7.5" fill="#c8bdb5" font-weight="600" letter-spacing="0.08em">DEPLOYMENT /
+          NOTES</text>
+        <!-- vertical divider -->
+        <line x1="140" y1="20" x2="140" y2="628" stroke="#f0ebe4" stroke-width="1" />
+        <line x1="714" y1="20" x2="714" y2="628" stroke="#f0ebe4" stroke-width="1" />
+
+        <!-- ── ROW 1: FRONTEND ── -->
+        <rect x="12" y="24" width="956" height="74" rx="7" fill="#edf7f2" stroke="#3d8f6e" stroke-width="1.3" />
+        <rect x="20" y="33" width="112" height="46" rx="6" fill="#3d8f6e" />
+        <text x="76" y="53" text-anchor="middle" font-size="10" fill="white" font-weight="700">Frontend</text>
+        <text x="76" y="68" text-anchor="middle" font-size="8" fill="white" opacity=".8">React · Vite</text>
+
+        <rect x="152" y="40" width="74" height="24" rx="12" fill="white" stroke="#c8e6d8" stroke-width="1" />
+        <text x="189" y="56" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">React 19</text>
+        <rect x="234" y="40" width="58" height="24" rx="12" fill="white" stroke="#c8e6d8" stroke-width="1" />
+        <text x="263" y="56" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Vite 7</text>
+        <rect x="300" y="40" width="86" height="24" rx="12" fill="white" stroke="#c8e6d8" stroke-width="1" />
+        <text x="343" y="56" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">TypeScript</text>
+        <rect x="394" y="40" width="98" height="24" rx="12" fill="white" stroke="#c8e6d8" stroke-width="1" />
+        <text x="443" y="56" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">React Router</text>
+        <rect x="500" y="40" width="108" height="24" rx="12" fill="white" stroke="#c8e6d8" stroke-width="1" />
+        <text x="554" y="56" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">i18n (en / vi)</text>
+
+        <text x="726" y="45" font-size="9" fill="#3d8f6e" font-weight="600">ECS Fargate</text>
+        <text x="726" y="60" font-size="8.5" fill="#9a9088">Auto Scaling · min 1 · max 6 · CPU 70%</text>
+        <text x="726" y="75" font-size="8.5" fill="#9a9088">Rolling deployment · React SPA served via ALB</text>
+
+        <!-- tick -->
+        <line x1="490" y1="98" x2="490" y2="108" stroke="#ddd5cc" stroke-width="1" />
+        <polygon points="487,107 493,107 490,112" fill="#ddd5cc" />
+
+        <!-- ── ROW 2: BACKEND ── -->
+        <rect x="12" y="114" width="956" height="74" rx="7" fill="#fdf4e7" stroke="#b86b1a" stroke-width="1.3" />
+        <rect x="20" y="123" width="112" height="46" rx="6" fill="#b86b1a" />
+        <text x="76" y="143" text-anchor="middle" font-size="10" fill="white" font-weight="700">Backend</text>
+        <text x="76" y="158" text-anchor="middle" font-size="8" fill="white" opacity=".8">Node · Express</text>
+
+        <rect x="152" y="130" width="70" height="24" rx="12" fill="white" stroke="#f0d5b0" stroke-width="1" />
+        <text x="187" y="146" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Node.js</text>
+        <rect x="230" y="130" width="70" height="24" rx="12" fill="white" stroke="#f0d5b0" stroke-width="1" />
+        <text x="265" y="146" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Express</text>
+        <rect x="308" y="130" width="60" height="24" rx="12" fill="white" stroke="#f0d5b0" stroke-width="1" />
+        <text x="338" y="146" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Prisma</text>
+
+        <!-- service chips -->
+        <rect x="382" y="130" width="52" height="24" rx="12" fill="#fdf4e7" stroke="#b86b1a" stroke-width="1" />
+        <text x="408" y="146" text-anchor="middle" font-size="8.5" fill="#7a4a10" font-weight="600">Main</text>
+        <rect x="442" y="130" width="46" height="24" rx="12" fill="#fdf4e7" stroke="#b86b1a" stroke-width="1" />
+        <text x="465" y="146" text-anchor="middle" font-size="8.5" fill="#7a4a10" font-weight="600">Cart</text>
+        <rect x="496" y="130" width="70" height="24" rx="12" fill="#fdf4e7" stroke="#b86b1a" stroke-width="1" />
+        <text x="531" y="146" text-anchor="middle" font-size="8.5" fill="#7a4a10" font-weight="600">Checkout</text>
+        <rect x="574" y="130" width="46" height="24" rx="12" fill="#fdf4e7" stroke="#b86b1a" stroke-width="1" />
+        <text x="597" y="146" text-anchor="middle" font-size="8.5" fill="#7a4a10" font-weight="600">Auth</text>
+        <rect x="628" y="130" width="56" height="24" rx="12" fill="#fdf4e7" stroke="#b86b1a" stroke-width="1" />
+        <text x="656" y="146" text-anchor="middle" font-size="8.5" fill="#7a4a10" font-weight="600">Admin</text>
+
+        <text x="726" y="135" font-size="9" fill="#b86b1a" font-weight="600">ECS Fargate · 5 services</text>
+        <text x="726" y="150" font-size="8.5" fill="#9a9088">Main / Cart / Checkout: max 6 tasks</text>
+        <text x="726" y="165" font-size="8.5" fill="#9a9088">Auth / Admin: max 2 tasks · ⭐ Cloud Map DNS</text>
+
+        <line x1="490" y1="188" x2="490" y2="198" stroke="#ddd5cc" stroke-width="1" />
+        <polygon points="487,197 493,197 490,202" fill="#ddd5cc" />
+
+        <!-- ── ROW 3: AUTH ── -->
+        <rect x="12" y="204" width="956" height="66" rx="7" fill="#eaf2fb" stroke="#2f72b8" stroke-width="1.3" />
+        <rect x="20" y="213" width="112" height="40" rx="6" fill="#2f72b8" />
+        <text x="76" y="232" text-anchor="middle" font-size="10" fill="white" font-weight="700">Auth</text>
+        <text x="76" y="247" text-anchor="middle" font-size="8" fill="white" opacity=".8">Stateless</text>
+
+        <rect x="152" y="221" width="114" height="24" rx="12" fill="white" stroke="#b8d4f0" stroke-width="1" />
+        <text x="209" y="237" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">JWT (stateless)</text>
+        <rect x="274" y="221" width="148" height="24" rx="12" fill="white" stroke="#b8d4f0" stroke-width="1" />
+        <text x="348" y="237" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">bcrypt (password
+          hashing)</text>
+
+        <text x="726" y="229" font-size="9" fill="#2f72b8" font-weight="600">Auth ECS service</text>
+        <text x="726" y="244" font-size="8.5" fill="#9a9088">Token issued on login · validated per request</text>
+        <text x="726" y="259" font-size="8.5" fill="#9a9088">Stateless — no server-side sessions</text>
+
+        <line x1="490" y1="270" x2="490" y2="280" stroke="#ddd5cc" stroke-width="1" />
+        <polygon points="487,279 493,279 490,284" fill="#ddd5cc" />
+
+        <!-- ── ROW 4: DATA ── -->
+        <rect x="12" y="286" width="956" height="66" rx="7" fill="#e7f6f9" stroke="#1f8fa0" stroke-width="1.3" />
+        <rect x="20" y="295" width="112" height="40" rx="6" fill="#1f8fa0" />
+        <text x="76" y="314" text-anchor="middle" font-size="10" fill="white" font-weight="700">Data</text>
+        <text x="76" y="329" text-anchor="middle" font-size="8" fill="white" opacity=".8">PostgreSQL</text>
+
+        <rect x="152" y="303" width="144" height="24" rx="12" fill="white" stroke="#a4dce6" stroke-width="1" />
+        <text x="224" y="319" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">PostgreSQL
+          (RDS)</text>
+        <rect x="304" y="303" width="92" height="24" rx="12" fill="white" stroke="#a4dce6" stroke-width="1" />
+        <text x="350" y="319" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Prisma ORM</text>
+        <rect x="404" y="303" width="108" height="24" rx="12" fill="white" stroke="#a4dce6" stroke-width="1" />
+        <text x="458" y="319" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Shared Schema</text>
+        <rect x="520" y="303" width="130" height="24" rx="12" fill="none" stroke="#6b4faa" stroke-width="1"
+          stroke-dasharray="4,2" />
+        <text x="585" y="319" text-anchor="middle" font-size="9" fill="#6b4faa" font-weight="500">⭐ S3 (images)</text>
+
+        <text x="726" y="311" font-size="9" fill="#1f8fa0" font-weight="600">RDS PostgreSQL · managed</text>
+        <text x="726" y="326" font-size="8.5" fill="#9a9088">Prisma migrations · shared schema across services</text>
+        <text x="726" y="341" font-size="8.5" fill="#9a9088">S3 for admin uploads (prod only)</text>
+
+        <line x1="490" y1="352" x2="490" y2="362" stroke="#ddd5cc" stroke-width="1" />
+        <polygon points="487,361 493,361 490,366" fill="#ddd5cc" />
+
+        <!-- ── ROW 5: INFRASTRUCTURE ── -->
+        <rect x="12" y="368" width="956" height="74" rx="7" fill="#f0ecf9" stroke="#6b4faa" stroke-width="1.3" />
+        <rect x="20" y="378" width="112" height="47" rx="6" fill="#6b4faa" />
+        <text x="76" y="398" text-anchor="middle" font-size="10" fill="white" font-weight="700">Infra</text>
+        <text x="76" y="413" text-anchor="middle" font-size="8" fill="white" opacity=".8">AWS · Terraform</text>
+
+        <rect x="152" y="384" width="44" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1" />
+        <text x="174" y="400" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">VPC</text>
+        <rect x="204" y="384" width="40" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1" />
+        <text x="224" y="400" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">ALB</text>
+        <rect x="252" y="384" width="88" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1" />
+        <text x="296" y="400" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">ECS Fargate</text>
+        <rect x="348" y="384" width="40" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1" />
+        <text x="368" y="400" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">RDS</text>
+        <rect x="396" y="384" width="40" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1" />
+        <text x="416" y="400" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">ECR</text>
+        <rect x="444" y="384" width="32" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1" />
+        <text x="460" y="400" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">S3</text>
+        <rect x="484" y="384" width="100" height="24" rx="12" fill="none" stroke="#6b4faa" stroke-width="1"
+          stroke-dasharray="4,2" />
+        <text x="534" y="400" text-anchor="middle" font-size="9" fill="#6b4faa" font-weight="500">⭐ Cloud Map</text>
+        <rect x="592" y="384" width="114" height="24" rx="12" fill="none" stroke="#6b4faa" stroke-width="1"
+          stroke-dasharray="4,2" />
+        <text x="649" y="400" text-anchor="middle" font-size="9" fill="#6b4faa" font-weight="500">⭐ Auto Scaling</text>
+
+        <text x="726" y="389" font-size="9" fill="#6b4faa" font-weight="600">Terraform IaC</text>
+        <text x="726" y="404" font-size="8.5" fill="#9a9088">Staging + Production environments</text>
+        <text x="726" y="419" font-size="8.5" fill="#9a9088">Optional NAT Gateway · Secrets Manager</text>
+        <text x="726" y="434" font-size="8.5" fill="#6b4faa">⭐ App Auto Scaling · CPU 70% target</text>
+
+        <line x1="490" y1="442" x2="490" y2="452" stroke="#ddd5cc" stroke-width="1" />
+        <polygon points="487,451 493,451 490,456" fill="#ddd5cc" />
+
+        <!-- ── ROW 6: CI/CD ── -->
+        <rect x="12" y="458" width="956" height="66" rx="7" fill="#fdecea" stroke="#c4433a" stroke-width="1.3" />
+        <rect x="20" y="467" width="112" height="40" rx="6" fill="#c4433a" />
+        <text x="76" y="487" text-anchor="middle" font-size="10" fill="white" font-weight="700">CI / CD</text>
+        <text x="76" y="502" text-anchor="middle" font-size="8" fill="white" opacity=".8">GitHub Actions</text>
+
+        <rect x="152" y="475" width="118" height="24" rx="12" fill="white" stroke="#f0b8b5" stroke-width="1" />
+        <text x="211" y="491" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Staging
+          auto-deploy</text>
+        <rect x="278" y="475" width="134" height="24" rx="12" fill="white" stroke="#f0b8b5" stroke-width="1" />
+        <text x="345" y="491" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Prod promote +
+          deploy</text>
+        <rect x="420" y="475" width="106" height="24" rx="12" fill="white" stroke="#f0b8b5" stroke-width="1" />
+        <text x="473" y="491" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Rollback · Seed</text>
+        <rect x="534" y="475" width="98" height="24" rx="12" fill="white" stroke="#f0b8b5" stroke-width="1" />
+        <text x="583" y="491" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Load Test (k6)</text>
+
+        <text x="726" y="483" font-size="9" fill="#c4433a" font-weight="600">workflow_dispatch (manual)</text>
+        <text x="726" y="498" font-size="8.5" fill="#9a9088">Staging: push trigger · Prod: manual only</text>
+        <text x="726" y="513" font-size="8.5" fill="#9a9088">Secrets: AWS creds · DB URL · ECR access</text>
+
+        <line x1="490" y1="524" x2="490" y2="534" stroke="#ddd5cc" stroke-width="1" />
+        <polygon points="487,533 493,533 490,538" fill="#ddd5cc" />
+
+        <!-- ── ROW 7: OBSERVABILITY (prod) ── -->
+        <rect x="12" y="540" width="956" height="66" rx="7" fill="none" stroke="#6b4faa" stroke-width="1.3"
+          stroke-dasharray="7,4" />
+        <rect x="12" y="540" width="956" height="66" rx="7" fill="#f0ecf9" opacity=".4" />
+        <rect x="20" y="549" width="112" height="40" rx="6" fill="none" stroke="#6b4faa" stroke-width="1.2"
+          stroke-dasharray="5,3" />
+        <rect x="20" y="549" width="112" height="40" rx="6" fill="#f0ecf9" opacity=".7" />
+        <text x="76" y="569" text-anchor="middle" font-size="9.5" fill="#6b4faa" font-weight="700">Observability</text>
+        <text x="76" y="584" text-anchor="middle" font-size="8" fill="#6b4faa">⭐ Prod only</text>
+
+        <rect x="152" y="557" width="92" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1" />
+        <text x="198" y="573" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Prometheus</text>
+        <rect x="252" y="557" width="74" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1" />
+        <text x="289" y="573" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Grafana</text>
+        <rect x="334" y="557" width="114" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1" />
+        <text x="391" y="573" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Loki + Promtail</text>
+        <rect x="456" y="557" width="108" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1" />
+        <text x="510" y="573" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">Node Exporter</text>
+        <rect x="572" y="557" width="36" height="24" rx="12" fill="white" stroke="#d0c4f0" stroke-width="1" />
+        <text x="590" y="573" text-anchor="middle" font-size="9" fill="#1a1714" font-weight="500">k6</text>
+
+        <text x="726" y="565" font-size="9" fill="#6b4faa" font-weight="600">Production only ⭐</text>
+        <text x="726" y="580" font-size="8.5" fill="#9a9088">Prometheus scrapes via Cloud Map · Grafana on ALB</text>
+        <text x="726" y="595" font-size="8.5" fill="#9a9088">Loki aggregates logs · k6 targets prod ALB</text>
+
+      </svg>
+    </div>
+
+    <div class="legend">
+      <div class="legend-label">Layers</div>
+      <div class="legend-item">
+        <div class="li-dot" style="background:#3d8f6e"></div>Frontend
+      </div>
+      <div class="legend-item">
+        <div class="li-dot" style="background:#b86b1a"></div>Backend
+      </div>
+      <div class="legend-item">
+        <div class="li-dot" style="background:#2f72b8"></div>Auth
+      </div>
+      <div class="legend-item">
+        <div class="li-dot" style="background:#1f8fa0"></div>Data
+      </div>
+      <div class="legend-item">
+        <div class="li-dot" style="background:#6b4faa"></div>Infrastructure
+      </div>
+      <div class="legend-item">
+        <div class="li-dot" style="background:#c4433a"></div>CI/CD
+      </div>
+      <div class="legend-item">
+        <div class="li-dash"></div>⭐ Observability (prod only)
+      </div>
+    </div>
+    <p class="note">⭐ = production environment only. Small connectors show data flow from user-facing layer down to
+      infrastructure.</p>
+  </div>
+
+  <script>
+    function switchTab(name, btn) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + name).classList.add('active');
+      btn.classList.add('active');
+    }
+  </script>
 </body>
+
 </html>
