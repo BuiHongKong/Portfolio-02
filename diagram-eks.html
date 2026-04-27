@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>EKS Architecture Diagram</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <script>
         tailwind.config = {
@@ -30,84 +33,112 @@
         };
     </script>
 </head>
+
 <body class="bg-transparent font-sans p-2 flex justify-center">
-    <div class="bg-background-light dark:bg-charcoal rounded-3xl p-8 border border-gray-200 dark:border-gray-700 shadow-inner overflow-hidden relative w-full min-w-[900px]">
+    <div
+        class="bg-background-light dark:bg-charcoal rounded-3xl p-8 border border-gray-200 dark:border-gray-700 shadow-inner overflow-hidden relative w-full min-w-[900px]">
         <!-- Connecting lines (desktop) -->
-        <div class="absolute top-1/2 left-0 w-full h-0 border-t-2 border-dashed border-gray-300 dark:border-gray-600 -translate-y-1/2 z-0"></div>
+        <div
+            class="absolute top-1/2 left-0 w-full h-0 border-t-2 border-dashed border-gray-300 dark:border-gray-600 -translate-y-1/2 z-0">
+        </div>
 
         <div class="grid grid-cols-3 gap-8 relative z-10">
-            
+
             <!-- Zone 1: Developer -->
-            <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl border border-gray-100 dark:border-gray-700 relative flex flex-col items-center">
-                <h3 class="font-mono text-sm font-bold text-primary uppercase tracking-widest mb-6 border-b border-gray-100 dark:border-gray-700 pb-2 w-full text-center">Developer Env</h3>
+            <div
+                class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl border border-gray-100 dark:border-gray-700 relative flex flex-col items-center">
+                <h3
+                    class="font-mono text-sm font-bold text-primary uppercase tracking-widest mb-6 border-b border-gray-100 dark:border-gray-700 pb-2 w-full text-center">
+                    Developer Env</h3>
                 <div class="space-y-4 w-full">
-                    <div class="flex flex-col items-center justify-center gap-1 p-4 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 text-center">
+                    <div
+                        class="flex flex-col items-center justify-center gap-1 p-4 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 text-center">
                         <span class="material-icons text-charcoal-light dark:text-gray-400 text-xl">computer</span>
                         <span class="text-sm font-bold text-charcoal dark:text-gray-200">Developer</span>
                     </div>
                     <div class="flex justify-center text-primary">
                         <span class="material-icons animate-bounce text-lg">arrow_downward</span>
                     </div>
-                    <div class="flex flex-col items-center justify-center gap-1 p-4 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 text-center">
+                    <div
+                        class="flex flex-col items-center justify-center gap-1 p-4 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 text-center">
                         <span class="material-icons text-charcoal-light dark:text-gray-400 text-xl">source</span>
                         <span class="text-sm font-bold text-charcoal dark:text-gray-200">App Repo</span>
                     </div>
                 </div>
                 <!-- Arrow to next zone -->
-                <div class="flex absolute top-1/2 -right-5 -translate-y-1/2 text-primary bg-background-light dark:bg-charcoal rounded-full p-2 z-20 shadow-sm border border-gray-200 dark:border-gray-700">
+                <div
+                    class="flex absolute top-1/2 -right-5 -translate-y-1/2 text-primary bg-background-light dark:bg-charcoal rounded-full p-2 z-20 shadow-sm border border-gray-200 dark:border-gray-700">
                     <span class="material-icons text-lg">arrow_forward</span>
                 </div>
             </div>
 
             <!-- Zone 2: CI Pipeline -->
-            <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl border border-gray-100 dark:border-gray-700 relative flex flex-col items-center">
-                <h3 class="font-mono text-sm font-bold text-primary uppercase tracking-widest mb-6 border-b border-gray-100 dark:border-gray-700 pb-2 w-full text-center">CI Pipeline</h3>
+            <div
+                class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl border border-gray-100 dark:border-gray-700 relative flex flex-col items-center">
+                <h3
+                    class="font-mono text-sm font-bold text-primary uppercase tracking-widest mb-6 border-b border-gray-100 dark:border-gray-700 pb-2 w-full text-center">
+                    CI Pipeline</h3>
                 <div class="space-y-4 w-full">
-                    <div class="flex flex-col items-center justify-center gap-1 p-4 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 text-center">
+                    <div
+                        class="flex flex-col items-center justify-center gap-1 p-4 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 text-center">
                         <span class="material-icons text-charcoal-light dark:text-gray-400 text-xl">build</span>
                         <span class="text-sm font-bold text-charcoal dark:text-gray-200">Build & Scan</span>
                         <span class="text-xs text-primary uppercase tracking-wider font-semibold">GitHub Actions</span>
                     </div>
                     <div class="grid grid-cols-2 gap-3">
-                        <div class="flex flex-col items-center justify-center gap-1 p-3 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 text-center">
-                            <span class="material-icons text-charcoal-light dark:text-gray-400 text-lg">cloud_upload</span>
+                        <div
+                            class="flex flex-col items-center justify-center gap-1 p-3 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 text-center">
+                            <span
+                                class="material-icons text-charcoal-light dark:text-gray-400 text-lg">cloud_upload</span>
                             <span class="text-xs font-bold text-charcoal dark:text-gray-200">Amazon ECR</span>
                             <span class="text-[0.65rem] text-primary opacity-90 font-semibold">(OIDC)</span>
                         </div>
-                        <div class="flex flex-col items-center justify-center gap-1 p-3 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 text-center">
-                            <span class="material-icons text-charcoal-light dark:text-gray-400 text-lg">edit_document</span>
+                        <div
+                            class="flex flex-col items-center justify-center gap-1 p-3 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 text-center">
+                            <span
+                                class="material-icons text-charcoal-light dark:text-gray-400 text-lg">edit_document</span>
                             <span class="text-xs font-bold text-charcoal dark:text-gray-200">GitOps Repo</span>
-                            <span class="text-[0.6rem] text-primary opacity-90 font-semibold uppercase">(Staging / Prod)</span>
+                            <span class="text-[0.6rem] text-primary opacity-90 font-semibold uppercase">(Staging /
+                                Prod)</span>
                         </div>
                     </div>
                 </div>
                 <!-- Arrow to next zone -->
-                <div class="flex absolute top-1/2 -right-5 -translate-y-1/2 text-primary bg-background-light dark:bg-charcoal rounded-full p-2 z-20 shadow-sm border border-gray-200 dark:border-gray-700">
+                <div
+                    class="flex absolute top-1/2 -right-5 -translate-y-1/2 text-primary bg-background-light dark:bg-charcoal rounded-full p-2 z-20 shadow-sm border border-gray-200 dark:border-gray-700">
                     <span class="material-icons text-lg">arrow_forward</span>
                 </div>
             </div>
 
             <!-- Zone 3: EKS Cluster -->
-            <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl border border-gray-100 dark:border-gray-700 relative flex flex-col items-center">
-                <h3 class="font-mono text-sm font-bold text-primary uppercase tracking-widest mb-6 border-b border-gray-100 dark:border-gray-700 pb-2 w-full text-center">EKS Cluster</h3>
+            <div
+                class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl border border-gray-100 dark:border-gray-700 relative flex flex-col items-center">
+                <h3
+                    class="font-mono text-sm font-bold text-primary uppercase tracking-widest mb-6 border-b border-gray-100 dark:border-gray-700 pb-2 w-full text-center">
+                    EKS Cluster</h3>
                 <div class="space-y-3 w-full">
-                    <div class="flex flex-col items-center justify-center gap-1 p-3 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 text-center">
+                    <div
+                        class="flex flex-col items-center justify-center gap-1 p-3 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 text-center">
                         <span class="material-icons text-charcoal-light dark:text-gray-400 text-lg">sync</span>
-                        <span class="text-sm font-bold text-charcoal dark:text-gray-200">Argo CD</span>
-                        <span class="text-[0.65rem] text-primary uppercase tracking-wider font-semibold">Helm Templates</span>
+                        <span class="text-sm font-bold text-charcoal dark:text-gray-200">ArgoCD</span>
+                        <span class="text-[0.65rem] text-primary uppercase tracking-wider font-semibold">Helm
+                            Templates</span>
                     </div>
                     <div class="flex justify-center text-primary -my-1">
                         <span class="material-icons text-lg">arrow_downward</span>
                     </div>
-                    <div class="flex flex-col items-center justify-center gap-1 p-3 bg-primary/10 rounded-xl border border-primary/30 text-center shadow-inner">
+                    <div
+                        class="flex flex-col items-center justify-center gap-1 p-3 bg-primary/10 rounded-xl border border-primary/30 text-center shadow-inner">
                         <span class="material-icons text-primary text-lg">layers</span>
                         <span class="text-sm font-bold text-charcoal dark:text-gray-200">App Pods</span>
-                        <span class="text-[0.65rem] text-primary uppercase tracking-wider font-semibold">Pod Identity</span>
+                        <span class="text-[0.65rem] text-primary uppercase tracking-wider font-semibold">Pod
+                            Identity</span>
                     </div>
                     <div class="flex justify-center text-primary -my-1">
                         <span class="material-icons text-lg">swap_vert</span>
                     </div>
-                    <div class="flex flex-col items-center justify-center gap-1 p-3 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 text-center">
+                    <div
+                        class="flex flex-col items-center justify-center gap-1 p-3 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 text-center">
                         <span class="material-icons text-charcoal-light dark:text-gray-400 text-lg">router</span>
                         <span class="text-sm font-bold text-charcoal dark:text-gray-200">AWS ALB</span>
                     </div>
@@ -116,4 +147,5 @@
         </div>
     </div>
 </body>
+
 </html>

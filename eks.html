@@ -76,7 +76,7 @@
                             <i class="devicon-kubernetes-plain colored text-3xl hover:scale-110 transition-transform cursor-pointer drop-shadow-sm" title="Kubernetes"></i>
                             <i class="devicon-terraform-plain colored text-3xl hover:scale-110 transition-transform cursor-pointer drop-shadow-sm" title="Terraform"></i>
                             <i class="devicon-amazonwebservices-plain-wordmark colored text-4xl hover:scale-110 transition-transform cursor-pointer drop-shadow-sm" title="AWS"></i>
-                            <i class="devicon-argocd-plain colored text-3xl hover:scale-110 transition-transform cursor-pointer drop-shadow-sm" title="Argo CD"></i>
+                            <i class="devicon-argocd-plain colored text-3xl hover:scale-110 transition-transform cursor-pointer drop-shadow-sm" title="ArgoCD"></i>
                         </div>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
                         <!-- Approach -->
                         <section>
                             <h2 class="font-display text-3xl font-extrabold tracking-tighter text-charcoal dark:text-white uppercase mb-6">The Approach</h2>
-                            <p class="text-lg text-charcoal-light dark:text-gray-400 leading-loose mb-8">Leveraging a "Pull-based" GitOps model with Argo CD ensures the cluster state is always synchronized with Git. The entire AWS footprint is managed via modular Terraform. To achieve a zero-trust posture, I implemented a Zero-Secret CI pipeline using GitHub OIDC and EKS Pod Identity to establish dynamic, identity-based trust, eliminating the need to store AWS access keys.</p>
+                            <p class="text-lg text-charcoal-light dark:text-gray-400 leading-loose mb-8">Leveraging a "Pull-based" GitOps model with ArgoCD ensures the cluster state is always synchronized with Git. The entire AWS footprint is managed via modular Terraform. To achieve a zero-trust posture, I implemented a Zero-Secret CI pipeline using GitHub OIDC and EKS Pod Identity to establish dynamic, identity-based trust, eliminating the need to store AWS access keys.</p>
                             <div class="w-full overflow-x-auto rounded-3xl">
                                 <iframe src="diagram-eks.html" title="EKS Architecture Diagram" class="w-full min-w-[768px] h-[590px] border-none overflow-hidden block" scrolling="no"></iframe>
                             </div>
@@ -116,8 +116,8 @@
                         <!-- Implementation -->
                         <section class="!mt-2">
                             <h2 class="font-display text-3xl font-extrabold tracking-tighter text-charcoal dark:text-white uppercase mb-6">Implementation</h2>
-                            <p class="text-lg text-charcoal-light dark:text-gray-400 leading-loose mb-6">The infrastructure was codified entirely in Terraform, establishing a secure VPC with private subnets and NAT gateways. The EKS v1.35 control plane was configured for private access. For continuous delivery, I deployed Argo CD as the platform's "brain", continuously reconciling declarative state stored in a dedicated GitOps repository.</p>
-                            <p class="text-lg text-charcoal-light dark:text-gray-400 leading-loose mb-6">To streamline developer workflows, I engineered standardized Helm chart templates to construct Argo CD applications. This approach cleanly separates staging and production environments by leveraging environment-specific values files. This architecture guarantees consistency across stages and enables immediate, highly reliable rollbacks in the event of a deployment failure.</p>
+                            <p class="text-lg text-charcoal-light dark:text-gray-400 leading-loose mb-6">The infrastructure was codified entirely in Terraform, establishing a secure VPC with private subnets and NAT gateways. The EKS v1.35 control plane was configured for private access. For continuous delivery, I deployed ArgoCD as the platform's "brain", continuously reconciling declarative state stored in a dedicated GitOps repository.</p>
+                            <p class="text-lg text-charcoal-light dark:text-gray-400 leading-loose mb-6">To streamline developer workflows, I engineered standardized Helm chart templates to construct ArgoCD applications. This approach cleanly separates staging and production environments by leveraging environment-specific values files. This architecture guarantees consistency across stages and enables immediate, highly reliable rollbacks in the event of a deployment failure.</p>
                             <p class="text-lg text-charcoal-light dark:text-gray-400 leading-loose">A major focus was automating ingress and security. The AWS Load Balancer Controller provisions ALBs dynamically from Kubernetes Ingress objects, handling SSL via ACM. Security was locked down by integrating GitHub Actions with AWS via OIDC for short-lived CI tokens, and mapping IAM roles directly to ServiceAccounts using EKS Pod Identity.</p>
                         </section>
 
@@ -149,12 +149,9 @@
                                 <h3 class="font-display font-extrabold tracking-tighter text-lg text-charcoal dark:text-white uppercase mb-8 pb-4 border-b border-gray-100 dark:border-gray-700">Project Details</h3>
                                 <ul class="space-y-6">
                                     <li>
-                                        <span class="block font-mono text-xs text-primary uppercase tracking-[0.3em] mb-2">Client / Context</span>
-                                        <span class="font-semibold text-sm text-charcoal dark:text-gray-200">Personal Infrastructure Showcase</span>
-                                    </li>
-                                    <li>
-                                        <span class="block font-mono text-xs text-primary uppercase tracking-[0.3em] mb-2">My Role</span>
-                                        <span class="font-semibold text-sm text-charcoal dark:text-gray-200">Lead Architect & Engineer</span>
+                                        <p class="text-sm text-charcoal-light dark:text-gray-400 leading-relaxed">
+                                            A production-grade Kubernetes platform built on AWS. It uses a GitOps methodology with ArgoCD and Helm to enforce declarative state, and OIDC with Pod Identity to completely eliminate static secrets from the CI/CD pipeline.
+                                        </p>
                                     </li>
                                     <li>
                                         <span class="block font-mono text-xs text-primary uppercase tracking-[0.3em] mb-3">Technologies</span>
