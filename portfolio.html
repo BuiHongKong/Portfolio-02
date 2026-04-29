@@ -41,6 +41,9 @@
         };
     </script>
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
         .parallax-text {
             -webkit-text-stroke: 1px rgba(141, 162, 145, 0.3);
             color: transparent;
@@ -49,6 +52,14 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.75rem;
             letter-spacing: 0.3em;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+        .animate-bounce-slow {
+            animation: bounce 2s infinite;
         }
     </style>
 </head>
@@ -126,15 +137,23 @@
 
                 </div>
             </div>
+
+            <!-- Scroll Down Arrow -->
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20">
+                <a href="#projects" class="flex flex-col items-center gap-2 text-charcoal-light dark:text-gray-400 hover:text-primary transition-colors group">
+                    <span class="text-[0.65rem] font-bold tracking-[0.3em] uppercase">Explore</span>
+                    <span class="material-icons animate-bounce-slow">expand_more</span>
+                </a>
+            </div>
         </header>
 
         <main class="flex-grow">
-        <section class="py-24 lg:py-32 border-t border-gray-200 dark:border-gray-800">
+        <section id="projects" class="py-24 lg:py-32 border-t border-gray-200 dark:border-gray-800">
             <div class="container mx-auto px-6 lg:px-16">
                 <div class="flex flex-col lg:flex-row gap-16 items-center">
                     <div class="lg:w-1/2">
 
-                        <h2 class="font-display text-4xl lg:text-6xl font-extrabold tracking-tighter mb-8 text-charcoal dark:text-white uppercase">
+                        <h2 class="font-display text-4xl lg:text-6xl font-extrabold tracking-wider mb-8 text-charcoal dark:text-white uppercase">
                             Zero-Secret EKS Platform
                         </h2>
                         <p class="text-lg text-charcoal-light dark:text-gray-400 mb-10 leading-relaxed font-medium">
@@ -152,7 +171,7 @@
                     </div>
                     <div class="lg:w-1/2 w-full">
                         <div class="aspect-video bg-gray-200 dark:bg-charcoal rounded-3xl overflow-hidden relative shadow-2xl group">
-                            <!-- Placeholder for Project Image -->
+                            <!-- Project Image Placeholder -->
                             <div class="absolute inset-0 flex items-center justify-center text-gray-400 font-mono italic">
                                 [Project Image Placeholder]
                             </div>
@@ -169,16 +188,16 @@
                 <div class="flex flex-col lg:flex-row-reverse gap-16 items-center">
                     <div class="lg:w-1/2">
 
-                        <h2 class="font-display text-4xl lg:text-6xl font-extrabold tracking-tighter mb-8 text-white uppercase">
-                            Zero-Downtime Pipeline
+                        <h2 class="font-display text-4xl lg:text-6xl font-extrabold tracking-wider mb-8 text-white uppercase">
+                            Plush Haven Store
                         </h2>
                         <p class="text-lg text-gray-400 mb-10 leading-relaxed font-medium">
-                            [Placeholder: Detailed description of your second DevOps project. Focus on the CI/CD aspects, observability, and the impact on deployment frequency and stability.]
+                            A production-ready retail platform featuring a multi-service architecture on AWS ECS. Implements a high-frequency CI/CD workflow, automated scaling, and deep observability to ensure a seamless shopping experience.
                         </p>
                         <div class="flex flex-wrap gap-4 mb-10">
-                            <span class="px-4 py-2 bg-white text-charcoal text-xs font-bold tracking-widest uppercase">Jenkins</span>
-                            <span class="px-4 py-2 bg-white text-charcoal text-xs font-bold tracking-widest uppercase">Prometheus</span>
-                            <span class="px-4 py-2 bg-white text-charcoal text-xs font-bold tracking-widest uppercase">Grafana</span>
+                            <span class="px-4 py-2 bg-white text-charcoal text-xs font-bold tracking-widest uppercase">AWS ECS</span>
+                            <span class="px-4 py-2 bg-white text-charcoal text-xs font-bold tracking-widest uppercase">Docker</span>
+                            <span class="px-4 py-2 bg-white text-charcoal text-xs font-bold tracking-widest uppercase">GitHub Actions</span>
                         </div>
                         <a href="retail-store.html" class="inline-flex items-center gap-3 border-2 border-white text-white font-bold px-8 py-4 uppercase tracking-widest text-xs rounded-2xl hover:bg-white hover:text-charcoal transition-all duration-300 hover:scale-105 group">
                             Explore Case Study
@@ -187,7 +206,7 @@
                     </div>
                     <div class="lg:w-1/2 w-full">
                         <div class="aspect-video bg-white/10 rounded-3xl overflow-hidden relative shadow-2xl group">
-                            <!-- Placeholder for Project Image -->
+                            <!-- Project Image Placeholder -->
                             <div class="absolute inset-0 flex items-center justify-center text-gray-500 font-mono italic">
                                 [Project Image Placeholder]
                             </div>
@@ -202,8 +221,8 @@
             <div class="container mx-auto px-6 lg:px-16">
                 <div class="text-center mb-20">
 
-                    <h2 class="font-display text-5xl lg:text-7xl font-extrabold tracking-tighter text-charcoal dark:text-white uppercase">
-                        Generative Systems
+                    <h2 class="font-display text-5xl lg:text-7xl font-extrabold tracking-wider text-charcoal dark:text-white uppercase">
+                        Tech-Arts
                     </h2>
                 </div>
                 
