@@ -7,7 +7,7 @@
     <title>Kong Bui</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <link
-        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@400;700&display=swap"
         rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <script>
@@ -30,7 +30,8 @@
                     fontFamily: {
                         display: ["Manrope", "sans-serif"],
                         sans: ["Inter", "sans-serif"],
-                        mono: ["JetBrains Mono", "monospace"]
+                        mono: ["JetBrains Mono", "monospace"],
+                        handwriting: ["Caveat", "cursive"]
                     },
                     letterSpacing: {
                         superwide: '0.2em',
@@ -61,24 +62,23 @@
 
 <body
     class="bg-background-light dark:bg-background-dark text-charcoal dark:text-gray-200 font-sans transition-colors duration-300 min-h-screen flex flex-col">
-    <nav class="bg-white dark:bg-charcoal py-6 shadow-sm relative z-10 w-full">
+    <nav
+        class="bg-white dark:bg-charcoal py-4 shadow-md drop-shadow-sm border-b border-gray-100 dark:border-gray-800 relative z-10 w-full">
         <div class="container mx-auto px-6 lg:px-16 flex justify-between items-center">
-            <a href="home.html" class="flex flex-col hover:opacity-80 transition-opacity">
-                <span class="font-display text-2xl font-extrabold text-charcoal dark:text-white tracking-tighter">Bui
-                    Hong Kong</span>
+            <a href="home.html" class="flex flex-col drop-shadow-sm hover:opacity-80 transition-opacity">
+                <span class="font-display text-2xl font-extrabold text-charcoal dark:text-white tracking-tighter">Bui Hong Kong</span>
                 <span
-                    class="text-[0.65rem] text-charcoal-light dark:text-gray-400 tracking-superwide uppercase mt-1 font-semibold">DevOps
-                    Engineer</span>
+                    class="text-[0.65rem] text-charcoal-light dark:text-gray-400 tracking-superwide uppercase mt-1 font-semibold">DevOps Engineer</span>
             </a>
             <div class="hidden md:flex space-x-8 text-sm font-semibold tracking-superwide uppercase">
-                <a class="text-charcoal dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors"
+                <a class="text-charcoal dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors drop-shadow-sm"
                     href="about.html">ABOUT</a>
-                <a class="text-charcoal dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors"
+                <a class="text-charcoal dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors drop-shadow-sm"
                     href="portfolio.html">PORTFOLIO</a>
-                <a class="text-charcoal dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors"
+                <a class="text-charcoal dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors drop-shadow-sm"
                     href="contact.html">CONTACT</a>
             </div>
-            <button class="md:hidden text-charcoal dark:text-white">
+            <button class="md:hidden text-charcoal dark:text-white drop-shadow-sm">
                 <span class="material-icons">menu</span>
             </button>
         </div>
@@ -101,13 +101,8 @@
                         Hi, I'm <span class="text-primary">Kong</span>.
                     </h1>
                     <p class="text-xl md:text-2xl text-charcoal-light dark:text-gray-300 font-sans leading-relaxed mb-8">
-                        A tech artist turned DevOps engineer — building things that make people's lives easier and a bit more joyful.
+                        DevOps Engineer building reliable infrastructure and seamless developer experiences — making engineering workflows effortless and dependable.
                     </p>
-                    <div class="flex flex-wrap gap-4">
-                        <span class="px-4 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold tracking-widest uppercase">DevOps Wizard</span>
-                        <span class="px-4 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold tracking-widest uppercase">Cloud Architect</span>
-                        <span class="px-4 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold tracking-widest uppercase">Tech Artist</span>
-                    </div>
                 </div>
             </div>
 
@@ -116,19 +111,18 @@
                 <!-- My Story -->
                 <div class="lg:col-span-7">
                     <h2 class="font-display text-2xl font-bold tracking-wide text-charcoal dark:text-white uppercase flex items-center mb-8">
-                        <span class="w-8 h-[2px] bg-primary mr-4 inline-block"></span> My Story
+                        <span class="w-8 h-[2px] bg-primary mr-4 inline-block"></span> The Mission
                     </h2>
                     <div class="space-y-6 text-lg text-charcoal-light dark:text-gray-300 leading-relaxed font-sans">
                         <p>
-                            I started my journey as a technical artist, fascinated by how code could bring art to life. Over
-                            time, I found myself drawn deeper into the systems that make software run smoothly. That
-                            curiosity led me into the world of infrastructure and operations.
+                            For me, the goal is always to build infrastructure that is fundamentally reliable and trustworthy. I want to create a solid foundation that never gets in the way, so developers can focus on what they do best: writing code.
+                        </p>
+
+                        <p>
+                            My focus is on creating resilient, scalable systems using <span class="text-charcoal dark:text-white font-bold">Kubernetes, Terraform, and AWS</span>. I’m obsessed with the <span class="text-charcoal dark:text-white font-bold italic">how</span>—how we can make deployments safer, monitoring more intuitive, and the entire development lifecycle more reliable.
                         </p>
                         <p>
-                            Today, I focus on bridging the gap between developers and deployment. But no matter what I'm
-                            working on, I always try to bring a creative, user-first perspective to the table. I believe
-                            that good engineering is fundamentally about empathy — understanding the pain points of the people
-                            using your systems and finding elegant ways to solve them.
+                            While my background includes a chapter as a technical artist in the games industry, that's actually where I learned to think in systems and untangle messy pipelines. Today, I bring that same problem-solving energy to DevOps—building solid infrastructure and making day-to-day work a lot smoother for development teams.
                         </p>
                     </div>
                 </div>
@@ -170,14 +164,47 @@
                 </div>
             </div>
 
-            <!-- Call to Action -->
-            <div class="py-16 text-center border-t border-gray-200 dark:border-gray-800">
-                <p class="mb-8 text-charcoal-light dark:text-gray-400 italic text-lg">Interested in working together or just want to chat?</p>
-                <a class="inline-flex items-center justify-center px-10 py-4 text-sm font-bold rounded-full text-charcoal bg-primary hover:bg-[#7a9285] dark:text-white transition-all duration-300 uppercase tracking-[0.2em] shadow-lg hover:shadow-xl hover:-translate-y-1"
-                    href="contact.html">
-                    Let's Connect
-                </a>
+            <!-- Philosophy Section -->
+            <div class="mb-32">
+                <div class="text-center mb-16">
+                    <h2 class="font-display text-3xl md:text-4xl font-extrabold text-charcoal dark:text-white mb-4 uppercase tracking-tighter">The Philosophy</h2>
+                    <p class="text-charcoal-light dark:text-gray-400 max-w-2xl mx-auto text-lg">How I approach infrastructure and developer empowerment.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Pillar 1 -->
+                    <div class="bg-primary/5 dark:bg-white/5 p-10 rounded-[2.5rem] border border-primary/10 hover:border-primary/30 transition-all duration-500 group">
+                        <div class="w-14 h-14 bg-primary text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform duration-500">
+                            <span class="material-icons text-3xl">verified_user</span>
+                        </div>
+                        <h3 class="font-display text-xl font-extrabold text-charcoal dark:text-white mb-4 uppercase tracking-tight">Reliable Foundations</h3>
+                        <p class="text-charcoal-light dark:text-gray-400 leading-relaxed">
+                            Infrastructure should be boring—stable, predictable, and resilient. I build systems that stand the test of time using industry-standard tools like Kubernetes and Terraform.
+                        </p>
+                    </div>
+                    <!-- Pillar 2 -->
+                    <div class="bg-primary/5 dark:bg-white/5 p-10 rounded-[2.5rem] border border-primary/10 hover:border-primary/30 transition-all duration-500 group">
+                        <div class="w-14 h-14 bg-primary text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform duration-500">
+                            <span class="material-icons text-3xl">psychology</span>
+                        </div>
+                        <h3 class="font-display text-xl font-extrabold text-charcoal dark:text-white mb-4 uppercase tracking-tight">Developer-First DX</h3>
+                        <p class="text-charcoal-light dark:text-gray-400 leading-relaxed">
+                            DevOps isn't just about YAML; it's about people. I focus on Developer Experience to ensure that CI/CD pipelines and internal tools are friction-less, empowering, and easy to use.
+                        </p>
+                    </div>
+                    <!-- Pillar 3 -->
+                    <div class="bg-primary/5 dark:bg-white/5 p-10 rounded-[2.5rem] border border-primary/10 hover:border-primary/30 transition-all duration-500 group">
+                        <div class="w-14 h-14 bg-primary text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform duration-500">
+                            <span class="material-icons text-3xl">build_circle</span>
+                        </div>
+                        <h3 class="font-display text-xl font-extrabold text-charcoal dark:text-white mb-4 uppercase tracking-tight">Practical Automation</h3>
+                        <p class="text-charcoal-light dark:text-gray-400 leading-relaxed">
+                            I focus on automating the things that actually matter. Instead of adding complexity for its own sake, I look for straightforward, sensible ways to eliminate repetitive tasks and speed up delivery.
+                        </p>
+                    </div>
+                </div>
             </div>
+
+
         </div>
     </main>
     <footer
