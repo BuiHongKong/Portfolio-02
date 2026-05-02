@@ -1,0 +1,2437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EKS GitOps Platform — Architecture Overview</title>
+  <style>
+    :root {
+      --bg: #070b12;
+      --surface: #0d1117;
+      --surface2: #161b22;
+      --surface3: #21262d;
+      --border: #30363d;
+      --border-light: #3d444d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --text-dim: #484f58;
+      --aws: #ff9900;
+      --aws-dim: #b36b00;
+      --k8s: #3b7ced;
+      --k8s-dim: #1e4fa3;
+      --argo: #e96214;
+      --argo-dim: #9a3e08;
+      --tf: #7b42f5;
+      --tf-dim: #4a1fa3;
+      --github: #2ea043;
+      --github-dim: #1a6128;
+      --red: #f85149;
+      --yellow: #d29922;
+      --cyan: #39d0d8;
+      --helm: #0f1689;
+      --helm-bright: #316ce8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── Navigation ─────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(7,11,18,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 0 24px;
+      height: 52px;
+    }
+    nav .logo {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--aws);
+      white-space: nowrap;
+      margin-right: 32px;
+      letter-spacing: 0.03em;
+    }
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      padding: 0 12px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    nav a:hover { color: var(--text); border-color: var(--border-light); }
+    nav a.active { color: var(--text); border-color: var(--aws); }
+
+    /* ── Layout ──────────────────────────────────────────────── */
+    main { padding-top: 52px; }
+
+    section {
+      padding: 64px 24px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 24px;
+    }
+
+    /* ── Typography ──────────────────────────────────────────── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 14px;
+      max-width: 640px;
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
+
+    /* ── Cards ───────────────────────────────────────────────── */
+    .card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .card-title {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    /* ── Badges ──────────────────────────────────────────────── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .badge-aws    { background: rgba(255,153,0,0.15); color: var(--aws); border: 1px solid rgba(255,153,0,0.3); }
+    .badge-k8s    { background: rgba(59,124,237,0.15); color: var(--k8s); border: 1px solid rgba(59,124,237,0.3); }
+    .badge-argo   { background: rgba(233,98,20,0.15); color: var(--argo); border: 1px solid rgba(233,98,20,0.3); }
+    .badge-tf     { background: rgba(123,66,245,0.15); color: var(--tf); border: 1px solid rgba(123,66,245,0.3); }
+    .badge-github { background: rgba(46,160,67,0.15); color: var(--github); border: 1px solid rgba(46,160,67,0.3); }
+    .badge-helm   { background: rgba(49,108,232,0.15); color: var(--helm-bright); border: 1px solid rgba(49,108,232,0.3); }
+
+    /* ── Hero ────────────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(180deg, #0d1221 0%, #070b12 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 24px 64px;
+      text-align: center;
+    }
+    .hero-badges {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      background: linear-gradient(135deg, #fff 0%, #8b949e 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+    }
+    .hero p {
+      color: var(--text-muted);
+      font-size: 16px;
+      max-width: 600px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .stat-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+    .stat-item .value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      display: block;
+    }
+    .stat-item .label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Flow Diagram ─────────────────────────────────────────── */
+    .flow-diagram {
+      position: relative;
+      overflow-x: auto;
+      padding: 8px 0 24px;
+    }
+    .flow-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      min-width: max-content;
+      padding: 16px 0;
+    }
+    .flow-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      min-width: 110px;
+    }
+    .flow-node .icon-wrap {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .flow-node .node-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text);
+      text-align: center;
+      line-height: 1.3;
+    }
+    .flow-node .node-sub {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    .flow-arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 4px;
+      gap: 4px;
+      position: relative;
+    }
+    .arrow-line {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .arrow-track {
+      height: 2px;
+      width: 60px;
+      background: linear-gradient(90deg, var(--border), var(--border-light));
+      position: relative;
+      overflow: hidden;
+    }
+    .arrow-track::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, var(--aws), transparent);
+      animation: flowAnim 2s ease-in-out infinite;
+    }
+    @keyframes flowAnim {
+      0% { left: -60%; }
+      100% { left: 100%; }
+    }
+    .arrow-head {
+      width: 0;
+      height: 0;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 8px solid var(--border-light);
+    }
+    .arrow-label {
+      font-size: 9px;
+      color: var(--text-dim);
+      text-align: center;
+      max-width: 72px;
+      line-height: 1.3;
+    }
+
+    /* ── VPC Diagram ─────────────────────────────────────────── */
+    .vpc-diagram {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .vpc-wrap {
+      min-width: 860px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* Internet cloud */
+    .inet-box {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .inet-cloud {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface3);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 8px 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* vertical line from internet to IGW */
+    .vline-wrap { display: flex; justify-content: center; margin: 0; }
+    .vline { width: 2px; height: 24px; background: var(--border-light); }
+
+    /* IGW row */
+    .igw-row {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 4px;
+    }
+    .igw-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,153,0,0.1);
+      border: 1px solid rgba(255,153,0,0.35);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--aws);
+    }
+
+    /* VPC outer box */
+    .vpc-outer {
+      border: 2px solid rgba(255,153,0,0.3);
+      border-radius: 12px;
+      background: rgba(255,153,0,0.03);
+      padding: 20px;
+      position: relative;
+      margin-top: 4px;
+    }
+    .vpc-label {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: var(--bg);
+      padding: 0 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--aws);
+      letter-spacing: 0.06em;
+    }
+
+    /* AZ grid */
+    .az-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .az-col {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .az-header {
+      background: var(--surface3);
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .subnet-pub {
+      background: rgba(46,160,67,0.06);
+      border-bottom: 1px solid var(--border);
+      padding: 12px;
+    }
+    .subnet-priv {
+      background: rgba(59,124,237,0.06);
+      padding: 12px;
+    }
+    .subnet-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .subnet-cidr {
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+      font-family: 'Courier New', monospace;
+    }
+    .subnet-resources {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .res-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--surface3);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 3px 7px;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    /* route annotations */
+    .route-note {
+      margin-top: 8px;
+      font-size: 10px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .arrow-right { font-size: 10px; }
+
+    /* NAT connection line between subnets */
+    .nat-line {
+      height: 1px;
+      background: repeating-linear-gradient(90deg, var(--border), var(--border) 4px, transparent 4px, transparent 8px);
+      margin: 4px 12px;
+    }
+
+    /* ── EKS Cluster Diagram ──────────────────────────────────── */
+    .cluster-diagram {
+      border: 2px solid rgba(59,124,237,0.3);
+      border-radius: 12px;
+      background: rgba(59,124,237,0.03);
+      padding: 20px;
+      position: relative;
+    }
+    .cluster-label {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: var(--bg);
+      padding: 0 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--k8s);
+      letter-spacing: 0.06em;
+    }
+    .ns-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+    .namespace {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .ns-header {
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--surface3);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ns-body {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .pod-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .pod-icon { font-size: 14px; }
+    .pod-name { font-size: 12px; font-weight: 500; }
+    .pod-desc { font-size: 10px; color: var(--text-muted); }
+
+    /* ── Pipeline Steps ───────────────────────────────────────── */
+    .pipeline {
+      position: relative;
+    }
+    .pipeline-step {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 0;
+      position: relative;
+    }
+    .pipeline-step:not(:last-child) .step-line {
+      display: block;
+    }
+    .step-num-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .step-line {
+      display: none;
+      width: 2px;
+      flex: 1;
+      background: linear-gradient(180deg, var(--border-light), var(--border));
+      margin: 4px 0;
+      min-height: 30px;
+    }
+    .step-content {
+      flex: 1;
+      padding-bottom: 28px;
+    }
+    .step-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .step-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .code-block {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      color: #a5d6ff;
+      overflow-x: auto;
+      white-space: pre;
+    }
+    .code-comment { color: #6e7681; }
+    .code-key { color: #ff7b72; }
+    .code-val { color: #a8daff; }
+    .code-str { color: #a5d6ff; }
+
+    /* ── Grid Layouts ─────────────────────────────────────────── */
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    @media (max-width: 900px) {
+      .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    }
+
+    /* ── IAM Roles Table ──────────────────────────────────────── */
+    .iam-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .iam-table th {
+      background: var(--surface3);
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+    .iam-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .iam-table tr:last-child td { border-bottom: none; }
+    .iam-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .mono { font-family: 'Courier New', monospace; font-size: 11px; color: var(--cyan); }
+
+    /* ── Helm Values Layering ─────────────────────────────────── */
+    .values-layer {
+      display: grid;
+      grid-template-columns: 1fr 40px 1fr 40px 1fr;
+      gap: 0;
+      align-items: start;
+    }
+    .values-file {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .values-header {
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      font-family: monospace;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .values-body {
+      padding: 10px;
+      font-size: 11px;
+      font-family: monospace;
+      line-height: 1.8;
+    }
+    .val-key { color: #ff7b72; }
+    .val-num { color: #79c0ff; }
+    .val-str { color: #a5d6ff; }
+    .val-bool { color: #56d364; }
+    .val-override { background: rgba(233,98,20,0.1); border-radius: 2px; padding: 0 2px; }
+    .merge-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 48px;
+      color: var(--text-dim);
+      font-size: 20px;
+    }
+
+    /* ── App Cards ────────────────────────────────────────────── */
+    .app-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .app-header {
+      background: var(--surface3);
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .app-name {
+      font-size: 13px;
+      font-weight: 600;
+      font-family: monospace;
+    }
+    .app-body {
+      padding: 12px 16px;
+    }
+    .env-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .env-row:last-child { border-bottom: none; }
+    .env-tag {
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+    .env-staging { background: rgba(217,153,34,0.15); color: var(--yellow); }
+    .env-prod { background: rgba(248,81,73,0.15); color: var(--red); }
+    .tag-val { font-family: monospace; font-size: 11px; color: var(--cyan); }
+
+    /* ── Terraform Files ──────────────────────────────────────── */
+    .tf-files {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .tf-file {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      transition: border-color 0.15s;
+    }
+    .tf-file:hover { border-color: var(--border-light); }
+    .tf-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: rgba(123,66,245,0.15);
+      border: 1px solid rgba(123,66,245,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--tf);
+      flex-shrink: 0;
+    }
+    .tf-name {
+      font-family: monospace;
+      font-size: 12px;
+      color: var(--text);
+      flex: 1;
+    }
+    .tf-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      flex: 2;
+    }
+    .tf-resources {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .tf-res {
+      font-size: 9px;
+      padding: 1px 6px;
+      background: rgba(255,153,0,0.1);
+      border: 1px solid rgba(255,153,0,0.2);
+      border-radius: 3px;
+      color: var(--aws);
+      font-family: monospace;
+    }
+
+    /* ── Security diagram ─────────────────────────────────────── */
+    .sec-chain {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .sec-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .sec-node {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid;
+      white-space: nowrap;
+    }
+    .sec-arrow {
+      color: var(--text-dim);
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .sec-label {
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+
+    /* ── Tooltip ──────────────────────────────────────────────── */
+    [data-tip] {
+      position: relative;
+      cursor: help;
+    }
+    [data-tip]:hover::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--surface3);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    /* ── Scroll indicator ─────────────────────────────────────── */
+    .scroll-progress {
+      position: fixed;
+      top: 52px;
+      left: 0;
+      height: 2px;
+      background: var(--aws);
+      transition: width 0.1s;
+      z-index: 101;
+    }
+
+    /* ── Legend ───────────────────────────────────────────────── */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+    }
+
+    /* ── Collapsible ──────────────────────────────────────────── */
+    details {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    summary {
+      padding: 10px 14px;
+      cursor: pointer;
+      background: var(--surface2);
+      font-size: 12px;
+      font-weight: 600;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::before {
+      content: '▶';
+      font-size: 9px;
+      color: var(--text-muted);
+      transition: transform 0.15s;
+    }
+    details[open] summary::before { transform: rotate(90deg); }
+    details > *:not(summary) {
+      padding: 12px 14px;
+    }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 12px;
+    }
+    footer a { color: var(--text-muted); text-decoration: none; }
+    footer a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollBar"></div>
+
+<nav>
+  <span class="logo">⚙ EKS GitOps</span>
+  <a href="#overview">Overview</a>
+  <a href="#network">Network</a>
+  <a href="#cluster">Cluster</a>
+  <a href="#cicd">CI/CD</a>
+  <a href="#gitops">GitOps</a>
+  <a href="#security">Security</a>
+  <a href="#apps">Apps</a>
+  <a href="#terraform">Terraform</a>
+</nav>
+
+<main>
+
+<!-- ═══ HERO ═══════════════════════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-badges">
+    <span class="badge badge-aws">AWS EKS v1.35</span>
+    <span class="badge badge-tf">Terraform ≥1.5</span>
+    <span class="badge badge-argo">Argo CD</span>
+    <span class="badge badge-helm">Helm v2</span>
+    <span class="badge badge-github">GitHub OIDC</span>
+    <span class="badge badge-k8s">Kubernetes</span>
+  </div>
+  <h1>EKS GitOps Platform</h1>
+  <p>A production-grade, security-first Kubernetes platform on AWS — fully automated from Git push to live traffic, with zero long-lived credentials anywhere in the chain.</p>
+  <div class="stat-grid">
+    <div class="stat-item">
+      <span class="value" style="color:var(--aws)">3</span>
+      <span class="label">Applications</span>
+    </div>
+    <div class="stat-item">
+      <span class="value" style="color:var(--k8s)">2</span>
+      <span class="label">Environments</span>
+    </div>
+    <div class="stat-item">
+      <span class="value" style="color:var(--argo)">6</span>
+      <span class="label">Argo CD Apps</span>
+    </div>
+    <div class="stat-item">
+      <span class="value" style="color:var(--tf)">16</span>
+      <span class="label">Terraform Files</span>
+    </div>
+    <div class="stat-item">
+      <span class="value" style="color:var(--github)">0</span>
+      <span class="label">Stored Secrets</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ OVERVIEW ════════════════════════════════════════════════════════════ -->
+<section id="overview">
+  <div class="section-label">Section 01</div>
+  <h2>End-to-End Architecture</h2>
+  <p class="section-desc">
+    A pull-based GitOps model separates CI (build &amp; push) from CD (cluster reconciliation). The Git repository is the single source of truth — the cluster always converges to what Git declares.
+  </p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+
+      <!-- Developer -->
+      <div class="flow-node">
+        <div class="icon-wrap" style="background:rgba(139,148,158,0.12);border:1px solid rgba(139,148,158,0.25);">👨‍💻</div>
+        <div class="node-label">Developer</div>
+        <div class="node-sub">git push</div>
+      </div>
+
+      <div class="flow-arrow">
+        <div class="arrow-line">
+          <div class="arrow-track" style="width:48px"></div>
+          <div class="arrow-head"></div>
+        </div>
+        <div class="arrow-label">code commit</div>
+      </div>
+
+      <!-- App Repo -->
+      <div class="flow-node">
+        <div class="icon-wrap" style="background:rgba(46,160,67,0.12);border:1px solid rgba(46,160,67,0.3);">🐙</div>
+        <div class="node-label">App Repo</div>
+        <div class="node-sub">GitHub</div>
+      </div>
+
+      <div class="flow-arrow">
+        <div class="arrow-line">
+          <div class="arrow-track" style="--flow-color:var(--github)"></div>
+          <div class="arrow-head" style="border-left-color:rgba(46,160,67,0.5)"></div>
+        </div>
+        <div class="arrow-label">triggers CI</div>
+      </div>
+
+      <!-- GitHub Actions -->
+      <div class="flow-node" style="min-width:120px">
+        <div class="icon-wrap" style="background:rgba(46,160,67,0.12);border:1px solid rgba(46,160,67,0.3);">⚡</div>
+        <div class="node-label">GitHub Actions</div>
+        <div class="node-sub">Build &amp; Push</div>
+      </div>
+
+      <div class="flow-arrow">
+        <div class="arrow-line">
+          <div class="arrow-track"></div>
+          <div class="arrow-head" style="border-left-color:rgba(255,153,0,0.5)"></div>
+        </div>
+        <div class="arrow-label">OIDC → push image</div>
+      </div>
+
+      <!-- ECR -->
+      <div class="flow-node">
+        <div class="icon-wrap" style="background:rgba(255,153,0,0.12);border:1px solid rgba(255,153,0,0.3);">📦</div>
+        <div class="node-label">Amazon ECR</div>
+        <div class="node-sub">3 repositories</div>
+      </div>
+
+      <div class="flow-arrow">
+        <div class="arrow-line">
+          <div class="arrow-track"></div>
+          <div class="arrow-head" style="border-left-color:rgba(46,160,67,0.5)"></div>
+        </div>
+        <div class="arrow-label">bump image tag in values.yaml</div>
+      </div>
+
+      <!-- GitOps Repo -->
+      <div class="flow-node" style="min-width:120px">
+        <div class="icon-wrap" style="background:rgba(46,160,67,0.12);border:1px solid rgba(46,160,67,0.3);">📂</div>
+        <div class="node-label">GitOps Repo</div>
+        <div class="node-sub">BuiHongKong/EKS</div>
+      </div>
+
+      <div class="flow-arrow">
+        <div class="arrow-line">
+          <div class="arrow-track"></div>
+          <div class="arrow-head" style="border-left-color:rgba(233,98,20,0.5)"></div>
+        </div>
+        <div class="arrow-label">git poll / webhook</div>
+      </div>
+
+      <!-- Argo CD -->
+      <div class="flow-node">
+        <div class="icon-wrap" style="background:rgba(233,98,20,0.12);border:1px solid rgba(233,98,20,0.3);">🐙</div>
+        <div class="node-label">Argo CD</div>
+        <div class="node-sub">auto-sync</div>
+      </div>
+
+      <div class="flow-arrow">
+        <div class="arrow-line">
+          <div class="arrow-track"></div>
+          <div class="arrow-head" style="border-left-color:rgba(59,124,237,0.5)"></div>
+        </div>
+        <div class="arrow-label">helm upgrade</div>
+      </div>
+
+      <!-- EKS Pods -->
+      <div class="flow-node">
+        <div class="icon-wrap" style="background:rgba(59,124,237,0.12);border:1px solid rgba(59,124,237,0.3);">☸️</div>
+        <div class="node-label">EKS Workloads</div>
+        <div class="node-sub">staging / prod</div>
+      </div>
+
+      <div class="flow-arrow">
+        <div class="arrow-line">
+          <div class="arrow-track"></div>
+          <div class="arrow-head" style="border-left-color:rgba(255,153,0,0.5)"></div>
+        </div>
+        <div class="arrow-label">ingress rules</div>
+      </div>
+
+      <!-- ALB -->
+      <div class="flow-node">
+        <div class="icon-wrap" style="background:rgba(255,153,0,0.12);border:1px solid rgba(255,153,0,0.3);">⚖️</div>
+        <div class="node-label">AWS ALB</div>
+        <div class="node-sub">HTTPS traffic</div>
+      </div>
+
+      <div class="flow-arrow">
+        <div class="arrow-line">
+          <div class="arrow-track"></div>
+          <div class="arrow-head"></div>
+        </div>
+        <div class="arrow-label">HTTPS</div>
+      </div>
+
+      <!-- Users -->
+      <div class="flow-node">
+        <div class="icon-wrap" style="background:rgba(139,148,158,0.12);border:1px solid rgba(139,148,158,0.25);">🌐</div>
+        <div class="node-label">End Users</div>
+        <div class="node-sub">Internet</div>
+      </div>
+
+    </div><!-- /flow-row -->
+  </div><!-- /flow-diagram -->
+
+  <!-- Key principles -->
+  <div class="grid-3" style="margin-top:32px">
+    <div class="card">
+      <div class="card-title" style="color:var(--argo)">🔄 Pull-Based GitOps</div>
+      <p style="color:var(--text-muted);font-size:13px;line-height:1.6">
+        Argo CD inside the cluster <em>polls</em> the Git repo. No external system can push directly to the cluster. This means the cluster auto-heals: drift is detected and reverted within minutes.
+      </p>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--github)">🔐 Zero Long-Lived Credentials</div>
+      <p style="color:var(--text-muted);font-size:13px;line-height:1.6">
+        GitHub Actions uses OIDC to get a short-lived STS token. The ALB Controller uses EKS Pod Identity. Worker nodes use an IAM role. No <code>AWS_ACCESS_KEY_ID</code> is stored anywhere.
+      </p>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--tf)">📋 Everything as Code</div>
+      <p style="color:var(--text-muted);font-size:13px;line-height:1.6">
+        Terraform provisions all AWS resources: VPC, EKS, ECR, IAM, ALB Controller, and Argo CD. Zero ClickOps. Every change is reviewed via Pull Request and tracked in Git history.
+      </p>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══ NETWORK ══════════════════════════════════════════════════════════════ -->
+<section id="network">
+  <div class="section-label">Section 02</div>
+  <h2>AWS Network Topology</h2>
+  <p class="section-desc">
+    A custom VPC with public and private subnets across 2 Availability Zones in <strong>ap-southeast-1</strong>. Application nodes live entirely in private subnets — only the Load Balancer is internet-facing.
+  </p>
+
+  <div class="vpc-diagram">
+    <div class="vpc-wrap">
+
+      <!-- Internet -->
+      <div class="inet-box">
+        <div class="inet-cloud">🌐 Internet</div>
+      </div>
+      <div class="vline-wrap"><div class="vline"></div></div>
+
+      <!-- IGW -->
+      <div class="igw-row">
+        <div class="igw-box" data-tip="Routes public subnet traffic to the Internet">
+          🔀 Internet Gateway<span style="font-weight:400;font-size:10px;margin-left:8px;color:var(--aws-dim)">{cluster_name}-igw</span>
+        </div>
+      </div>
+      <div class="vline-wrap"><div class="vline"></div></div>
+
+      <!-- VPC -->
+      <div class="vpc-outer">
+        <span class="vpc-label">VPC — 10.0.0.0/16 · DNS enabled</span>
+
+        <div class="az-grid">
+
+          <!-- AZ-a -->
+          <div class="az-col">
+            <div class="az-header">📍 Availability Zone · ap-southeast-1a</div>
+            <div class="subnet-pub">
+              <div class="subnet-tag" style="color:var(--github)">🟢 Public Subnet</div>
+              <div class="subnet-cidr">10.0.101.0/24</div>
+              <div class="subnet-resources">
+                <span class="res-chip" style="color:var(--aws);border-color:rgba(255,153,0,0.3)">🔀 NAT Gateway</span>
+                <span class="res-chip" style="color:var(--aws);border-color:rgba(255,153,0,0.3)">🔌 Elastic IP</span>
+                <span class="res-chip" style="color:var(--aws);border-color:rgba(255,153,0,0.3)">⚖️ ALB (shared)</span>
+              </div>
+              <div class="route-note">Route: 0.0.0.0/0 <span class="arrow-right">→</span> IGW</div>
+            </div>
+            <div class="nat-line"></div>
+            <div class="subnet-priv">
+              <div class="subnet-tag" style="color:var(--k8s)">🔵 Private Subnet</div>
+              <div class="subnet-cidr">10.0.1.0/24</div>
+              <div class="subnet-resources">
+                <span class="res-chip" style="color:var(--k8s);border-color:rgba(59,124,237,0.3)">☸ EKS Node 1</span>
+                <span class="res-chip" style="color:var(--k8s);border-color:rgba(59,124,237,0.3)">☸ EKS Node 2</span>
+              </div>
+              <div class="route-note">Route: 0.0.0.0/0 <span class="arrow-right">→</span> NAT GW</div>
+            </div>
+          </div>
+
+          <!-- AZ-b -->
+          <div class="az-col">
+            <div class="az-header">📍 Availability Zone · ap-southeast-1b</div>
+            <div class="subnet-pub">
+              <div class="subnet-tag" style="color:var(--github)">🟢 Public Subnet</div>
+              <div class="subnet-cidr">10.0.102.0/24</div>
+              <div class="subnet-resources">
+                <span class="res-chip" style="color:var(--aws);border-color:rgba(255,153,0,0.3)">⚖️ ALB (shared)</span>
+                <span class="res-chip">map_public_ip=true</span>
+              </div>
+              <div class="route-note">Route: 0.0.0.0/0 <span class="arrow-right">→</span> IGW</div>
+            </div>
+            <div class="nat-line"></div>
+            <div class="subnet-priv">
+              <div class="subnet-tag" style="color:var(--k8s)">🔵 Private Subnet</div>
+              <div class="subnet-cidr">10.0.2.0/24</div>
+              <div class="subnet-resources">
+                <span class="res-chip" style="color:var(--k8s);border-color:rgba(59,124,237,0.3)">☸ EKS Node 3</span>
+              </div>
+              <div class="route-note">Route: 0.0.0.0/0 <span class="arrow-right">→</span> NAT GW</div>
+            </div>
+          </div>
+
+        </div><!-- /az-grid -->
+      </div><!-- /vpc-outer -->
+
+    </div><!-- /vpc-wrap -->
+  </div><!-- /vpc-diagram -->
+
+  <!-- Network notes -->
+  <div class="grid-3" style="margin-top:24px">
+    <div class="card">
+      <h3>🔀 NAT Gateway</h3>
+      <p style="color:var(--text-muted);font-size:13px;line-height:1.6">
+        A single NAT Gateway in AZ-a allows private nodes to reach the internet (for ECR pulls, AWS API calls) without a public IP. Managed with an Elastic IP for consistent outbound address.
+      </p>
+    </div>
+    <div class="card">
+      <h3>⚖️ Load Balancer Placement</h3>
+      <p style="color:var(--text-muted);font-size:13px;line-height:1.6">
+        The ALB Controller places the Application Load Balancer in the <strong>public subnets</strong> (tagged <code>kubernetes.io/role/elb=1</code>), routing traffic to pods in private subnets.
+      </p>
+    </div>
+    <div class="card">
+      <h3>🔑 EKS Endpoint</h3>
+      <p style="color:var(--text-muted);font-size:13px;line-height:1.6">
+        EKS control plane is configured with <code>endpoint_private_access=true</code> and <code>endpoint_public_access=true</code>. Internal cluster components communicate without traversing the internet.
+      </p>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══ CLUSTER ══════════════════════════════════════════════════════════════ -->
+<section id="cluster">
+  <div class="section-label">Section 03</div>
+  <h2>EKS Cluster Internals</h2>
+  <p class="section-desc">
+    EKS v1.35 with a managed node group of <strong>t3.medium</strong> EC2 instances (1–4 nodes, desired 2). What runs inside the cluster, organized by Kubernetes namespace.
+  </p>
+
+  <div class="cluster-diagram">
+    <span class="cluster-label">EKS Cluster — Kubernetes v1.35 · ap-southeast-1</span>
+
+    <div style="margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span class="badge badge-k8s">Control Plane (AWS Managed)</span>
+      <span class="res-chip">kube-apiserver</span>
+      <span class="res-chip">etcd</span>
+      <span class="res-chip">kube-scheduler</span>
+      <span class="res-chip">kube-controller-manager</span>
+    </div>
+
+    <div class="ns-grid">
+
+      <!-- kube-system -->
+      <div class="namespace">
+        <div class="ns-header">
+          <span>📁 namespace: <strong>kube-system</strong></span>
+          <span class="badge badge-k8s" style="font-size:9px">system</span>
+        </div>
+        <div class="ns-body">
+          <div class="pod-item">
+            <span class="pod-icon">⚖️</span>
+            <div>
+              <div class="pod-name">aws-load-balancer-controller</div>
+              <div class="pod-desc">Provisioned by Helm v1.7.2 · Pod Identity → alb-controller IAM role</div>
+            </div>
+          </div>
+          <div class="pod-item">
+            <span class="pod-icon">🧩</span>
+            <div>
+              <div class="pod-name">eks-pod-identity-agent (DaemonSet)</div>
+              <div class="pod-desc">EKS addon · Intercepts IMDS calls for Pod Identity associations</div>
+            </div>
+          </div>
+          <div class="pod-item">
+            <span class="pod-icon">🌐</span>
+            <div>
+              <div class="pod-name">vpc-cni (DaemonSet)</div>
+              <div class="pod-desc">EKS addon · Assigns VPC IPs directly to pods</div>
+            </div>
+          </div>
+          <div class="pod-item">
+            <span class="pod-icon">🔗</span>
+            <div>
+              <div class="pod-name">kube-proxy (DaemonSet)</div>
+              <div class="pod-desc">EKS addon · iptables rules for Service routing</div>
+            </div>
+          </div>
+          <div class="pod-item">
+            <span class="pod-icon">🔍</span>
+            <div>
+              <div class="pod-name">coredns</div>
+              <div class="pod-desc">EKS addon · Cluster DNS resolution</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- argocd -->
+      <div class="namespace">
+        <div class="ns-header">
+          <span>📁 namespace: <strong>argocd</strong></span>
+          <span class="badge badge-argo" style="font-size:9px">gitops</span>
+        </div>
+        <div class="ns-body">
+          <div class="pod-item">
+            <span class="pod-icon">🖥️</span>
+            <div>
+              <div class="pod-name">argocd-server</div>
+              <div class="pod-desc">Web UI + gRPC API · 1 replica</div>
+            </div>
+          </div>
+          <div class="pod-item">
+            <span class="pod-icon">⚙️</span>
+            <div>
+              <div class="pod-name">argocd-application-controller</div>
+              <div class="pod-desc">Reconciliation loop · watches Git &amp; cluster · 1 replica</div>
+            </div>
+          </div>
+          <div class="pod-item">
+            <span class="pod-icon">📡</span>
+            <div>
+              <div class="pod-name">argocd-repo-server</div>
+              <div class="pod-desc">Clones &amp; renders Helm charts from GitOps repo</div>
+            </div>
+          </div>
+          <div class="pod-item">
+            <span class="pod-icon">🔔</span>
+            <div>
+              <div class="pod-name">argocd-notifications-controller</div>
+              <div class="pod-desc">Optional: sync status alerts</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- staging -->
+      <div class="namespace">
+        <div class="ns-header">
+          <span>📁 namespace: <strong>staging</strong></span>
+          <span class="badge" style="background:rgba(217,153,34,0.15);color:var(--yellow);font-size:9px">staging env</span>
+        </div>
+        <div class="ns-body">
+          <div class="pod-item">
+            <span class="pod-icon">🟡</span>
+            <div>
+              <div class="pod-name">simple-app-01</div>
+              <div class="pod-desc">1 replica · tag: stag-v.0.3 · CPU 100–300m</div>
+            </div>
+          </div>
+          <div class="pod-item">
+            <span class="pod-icon">🟡</span>
+            <div>
+              <div class="pod-name">simple-app-02</div>
+              <div class="pod-desc">1 replica · tag: stag-v.0.1 · HPA disabled</div>
+            </div>
+          </div>
+          <div class="pod-item">
+            <span class="pod-icon">🟡</span>
+            <div>
+              <div class="pod-name">simple-app-03</div>
+              <div class="pod-desc">1 replica · tag: stag-v.0.1 · HPA disabled</div>
+            </div>
+          </div>
+          <div class="pod-item" style="opacity:0.5">
+            <span class="pod-icon">🔗</span>
+            <div>
+              <div class="pod-name">Services + Ingress objects</div>
+              <div class="pod-desc">ClusterIP service per app · Ingress → ALB Target Group</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- prod -->
+      <div class="namespace">
+        <div class="ns-header">
+          <span>📁 namespace: <strong>prod</strong></span>
+          <span class="badge" style="background:rgba(248,81,73,0.15);color:var(--red);font-size:9px">production</span>
+        </div>
+        <div class="ns-body">
+          <div class="pod-item">
+            <span class="pod-icon">🔴</span>
+            <div>
+              <div class="pod-name">simple-app-01</div>
+              <div class="pod-desc">3 replicas · tag: prod-v.0.3 · HPA 3–10 @ 60% CPU</div>
+            </div>
+          </div>
+          <div class="pod-item">
+            <span class="pod-icon">🔴</span>
+            <div>
+              <div class="pod-name">simple-app-02</div>
+              <div class="pod-desc">3 replicas · tag: prod-v.0.1 · HPA 3–10 @ 60% CPU</div>
+            </div>
+          </div>
+          <div class="pod-item">
+            <span class="pod-icon">🔴</span>
+            <div>
+              <div class="pod-name">simple-app-03</div>
+              <div class="pod-desc">3 replicas · tag: prod-v.0.1 · HPA 3–10 @ 60% CPU</div>
+            </div>
+          </div>
+          <div class="pod-item" style="opacity:0.5">
+            <span class="pod-icon">🔗</span>
+            <div>
+              <div class="pod-name">Services + HPA + Ingress objects</div>
+              <div class="pod-desc">ClusterIP service · HorizontalPodAutoscaler per app</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /ns-grid -->
+  </div><!-- /cluster-diagram -->
+
+  <!-- Node group details -->
+  <div class="grid-2" style="margin-top:24px">
+    <div class="card">
+      <h3>🖥️ Managed Node Group</h3>
+      <table style="width:100%;font-size:12px;border-collapse:collapse">
+        <tr><td style="padding:4px 0;color:var(--text-muted);width:130px">Instance type</td><td class="mono">t3.medium (2 vCPU, 4 GB RAM)</td></tr>
+        <tr><td style="padding:4px 0;color:var(--text-muted)">AMI</td><td class="mono">Amazon Linux 2023 / AL2 optimized</td></tr>
+        <tr><td style="padding:4px 0;color:var(--text-muted)">Desired size</td><td class="mono">2 nodes</td></tr>
+        <tr><td style="padding:4px 0;color:var(--text-muted)">Min / Max</td><td class="mono">1 / 4 nodes</td></tr>
+        <tr><td style="padding:4px 0;color:var(--text-muted)">Subnet</td><td class="mono">Private (both AZs)</td></tr>
+        <tr><td style="padding:4px 0;color:var(--text-muted)">Max unavailable</td><td class="mono">1 (rolling update)</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>🔌 EKS Addons</h3>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="pod-item">
+          <span>📡</span>
+          <div>
+            <div class="pod-name">vpc-cni</div>
+            <div class="pod-desc">Pod IPs are real VPC IPs — no overlay network overhead</div>
+          </div>
+        </div>
+        <div class="pod-item">
+          <span>🔗</span>
+          <div>
+            <div class="pod-name">kube-proxy</div>
+            <div class="pod-desc">iptables-based Service routing on each node</div>
+          </div>
+        </div>
+        <div class="pod-item">
+          <span>🔍</span>
+          <div>
+            <div class="pod-name">coredns</div>
+            <div class="pod-desc">In-cluster DNS for service discovery</div>
+          </div>
+        </div>
+        <div class="pod-item" style="border-color:rgba(255,153,0,0.3)">
+          <span>🧩</span>
+          <div>
+            <div class="pod-name" style="color:var(--aws)">eks-pod-identity-agent</div>
+            <div class="pod-desc">Required for Pod Identity (modern IRSA replacement)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══ CI/CD ════════════════════════════════════════════════════════════════ -->
+<section id="cicd">
+  <div class="section-label">Section 04</div>
+  <h2>CI/CD Pipeline</h2>
+  <p class="section-desc">
+    The CI pipeline lives in each <em>application</em> repository (not this GitOps repo). A reference workflow template is provided at <code>examples/gitops-app-repo-ecr-bump.yml</code>.
+  </p>
+
+  <div class="grid-2" style="margin-bottom:32px">
+    <div>
+      <div class="pipeline">
+
+        <div class="pipeline-step">
+          <div class="step-num-wrap">
+            <div class="step-num" style="background:rgba(46,160,67,0.15);color:var(--github);border:1px solid rgba(46,160,67,0.3)">1</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-content">
+            <div class="step-title">Developer pushes code</div>
+            <div class="step-desc">A <code>git push</code> to an app repository (<code>BuiHongKong/simple-app-01</code>) triggers the GitHub Actions workflow on the <code>main</code> branch.</div>
+          </div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="step-num-wrap">
+            <div class="step-num" style="background:rgba(46,160,67,0.15);color:var(--github);border:1px solid rgba(46,160,67,0.3)">2</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-content">
+            <div class="step-title">OIDC token exchange (zero secrets)</div>
+            <div class="step-desc">GitHub Actions requests an OIDC JWT, then calls <code>sts:AssumeRoleWithWebIdentity</code> to get short-lived AWS credentials for the <code>github-actions-role</code>. No stored keys.</div>
+            <div class="code-block"><span class="code-comment"># GitHub Actions step — no secrets stored</span>
+- <span class="code-key">uses</span>: <span class="code-str">aws-actions/configure-aws-credentials@v4</span>
+  <span class="code-key">with</span>:
+    <span class="code-key">role-to-assume</span>: <span class="code-str">$&#123;&#123; secrets.AWS_ROLE_ARN &#125;&#125;</span>
+    <span class="code-key">aws-region</span>: <span class="code-str">ap-southeast-1</span></div>
+          </div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="step-num-wrap">
+            <div class="step-num" style="background:rgba(255,153,0,0.15);color:var(--aws);border:1px solid rgba(255,153,0,0.3)">3</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-content">
+            <div class="step-title">Docker build &amp; push to ECR</div>
+            <div class="step-desc">The image is built and pushed with two tags: <code>stag-v.&lt;SHA&gt;</code> for staging promotion. The ECR repo already exists (created by Terraform).</div>
+            <div class="code-block"><span class="code-comment"># Tag format: stag-v.&lt;git-sha&gt;</span>
+IMAGE_TAG=stag-v.$(git rev-parse --short HEAD)
+docker build -t $ECR_REGISTRY/$APP_SLUG:$IMAGE_TAG .
+docker push $ECR_REGISTRY/$APP_SLUG:$IMAGE_TAG</div>
+          </div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="step-num-wrap">
+            <div class="step-num" style="background:rgba(46,160,67,0.15);color:var(--github);border:1px solid rgba(46,160,67,0.3)">4</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-content">
+            <div class="step-title">Bump image tag in GitOps repo</div>
+            <div class="step-desc">Using a <code>GITOPS_REPO_PAT_TOKEN</code>, the workflow checks out <code>BuiHongKong/EKS</code> and updates <code>values-staging.yaml</code> with the new image tag, then commits.</div>
+            <div class="code-block"><span class="code-comment"># apps/simple-app-01/helm/values-staging.yaml</span>
+<span class="code-key">image</span>:
+  <span class="code-key">tag</span>: <span class="code-str">stag-v.0.3</span>  <span class="code-comment">← updated by CI</span></div>
+          </div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="step-num-wrap">
+            <div class="step-num" style="background:rgba(233,98,20,0.15);color:var(--argo);border:1px solid rgba(233,98,20,0.3)">5</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-content">
+            <div class="step-title">Argo CD detects Git change</div>
+            <div class="step-desc">Argo CD polls the GitOps repo every ~3 minutes. On detecting the new commit, it renders the Helm chart and runs <code>kubectl apply</code> against the cluster.</div>
+          </div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="step-num-wrap">
+            <div class="step-num" style="background:rgba(255,153,0,0.15);color:var(--aws);border:1px solid rgba(255,153,0,0.3)">6</div>
+          </div>
+          <div class="step-content">
+            <div class="step-title">Promotion to Production</div>
+            <div class="step-desc">To promote, the image is retagged as <code>prod-v.&lt;SHA&gt;</code> and <code>values-prod.yaml</code> is updated. This can be triggered manually via PR merge or a separate workflow dispatch.</div>
+            <div class="code-block"><span class="code-comment"># apps/simple-app-01/helm/values-prod.yaml</span>
+<span class="code-key">image</span>:
+  <span class="code-key">tag</span>: <span class="code-str">prod-v.0.3</span>  <span class="code-comment">← promoted from staging</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CI role details -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="card">
+        <div class="card-title" style="color:var(--aws)">IAM Trust Policy — CI Role</div>
+        <div class="code-block" style="font-size:10px"><span class="code-comment">// Only GitHub repos in var.app_repos can assume this role</span>
+{
+  <span class="code-key">"Effect"</span>: <span class="code-str">"Allow"</span>,
+  <span class="code-key">"Principal"</span>: {
+    <span class="code-key">"Federated"</span>: <span class="code-str">"oidc:github"</span>
+  },
+  <span class="code-key">"Action"</span>: <span class="code-str">"sts:AssumeRoleWithWebIdentity"</span>,
+  <span class="code-key">"Condition"</span>: {
+    <span class="code-key">"StringLike"</span>: {
+      <span class="code-key">"sub"</span>: <span class="code-str">"repo:BuiHongKong/simple-app-0*:*"</span>
+    }
+  }
+}</div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--aws)">ECR Lifecycle Policies</div>
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px">Automatic cleanup keeps storage costs low:</p>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:12px">
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)">
+            <span style="color:var(--text-muted)">Staging images <span class="mono">stag-*</span></span>
+            <span class="badge badge-aws">keep last 5</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0">
+            <span style="color:var(--text-muted)">Production images <span class="mono">prod-*</span></span>
+            <span class="badge badge-aws">keep last 20</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--aws)">ECR Repositories</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="res-chip" style="padding:6px 10px;font-size:11px"><span>📦</span> <span class="mono">975305815837.dkr.ecr.ap-southeast-1.amazonaws.com/simple-app-01</span></div>
+          <div class="res-chip" style="padding:6px 10px;font-size:11px"><span>📦</span> <span class="mono">975305815837.dkr.ecr.ap-southeast-1.amazonaws.com/simple-app-02</span></div>
+          <div class="res-chip" style="padding:6px 10px;font-size:11px"><span>📦</span> <span class="mono">975305815837.dkr.ecr.ap-southeast-1.amazonaws.com/simple-app-03</span></div>
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--text-dim)">scan_on_push = true · MUTABLE tags</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══ GITOPS ═══════════════════════════════════════════════════════════════ -->
+<section id="gitops">
+  <div class="section-label">Section 05</div>
+  <h2>GitOps Delivery via Argo CD</h2>
+  <p class="section-desc">
+    6 Argo CD <code>Application</code> resources (3 apps × 2 environments) all point to this repository at branch <code>main</code>. Each uses automated sync with self-heal and prune enabled.
+  </p>
+
+  <!-- Argo CD app manifest example -->
+  <div class="grid-2" style="margin-bottom:32px">
+    <div class="card">
+      <div class="card-title" style="color:var(--argo)">Argo CD Application Manifest (staging)</div>
+      <div class="code-block" style="font-size:11px"><span class="code-key">apiVersion</span>: <span class="code-str">argoproj.io/v1alpha1</span>
+<span class="code-key">kind</span>: <span class="code-str">Application</span>
+<span class="code-key">metadata</span>:
+  <span class="code-key">name</span>: <span class="code-str">simple-app-01-staging</span>
+  <span class="code-key">namespace</span>: <span class="code-str">argocd</span>
+<span class="code-key">spec</span>:
+  <span class="code-key">source</span>:
+    <span class="code-key">repoURL</span>: <span class="code-str">git@github.com:BuiHongKong/EKS.git</span>
+    <span class="code-key">targetRevision</span>: <span class="code-str">main</span>
+    <span class="code-key">path</span>: <span class="code-str">apps/simple-app-01/helm</span>
+    <span class="code-key">helm</span>:
+      <span class="code-key">valueFiles</span>:
+        - <span class="code-str">values.yaml</span>
+        - <span class="code-str">values-staging.yaml</span>   <span class="code-comment">← env override</span>
+  <span class="code-key">destination</span>:
+    <span class="code-key">namespace</span>: <span class="code-str">staging</span>
+  <span class="code-key">syncPolicy</span>:
+    <span class="code-key">automated</span>:
+      <span class="code-key">prune</span>: <span class="code-str">true</span>     <span class="code-comment">← removes deleted resources</span>
+      <span class="code-key">selfHeal</span>: <span class="code-str">true</span>  <span class="code-comment">← reverts manual changes</span>
+    <span class="code-key">syncOptions</span>:
+      - <span class="code-str">CreateNamespace=true</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card">
+        <div class="card-title" style="color:var(--argo)">Sync Behavior</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+          <div style="display:flex;gap:8px;align-items:flex-start">
+            <span style="color:var(--argo)">🔄</span>
+            <div><strong>Auto-sync:</strong> <span style="color:var(--text-muted)">Argo CD polls Git every ~3 minutes. Any new commit is applied automatically.</span></div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start">
+            <span style="color:var(--red)">🩹</span>
+            <div><strong>Self-heal:</strong> <span style="color:var(--text-muted)">If someone <code>kubectl deletes</code> a pod or edits a ConfigMap manually, Argo CD reverts it.</span></div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start">
+            <span style="color:var(--yellow)">✂️</span>
+            <div><strong>Prune:</strong> <span style="color:var(--text-muted)">Resources removed from Git are also deleted from the cluster.</span></div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start">
+            <span style="color:var(--github)">📁</span>
+            <div><strong>CreateNamespace:</strong> <span style="color:var(--text-muted)">Argo CD creates the <code>staging</code>/<code>prod</code> namespaces if they don't exist.</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--argo)">All 6 Argo CD Applications</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border)">
+            <span class="mono">simple-app-01-staging</span><span class="env-tag env-staging">staging</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border)">
+            <span class="mono">simple-app-01-prod</span><span class="env-tag env-prod">prod</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border)">
+            <span class="mono">simple-app-02-staging</span><span class="env-tag env-staging">staging</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border)">
+            <span class="mono">simple-app-02-prod</span><span class="env-tag env-prod">prod</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border)">
+            <span class="mono">simple-app-03-staging</span><span class="env-tag env-staging">staging</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0">
+            <span class="mono">simple-app-03-prod</span><span class="env-tag env-prod">prod</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Helm Values Layering -->
+  <h3 style="margin-bottom:16px">Helm Values Layering — Base + Environment Override</h3>
+  <p style="color:var(--text-muted);font-size:13px;margin-bottom:20px">
+    Argo CD passes two <code>valueFiles</code> to <code>helm template</code>. Keys in the environment file override the base. This avoids duplicating the entire chart config per environment.
+  </p>
+
+  <div style="overflow-x:auto">
+    <div class="values-layer" style="min-width:700px">
+
+      <div class="values-file">
+        <div class="values-header" style="background:var(--surface3)">
+          📄 values.yaml <span style="color:var(--text-dim);font-size:10px">(base)</span>
+        </div>
+        <div class="values-body">
+          <div><span class="val-key">replicaCount</span>: <span class="val-num">1</span></div>
+          <div><span class="val-key">image</span>:</div>
+          <div>&nbsp;&nbsp;<span class="val-key">tag</span>: <span class="val-str">"latest"</span></div>
+          <div><span class="val-key">resources</span>:</div>
+          <div>&nbsp;&nbsp;<span class="val-key">requests.cpu</span>: <span class="val-str">100m</span></div>
+          <div>&nbsp;&nbsp;<span class="val-key">limits.cpu</span>: <span class="val-str">500m</span></div>
+          <div><span class="val-key">hpa.enabled</span>: <span class="val-bool">false</span></div>
+          <div><span class="val-key">ingress.enabled</span>: <span class="val-bool">false</span></div>
+          <div><span class="val-key">env.APP_ENV</span>: <span class="val-str">"development"</span></div>
+        </div>
+      </div>
+
+      <div class="merge-arrow">+</div>
+
+      <div class="values-file">
+        <div class="values-header" style="background:rgba(217,153,34,0.08);border-color:rgba(217,153,34,0.2);color:var(--yellow)">
+          📄 values-staging.yaml
+        </div>
+        <div class="values-body">
+          <div><span class="val-key val-override">replicaCount</span>: <span class="val-num val-override">1</span></div>
+          <div><span class="val-key val-override">image.tag</span>: <span class="val-str val-override">"stag-v.0.3"</span></div>
+          <div><span class="val-key val-override">limits.cpu</span>: <span class="val-str val-override">300m</span></div>
+          <div><span class="val-key val-override">hpa.enabled</span>: <span class="val-bool val-override">false</span></div>
+          <div><span class="val-key val-override">ingress.enabled</span>: <span class="val-bool val-override">true</span></div>
+          <div><span class="val-key val-override">env.APP_ENV</span>: <span class="val-str val-override">"staging"</span></div>
+        </div>
+      </div>
+
+      <div class="merge-arrow">→</div>
+
+      <div class="values-file" style="border-color:rgba(217,153,34,0.3)">
+        <div class="values-header" style="background:rgba(217,153,34,0.1);color:var(--yellow)">
+          ✅ Final (staging)
+        </div>
+        <div class="values-body">
+          <div><span class="val-key">replicaCount</span>: <span class="val-num">1</span></div>
+          <div><span class="val-key">image.tag</span>: <span class="val-str" style="color:var(--yellow)">"stag-v.0.3"</span></div>
+          <div><span class="val-key">limits.cpu</span>: <span class="val-str">300m</span></div>
+          <div><span class="val-key">hpa.enabled</span>: <span class="val-bool">false</span></div>
+          <div><span class="val-key">ingress.enabled</span>: <span class="val-bool" style="color:var(--github)">true</span></div>
+          <div><span class="val-key">env.APP_ENV</span>: <span class="val-str" style="color:var(--yellow)">"staging"</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="margin-top:16px;overflow-x:auto">
+    <div class="values-layer" style="min-width:700px">
+
+      <div class="values-file">
+        <div class="values-header" style="background:var(--surface3)">
+          📄 values.yaml <span style="color:var(--text-dim);font-size:10px">(base)</span>
+        </div>
+        <div class="values-body">
+          <div><span class="val-key">replicaCount</span>: <span class="val-num">1</span></div>
+          <div><span class="val-key">image.tag</span>: <span class="val-str">"latest"</span></div>
+          <div><span class="val-key">limits.cpu</span>: <span class="val-str">500m</span></div>
+          <div><span class="val-key">hpa.enabled</span>: <span class="val-bool">false</span></div>
+          <div><span class="val-key">ingress.enabled</span>: <span class="val-bool">false</span></div>
+          <div><span class="val-key">env.APP_ENV</span>: <span class="val-str">"development"</span></div>
+        </div>
+      </div>
+
+      <div class="merge-arrow">+</div>
+
+      <div class="values-file">
+        <div class="values-header" style="background:rgba(248,81,73,0.08);border-color:rgba(248,81,73,0.2);color:var(--red)">
+          📄 values-prod.yaml
+        </div>
+        <div class="values-body">
+          <div><span class="val-key val-override" style="background:rgba(248,81,73,0.1)">replicaCount</span>: <span class="val-num val-override" style="background:rgba(248,81,73,0.1)">3</span></div>
+          <div><span class="val-key val-override" style="background:rgba(248,81,73,0.1)">image.tag</span>: <span class="val-str val-override" style="background:rgba(248,81,73,0.1)">"prod-v.0.3"</span></div>
+          <div><span class="val-key val-override" style="background:rgba(248,81,73,0.1)">limits.cpu</span>: <span class="val-str val-override" style="background:rgba(248,81,73,0.1)">1000m</span></div>
+          <div><span class="val-key val-override" style="background:rgba(248,81,73,0.1)">hpa.enabled</span>: <span class="val-bool val-override" style="background:rgba(248,81,73,0.1)">true</span></div>
+          <div><span class="val-key val-override" style="background:rgba(248,81,73,0.1)">hpa.minReplicas</span>: <span class="val-num val-override" style="background:rgba(248,81,73,0.1)">3</span></div>
+          <div><span class="val-key val-override" style="background:rgba(248,81,73,0.1)">hpa.maxReplicas</span>: <span class="val-num val-override" style="background:rgba(248,81,73,0.1)">10</span></div>
+          <div><span class="val-key val-override" style="background:rgba(248,81,73,0.1)">env.APP_ENV</span>: <span class="val-str val-override" style="background:rgba(248,81,73,0.1)">"production"</span></div>
+        </div>
+      </div>
+
+      <div class="merge-arrow">→</div>
+
+      <div class="values-file" style="border-color:rgba(248,81,73,0.3)">
+        <div class="values-header" style="background:rgba(248,81,73,0.1);color:var(--red)">
+          ✅ Final (production)
+        </div>
+        <div class="values-body">
+          <div><span class="val-key">replicaCount</span>: <span class="val-num" style="color:var(--red)">3</span></div>
+          <div><span class="val-key">image.tag</span>: <span class="val-str" style="color:var(--red)">"prod-v.0.3"</span></div>
+          <div><span class="val-key">limits.cpu</span>: <span class="val-str" style="color:var(--red)">1000m</span></div>
+          <div><span class="val-key">hpa.enabled</span>: <span class="val-bool" style="color:var(--github)">true</span></div>
+          <div><span class="val-key">hpa.min/max</span>: <span class="val-num">3</span> / <span class="val-num">10</span></div>
+          <div><span class="val-key">env.APP_ENV</span>: <span class="val-str" style="color:var(--red)">"production"</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══ SECURITY ══════════════════════════════════════════════════════════════ -->
+<section id="security">
+  <div class="section-label">Section 06</div>
+  <h2>Security Model</h2>
+  <p class="section-desc">
+    Every identity in the system uses dynamic, short-lived credentials. No long-lived access keys or passwords exist anywhere in the stack.
+  </p>
+
+  <div style="display:flex;flex-direction:column;gap:24px;margin-bottom:32px">
+
+    <!-- Chain 1: CI -->
+    <div class="card">
+      <div class="card-title" style="color:var(--github)">🔐 Identity Chain 1 — GitHub Actions (CI)</div>
+      <div class="sec-chain">
+        <div class="sec-row">
+          <div class="sec-node" style="background:rgba(46,160,67,0.1);border-color:rgba(46,160,67,0.3);color:var(--github)">
+            ⚡ GitHub Actions Workflow
+          </div>
+          <span class="sec-arrow">→</span>
+          <div>
+            <div class="sec-node" style="background:rgba(255,153,0,0.1);border-color:rgba(255,153,0,0.3);color:var(--aws)">
+              🪪 OIDC JWT Token
+            </div>
+            <div class="sec-label">signed by github.com/login/oauth</div>
+          </div>
+          <span class="sec-arrow">→</span>
+          <div>
+            <div class="sec-node" style="background:rgba(255,153,0,0.1);border-color:rgba(255,153,0,0.3);color:var(--aws)">
+              🔑 AWS STS · AssumeRoleWithWebIdentity
+            </div>
+            <div class="sec-label">verified against AWS OIDC Provider for github</div>
+          </div>
+          <span class="sec-arrow">→</span>
+          <div>
+            <div class="sec-node" style="background:rgba(255,153,0,0.1);border-color:rgba(255,153,0,0.3);color:var(--aws)">
+              📦 ECR · Push image
+            </div>
+            <div class="sec-label">AmazonEC2ContainerRegistryFullAccess</div>
+          </div>
+        </div>
+      </div>
+      <details style="margin-top:12px;border:none;background:transparent">
+        <summary style="background:transparent;font-size:11px;padding:4px 0">Trust condition details</summary>
+        <div class="code-block" style="margin-top:8px;font-size:10px"><span class="code-comment">// Only repositories listed in var.app_repos can assume the role</span>
+<span class="code-key">"Condition"</span>: {
+  <span class="code-key">"StringLike"</span>: {
+    <span class="code-key">"token.actions.githubusercontent.com:sub"</span>:
+      <span class="code-str">"repo:BuiHongKong/simple-app-01:*"</span>,
+      <span class="code-str">"repo:BuiHongKong/simple-app-02:*"</span>,
+      <span class="code-str">"repo:BuiHongKong/simple-app-03:*"</span>
+  },
+  <span class="code-key">"StringEquals"</span>: {
+    <span class="code-key">"token.actions.githubusercontent.com:aud"</span>: <span class="code-str">"sts.amazonaws.com"</span>
+  }
+}</div>
+      </details>
+    </div>
+
+    <!-- Chain 2: ALB Controller -->
+    <div class="card">
+      <div class="card-title" style="color:var(--aws)">🔐 Identity Chain 2 — ALB Controller Pod (EKS Pod Identity)</div>
+      <div class="sec-chain">
+        <div class="sec-row">
+          <div class="sec-node" style="background:rgba(59,124,237,0.1);border-color:rgba(59,124,237,0.3);color:var(--k8s)">
+            ⚖️ alb-controller Pod
+          </div>
+          <span class="sec-arrow">→</span>
+          <div>
+            <div class="sec-node" style="background:rgba(59,124,237,0.1);border-color:rgba(59,124,237,0.3);color:var(--k8s)">
+              🧩 Pod Identity Agent (DaemonSet)
+            </div>
+            <div class="sec-label">Intercepts IMDS credential requests on node</div>
+          </div>
+          <span class="sec-arrow">→</span>
+          <div>
+            <div class="sec-node" style="background:rgba(255,153,0,0.1);border-color:rgba(255,153,0,0.3);color:var(--aws)">
+              🔑 AWS STS · AssumeRole
+            </div>
+            <div class="sec-label">Pod Identity Association: ServiceAccount → IAM Role</div>
+          </div>
+          <span class="sec-arrow">→</span>
+          <div>
+            <div class="sec-node" style="background:rgba(255,153,0,0.1);border-color:rgba(255,153,0,0.3);color:var(--aws)">
+              ⚖️ AWS ALB/Target Group APIs
+            </div>
+            <div class="sec-label">alb-iam-policy.json (240+ permissions)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chain 3: Nodes -->
+    <div class="card">
+      <div class="card-title" style="color:var(--k8s)">🔐 Identity Chain 3 — Worker Nodes (EC2 Instance Role)</div>
+      <div class="sec-chain">
+        <div class="sec-row">
+          <div class="sec-node" style="background:rgba(59,124,237,0.1);border-color:rgba(59,124,237,0.3);color:var(--k8s)">
+            🖥️ EC2 Worker Node
+          </div>
+          <span class="sec-arrow">→</span>
+          <div>
+            <div class="sec-node" style="background:rgba(255,153,0,0.1);border-color:rgba(255,153,0,0.3);color:var(--aws)">
+              🔑 eks-nodes IAM Role
+            </div>
+            <div class="sec-label">Attached via EC2 Instance Profile at launch</div>
+          </div>
+          <span class="sec-arrow">→</span>
+          <div>
+            <div class="sec-node" style="background:rgba(255,153,0,0.1);border-color:rgba(255,153,0,0.3);color:var(--aws)">
+              📦 ECR Pull · EKS Registration · VPC CNI
+            </div>
+            <div class="sec-label">AmazonEKSWorkerNodePolicy + AmazonEKS_CNI_Policy + ECRReadOnly</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- IAM Roles summary table -->
+  <h3 style="margin-bottom:12px">All IAM Roles</h3>
+  <div style="overflow-x:auto">
+    <table class="iam-table">
+      <thead>
+        <tr>
+          <th>Role Name</th>
+          <th>Assumed By</th>
+          <th>Permissions</th>
+          <th>Mechanism</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="mono">{cluster}-cluster-role</span></td>
+          <td><span class="res-chip">eks.amazonaws.com</span></td>
+          <td><span class="mono">AmazonEKSClusterPolicy</span></td>
+          <td><span class="badge badge-aws">Service Role</span></td>
+        </tr>
+        <tr>
+          <td><span class="mono">{cluster}-node-role</span></td>
+          <td><span class="res-chip">ec2.amazonaws.com</span></td>
+          <td><span class="mono">WorkerNode + CNI + ECRReadOnly</span></td>
+          <td><span class="badge badge-aws">Instance Profile</span></td>
+        </tr>
+        <tr>
+          <td><span class="mono">{cluster}-alb-controller</span></td>
+          <td><span class="res-chip">pods.eks.amazonaws.com</span></td>
+          <td><span class="mono">alb-iam-policy.json</span></td>
+          <td><span class="badge badge-k8s">Pod Identity</span></td>
+        </tr>
+        <tr>
+          <td><span class="mono">github-actions-role</span></td>
+          <td><span class="res-chip">token.actions.githubusercontent.com</span></td>
+          <td><span class="mono">ECRFullAccess</span></td>
+          <td><span class="badge badge-github">GitHub OIDC</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Security checklist -->
+  <div class="grid-3" style="margin-top:24px">
+    <div class="card" style="border-color:rgba(46,160,67,0.3)">
+      <div class="card-title" style="color:var(--github)">✅ What Is Secure</div>
+      <ul style="list-style:none;font-size:12px;color:var(--text-muted);display:flex;flex-direction:column;gap:6px">
+        <li>✓ No AWS_ACCESS_KEY_ID in app repos</li>
+        <li>✓ No secrets in committed YAML files</li>
+        <li>✓ Least-privilege IAM per service</li>
+        <li>✓ Nodes in private subnets only</li>
+        <li>✓ ECR image scanning on push</li>
+        <li>✓ OIDC trust scoped to specific repos</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:rgba(217,153,34,0.3)">
+      <div class="card-title" style="color:var(--yellow)">⚠️ Operational Notes</div>
+      <ul style="list-style:none;font-size:12px;color:var(--text-muted);display:flex;flex-direction:column;gap:6px">
+        <li>• <code>GITOPS_REPO_PAT_TOKEN</code> in app repo secrets — rotate periodically</li>
+        <li>• terraform.tfvars is gitignored (correct)</li>
+        <li>• Terraform state in S3 — enable versioning &amp; lock</li>
+        <li>• argocd SSH deploy key — created out-of-band</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--text-muted)">🔑 Rollback Strategy</div>
+      <ul style="list-style:none;font-size:12px;color:var(--text-muted);display:flex;flex-direction:column;gap:6px">
+        <li>1. <code>git revert</code> the offending commit</li>
+        <li>2. Argo CD detects change within ~3 min</li>
+        <li>3. Cluster converges to previous state</li>
+        <li>4. Full audit trail in Git history</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══ APPS ════════════════════════════════════════════════════════════════ -->
+<section id="apps">
+  <div class="section-label">Section 07</div>
+  <h2>Application Structure</h2>
+  <p class="section-desc">
+    Three applications follow an identical layout. Each app is self-contained: its Helm chart, per-environment values, and Argo CD manifests all live together.
+  </p>
+
+  <!-- File tree -->
+  <div class="grid-2" style="margin-bottom:32px">
+    <div class="card">
+      <div class="card-title">📁 Repository File Tree (apps/)</div>
+      <div style="font-family:monospace;font-size:12px;line-height:1.9;color:var(--text-muted)">
+        <div><span style="color:var(--text-dim)">apps/</span></div>
+        <div>&nbsp;&nbsp;<span style="color:var(--aws)">simple-app-01/</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--argo)">argocd/</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--text)">staging.yaml</span> <span style="color:var(--text-dim)">← ArgoCD Application</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--text)">prod.yaml</span> <span style="color:var(--text-dim)">← ArgoCD Application</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--helm-bright)">helm/</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--text)">Chart.yaml</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--text)">values.yaml</span> <span style="color:var(--text-dim)">← base defaults</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--yellow)">values-staging.yaml</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--red)">values-prod.yaml</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--text-dim)">templates/</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--text)">deployment.yaml</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--text)">service.yaml</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--text)">ingress.yaml</span> <span style="color:var(--text-dim)">← ALB annotations</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--text)">hpa.yaml</span> <span style="color:var(--text-dim)">← HorizontalPodAutoscaler</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--text)">_helpers.tpl</span></div>
+        <div>&nbsp;&nbsp;<span style="color:var(--aws)">simple-app-02/</span> <span style="color:var(--text-dim)">← identical structure</span></div>
+        <div>&nbsp;&nbsp;<span style="color:var(--aws)">simple-app-03/</span> <span style="color:var(--text-dim)">← identical structure</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card">
+        <div class="card-title">🔤 Helm Chart Templates</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:12px">
+          <div class="pod-item">
+            <span>🚀</span>
+            <div>
+              <div class="pod-name">deployment.yaml</div>
+              <div class="pod-desc">Uses <code>image.repository:image.tag</code>, env vars from <code>values.env</code>, readiness probe on port 80</div>
+            </div>
+          </div>
+          <div class="pod-item">
+            <span>🔗</span>
+            <div>
+              <div class="pod-name">service.yaml</div>
+              <div class="pod-desc"><code>ClusterIP</code> type · port 80 → targetPort 80 · label selector from <code>_helpers.tpl</code></div>
+            </div>
+          </div>
+          <div class="pod-item">
+            <span>⚖️</span>
+            <div>
+              <div class="pod-name">ingress.yaml</div>
+              <div class="pod-desc">ALB annotations: <code>kubernetes.io/ingress.class: alb</code>, internet-facing, IP target type. Enabled when <code>ingress.enabled=true</code></div>
+            </div>
+          </div>
+          <div class="pod-item">
+            <span>📈</span>
+            <div>
+              <div class="pod-name">hpa.yaml</div>
+              <div class="pod-desc">CPU-based autoscaler. Enabled only in prod (<code>hpa.enabled=true</code>), scales 3–10 replicas at 60% CPU</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">📦 Onboarding a New App (5 steps)</div>
+        <ol style="padding-left:16px;font-size:12px;color:var(--text-muted);display:flex;flex-direction:column;gap:6px">
+          <li>Add ECR repo name to <code>locals.ecr_repos</code> in Terraform</li>
+          <li>Add GitHub repo path to <code>var.app_repos</code> (tfvars)</li>
+          <li>Run <code>terraform apply</code></li>
+          <li>Copy <code>apps/simple-app-01/</code> → <code>apps/new-app/</code>, rename identifiers</li>
+          <li>Add CI workflow from <code>examples/</code> to the app repo</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- Per-app summary cards -->
+  <div class="grid-3">
+    <div class="app-card">
+      <div class="app-header">
+        <span class="app-name">simple-app-01</span>
+        <span class="badge badge-aws">active</span>
+      </div>
+      <div class="app-body">
+        <div class="env-row">
+          <span class="env-tag env-staging">staging</span>
+          <span class="tag-val">stag-v.0.3</span>
+          <span style="font-size:11px;color:var(--text-muted)">1 replica</span>
+        </div>
+        <div class="env-row">
+          <span class="env-tag env-prod">prod</span>
+          <span class="tag-val">prod-v.0.3</span>
+          <span style="font-size:11px;color:var(--text-muted)">3–10 replicas</span>
+        </div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:8px">ECR: <span class="mono" style="font-size:10px">…/simple-app-01</span></div>
+      </div>
+    </div>
+    <div class="app-card">
+      <div class="app-header">
+        <span class="app-name">simple-app-02</span>
+        <span class="badge badge-aws">active</span>
+      </div>
+      <div class="app-body">
+        <div class="env-row">
+          <span class="env-tag env-staging">staging</span>
+          <span class="tag-val">stag-v.0.1</span>
+          <span style="font-size:11px;color:var(--text-muted)">1 replica</span>
+        </div>
+        <div class="env-row">
+          <span class="env-tag env-prod">prod</span>
+          <span class="tag-val">prod-v.0.1</span>
+          <span style="font-size:11px;color:var(--text-muted)">3–10 replicas</span>
+        </div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:8px">ECR: <span class="mono" style="font-size:10px">…/simple-app-02</span></div>
+      </div>
+    </div>
+    <div class="app-card">
+      <div class="app-header">
+        <span class="app-name">simple-app-03</span>
+        <span class="badge badge-aws">active</span>
+      </div>
+      <div class="app-body">
+        <div class="env-row">
+          <span class="env-tag env-staging">staging</span>
+          <span class="tag-val">stag-v.0.1</span>
+          <span style="font-size:11px;color:var(--text-muted)">1 replica</span>
+        </div>
+        <div class="env-row">
+          <span class="env-tag env-prod">prod</span>
+          <span class="tag-val">prod-v.0.1</span>
+          <span style="font-size:11px;color:var(--text-muted)">3–10 replicas</span>
+        </div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:8px">ECR: <span class="mono" style="font-size:10px">…/simple-app-03</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══ TERRAFORM ══════════════════════════════════════════════════════════════ -->
+<section id="terraform">
+  <div class="section-label">Section 08</div>
+  <h2>Terraform Infrastructure</h2>
+  <p class="section-desc">
+    16 numbered <code>.tf</code> files define the entire AWS footprint. The numbering reflects the dependency order — each file builds on resources defined in earlier files.
+    Terraform state is stored remotely in S3 (<code>terraform-state-myapp-975305815837</code>).
+  </p>
+
+  <div class="grid-2">
+    <div class="tf-files">
+      <div class="tf-file">
+        <div class="tf-num">0</div>
+        <div style="flex:1">
+          <div class="tf-name">0-locals.tf</div>
+          <div class="tf-desc">Shared local values: ECR repo list, VPC CIDRs, AZ list, registry prefix</div>
+        </div>
+        <div class="tf-resources">
+          <span class="tf-res">locals</span>
+        </div>
+      </div>
+      <div class="tf-file">
+        <div class="tf-num">1</div>
+        <div style="flex:1">
+          <div class="tf-name">1-providers.tf</div>
+          <div class="tf-desc">Terraform version constraint, AWS/Helm/TLS providers, S3 remote backend</div>
+        </div>
+        <div class="tf-resources">
+          <span class="tf-res">terraform{}</span>
+          <span class="tf-res">backend "s3"</span>
+        </div>
+      </div>
+      <div class="tf-file">
+        <div class="tf-num">2</div>
+        <div style="flex:1">
+          <div class="tf-name">2-vpc.tf</div>
+          <div class="tf-desc">Custom VPC with DNS hostnames/support, Kubernetes cluster tags</div>
+        </div>
+        <div class="tf-resources">
+          <span class="tf-res">aws_vpc</span>
+        </div>
+      </div>
+      <div class="tf-file">
+        <div class="tf-num">3</div>
+        <div style="flex:1">
+          <div class="tf-name">3-igw.tf</div>
+          <div class="tf-desc">Internet Gateway attached to VPC for public subnet egress/ingress</div>
+        </div>
+        <div class="tf-resources">
+          <span class="tf-res">aws_internet_gateway</span>
+        </div>
+      </div>
+      <div class="tf-file">
+        <div class="tf-num">4</div>
+        <div style="flex:1">
+          <div class="tf-name">4-subnets.tf</div>
+          <div class="tf-desc">2× public + 2× private subnets across 2 AZs with ELB/internal-ELB tags</div>
+        </div>
+        <div class="tf-resources">
+          <span class="tf-res">aws_subnet ×4</span>
+        </div>
+      </div>
+      <div class="tf-file">
+        <div class="tf-num">5</div>
+        <div style="flex:1">
+          <div class="tf-name">5-nat.tf</div>
+          <div class="tf-desc">Elastic IP + NAT Gateway in public subnet AZ-a for private node egress</div>
+        </div>
+        <div class="tf-resources">
+          <span class="tf-res">aws_eip</span>
+          <span class="tf-res">aws_nat_gateway</span>
+        </div>
+      </div>
+      <div class="tf-file">
+        <div class="tf-num">6</div>
+        <div style="flex:1">
+          <div class="tf-name">6-routes.tf</div>
+          <div class="tf-desc">Route tables: public→IGW, private→NAT; associations for all subnets</div>
+        </div>
+        <div class="tf-resources">
+          <span class="tf-res">aws_route_table ×2</span>
+          <span class="tf-res">aws_route ×2</span>
+          <span class="tf-res">associations ×4</span>
+        </div>
+      </div>
+      <div class="tf-file">
+        <div class="tf-num">7</div>
+        <div style="flex:1">
+          <div class="tf-name">7-eks.tf</div>
+          <div class="tf-desc">EKS cluster v1.35 in private subnets; OIDC provider for IRSA/Pod Identity</div>
+        </div>
+        <div class="tf-resources">
+          <span class="tf-res">aws_eks_cluster</span>
+          <span class="tf-res">aws_iam_openid_connect_provider (eks)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tf-files">
+      <div class="tf-file">
+        <div class="tf-num">8</div>
+        <div style="flex:1">
+          <div class="tf-name">8-nodes.tf</div>
+          <div class="tf-desc">Managed node group: t3.medium, 1–4 nodes in private subnets</div>
+        </div>
+        <div class="tf-resources">
+          <span class="tf-res">aws_eks_node_group</span>
+        </div>
+      </div>
+      <div class="tf-file">
+        <div class="tf-num">9</div>
+        <div style="flex:1">
+          <div class="tf-name">9-helm-provider.tf</div>
+          <div class="tf-desc">Helm provider wired to EKS: endpoint, CA cert, exec aws-eks-get-token</div>
+        </div>
+        <div class="tf-resources">
+          <span class="tf-res">provider "helm"</span>
+        </div>
+      </div>
+      <div class="tf-file">
+        <div class="tf-num">10</div>
+        <div style="flex:1">
+          <div class="tf-name">10-pod-identity-addon.tf</div>
+          <div class="tf-desc">EKS Pod Identity agent addon (required before any Pod Identity associations)</div>
+        </div>
+        <div class="tf-resources">
+          <span class="tf-res">aws_eks_addon</span>
+        </div>
+      </div>
+      <div class="tf-file">
+        <div class="tf-num">11</div>
+        <div style="flex:1">
+          <div class="tf-name">11-argocd.tf</div>
+          <div class="tf-desc">Argo CD Helm release in namespace <code>argocd</code>; values from <code>values/argocd.yaml</code></div>
+        </div>
+        <div class="tf-resources">
+          <span class="tf-res">helm_release "argocd"</span>
+        </div>
+      </div>
+      <div class="tf-file">
+        <div class="tf-num">12</div>
+        <div style="flex:1">
+          <div class="tf-name">12-alb-controller.tf</div>
+          <div class="tf-desc">ALB Controller Helm release v1.7.2 + Pod Identity Association → alb-controller role</div>
+        </div>
+        <div class="tf-resources">
+          <span class="tf-res">helm_release "alb"</span>
+          <span class="tf-res">aws_eks_pod_identity_association</span>
+        </div>
+      </div>
+      <div class="tf-file">
+        <div class="tf-num">13</div>
+        <div style="flex:1">
+          <div class="tf-name">13-ecr.tf</div>
+          <div class="tf-desc">3 ECR repositories (for_each); lifecycle: keep 5 stag / 20 prod images; scan on push</div>
+        </div>
+        <div class="tf-resources">
+          <span class="tf-res">aws_ecr_repository ×3</span>
+          <span class="tf-res">aws_ecr_lifecycle_policy ×3</span>
+        </div>
+      </div>
+      <div class="tf-file">
+        <div class="tf-num">14</div>
+        <div style="flex:1">
+          <div class="tf-name">14-iam.tf</div>
+          <div class="tf-desc">All IAM: cluster role, node role, ALB role (Pod Identity), GitHub OIDC + CI role</div>
+        </div>
+        <div class="tf-resources">
+          <span class="tf-res">aws_iam_role ×4</span>
+          <span class="tf-res">aws_iam_policy</span>
+          <span class="tf-res">aws_iam_openid_connect_provider (github)</span>
+        </div>
+      </div>
+      <div class="tf-file">
+        <div class="tf-num">15</div>
+        <div style="flex:1">
+          <div class="tf-name">15-outputs.tf</div>
+          <div class="tf-desc">Exposes: ECR URLs, cluster name, endpoint, OIDC ARN, ALB role ARN, GitHub role ARN</div>
+        </div>
+        <div class="tf-resources">
+          <span class="tf-res">output ×6</span>
+        </div>
+      </div>
+      <div class="tf-file">
+        <div class="tf-num">16</div>
+        <div style="flex:1">
+          <div class="tf-name">16-variables.tf</div>
+          <div class="tf-desc">Input vars: aws_region, cluster_name, environment, app_repos list (values in tfvars)</div>
+        </div>
+        <div class="tf-resources">
+          <span class="tf-res">variable ×4</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional files -->
+  <div class="grid-2" style="margin-top:20px">
+    <div class="card">
+      <div class="card-title">📄 terraform/values/argocd.yaml</div>
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px">
+        Helm values overrides for the Argo CD release. Keeps controller and server at 1 replica for this setup (can be increased for HA).
+      </p>
+      <div class="code-block" style="font-size:10px"><span class="code-key">controller</span>:
+  <span class="code-key">replicas</span>: <span class="val-num">1</span>
+<span class="code-key">server</span>:
+  <span class="code-key">replicas</span>: <span class="val-num">1</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title">📄 terraform/policies/alb-iam-policy.json</div>
+      <p style="font-size:12px;color:var(--text-muted)">
+        The official AWS Load Balancer Controller IAM policy (~240 lines). Contains permissions to create/modify/delete ALBs, NLBs, Target Groups, Listeners, Security Groups, and read EC2/ELB metadata. Sourced from <code>file()</code> in Terraform.
+      </p>
+    </div>
+  </div>
+
+  <!-- Design rationale table -->
+  <h3 style="margin-top:32px;margin-bottom:12px">Design Rationale</h3>
+  <div style="overflow-x:auto">
+    <table class="iam-table">
+      <thead>
+        <tr>
+          <th>Choice</th>
+          <th>Why</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Terraform numbered files</strong></td>
+          <td style="color:var(--text-muted)">Explicit dependency order visible at a glance. Each file = one layer of concern, easy to locate and modify without a module maze.</td>
+        </tr>
+        <tr>
+          <td><strong>Private subnets for nodes</strong></td>
+          <td style="color:var(--text-muted)">Nodes have no public IPs and cannot be reached directly from the internet. Only the ALB (in public subnets) can forward traffic in.</td>
+        </tr>
+        <tr>
+          <td><strong>GitOps (pull) vs push CD</strong></td>
+          <td style="color:var(--text-muted)">Git repo IS the backup of cluster state. Disaster recovery = <code>kubectl apply -k argocd/</code>. No external system has cluster credentials.</td>
+        </tr>
+        <tr>
+          <td><strong>OIDC / Pod Identity (no keys)</strong></td>
+          <td style="color:var(--text-muted)">Short-lived tokens expire in ≤1h. Nothing to rotate, nothing to leak, nothing to accidentally commit.</td>
+        </tr>
+        <tr>
+          <td><strong>ALB Controller via Helm</strong></td>
+          <td style="color:var(--text-muted)">Delegates complex L7 routing, SSL termination, and health check management to a proven AWS-maintained component. Developers just write an <code>Ingress</code> object.</td>
+        </tr>
+        <tr>
+          <td><strong>for_each on ECR / apps</strong></td>
+          <td style="color:var(--text-muted)">Adding a new app = 1 line in <code>locals.ecr_repos</code>. No copy-paste of resource blocks.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>EKS GitOps Platform · <a href="https://github.com/BuiHongKong/EKS" target="_blank">github.com/BuiHongKong/EKS</a> · Architecture diagram generated from source · Do not commit real secrets to git.</p>
+</footer>
+
+<script>
+  // Scroll progress bar
+  window.addEventListener('scroll', () => {
+    const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    document.getElementById('scrollBar').style.width = pct + '%';
+  });
+
+  // Nav active highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -60% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+
+  // Stagger flow animation offsets so arrows don't all pulse together
+  document.querySelectorAll('.arrow-track').forEach((el, i) => {
+    el.style.setProperty('--delay', `${i * 0.25}s`);
+    if (el.querySelector) return;
+    el.style.animationDelay = `${i * 0.25}s`;
+  });
+  document.querySelectorAll('.arrow-track::after').forEach((el, i) => {
+    el.style.animationDelay = `${i * 0.25}s`;
+  });
+</script>
+</body>
+</html>
