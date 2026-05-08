@@ -74,7 +74,7 @@
 <body
     class="bg-background-light dark:bg-background-dark text-charcoal dark:text-gray-200 font-sans transition-colors duration-300 min-h-screen flex flex-col">
     <nav
-        class="bg-white dark:bg-charcoal py-2 shadow-md drop-shadow-sm border-b border-gray-100 dark:border-gray-800 relative z-10 w-full">
+        class="bg-white dark:bg-charcoal py-2 shadow-md drop-shadow-sm border-b border-gray-100 dark:border-gray-800 relative z-50 w-full">
         <div class="container mx-auto px-6 lg:px-16 flex justify-between items-center">
             <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
                 <img src="assets/images/small-icon.png" alt="Logo Icon" class="h-[5.5rem] w-auto object-contain">
@@ -91,9 +91,22 @@
                 <a class="text-charcoal dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors drop-shadow-sm"
                     href="contact.html">CONTACT</a>
             </div>
-            <button class="md:hidden text-charcoal dark:text-white drop-shadow-sm">
-                <span class="material-icons">menu</span>
+            <button type="button" id="nav-menu-toggle"
+                class="md:hidden text-charcoal dark:text-white drop-shadow-sm p-2 -mr-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                aria-expanded="false" aria-controls="mobile-nav-panel">
+                <span class="material-icons nav-icon-open text-3xl" aria-hidden="true">menu</span>
+                <span class="material-icons nav-icon-close text-3xl hidden" aria-hidden="true">close</span>
             </button>
+        </div>
+        <div id="mobile-nav-panel"
+            class="hidden md:hidden flex-col gap-1 px-6 lg:px-16 pb-6 pt-2 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-charcoal text-sm font-semibold tracking-superwide uppercase"
+            role="dialog" aria-label="Main navigation">
+            <a class="text-charcoal dark:text-gray-300 hover:text-primary dark:hover:text-primary py-3 block"
+                href="about.html">ABOUT</a>
+            <a class="text-charcoal dark:text-gray-300 hover:text-primary dark:hover:text-primary py-3 block"
+                href="portfolio.html">PORTFOLIO</a>
+            <a class="text-charcoal dark:text-gray-300 hover:text-primary dark:hover:text-primary py-3 block"
+                href="contact.html">CONTACT</a>
         </div>
     </nav>
 
@@ -140,30 +153,32 @@
                         View Projects
                     </a>
                 </div>
-                <div class="lg:w-1/2 mt-16 lg:-mt-12 relative flex justify-center z-20">
+                <div class="lg:w-1/2 mt-10 sm:mt-16 lg:-mt-12 relative flex justify-center z-20 w-full max-w-md lg:max-w-none mx-auto">
                     <!-- Subtle glow behind -->
                     <div class="absolute -inset-6 bg-primary/5 blur-3xl rounded-full scale-110 pointer-events-none">
                     </div>
 
                     <!-- Polaroid Container -->
                     <div
-                        class="relative p-5 bg-[#FDFDFD] shadow-[20px_20px_60px_rgba(0,0,0,0.15)] rotate-3 hover:rotate-1 transition-all duration-500 border border-gray-100 group max-w-lg flex flex-col">
+                        class="relative p-3 sm:p-4 md:p-5 bg-[#FDFDFD] shadow-[20px_20px_60px_rgba(0,0,0,0.15)] rotate-3 hover:rotate-1 transition-all duration-500 border border-gray-100 group w-full max-w-[min(22rem,92vw)] sm:max-w-sm md:max-w-md lg:max-w-lg flex flex-col mx-auto">
 
-                        <!-- Image Area -->
-                        <div class="relative overflow-hidden border border-black/5 shadow-inner bg-charcoal">
-                            <img alt="Professional portrait of developer" class="w-full h-[500px] object-cover"
+                        <!-- Image Area: fixed aspect on small screens avoids a tall strip; desktop keeps original height -->
+                        <div
+                            class="relative overflow-hidden border border-black/5 shadow-inner bg-charcoal w-full aspect-[3/4] max-h-[50vh] sm:max-h-[55vh] sm:aspect-[4/5] lg:aspect-auto lg:max-h-none lg:h-[500px]">
+                            <img alt="Professional portrait of developer"
+                                class="absolute inset-0 w-full h-full object-cover lg:relative lg:inset-auto lg:block lg:h-[500px] lg:w-full"
                                 src="assets/images/profile.jpg" />
 
                             <!-- Light Sweep Animation -->
                             <div
-                                class="absolute inset-y-0 w-24 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-light-swipe pointer-events-none">
+                                class="absolute inset-y-0 w-24 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-light-swipe pointer-events-none z-10">
                             </div>
                         </div>
 
                         <!-- Polaroid Caption Area -->
-                        <div class="py-12 text-center relative">
+                        <div class="py-4 sm:py-6 md:py-10 lg:py-12 text-center relative">
                             <span
-                                class="font-handwriting text-charcoal dark:text-white text-6xl opacity-90 group-hover:opacity-100 transition-opacity duration-300 inline-block rotate-[-2deg]">
+                                class="font-handwriting text-charcoal dark:text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl opacity-90 group-hover:opacity-100 transition-opacity duration-300 inline-block rotate-[-2deg]">
                                 Yeah, this is me
                             </span>
                         </div>
@@ -189,6 +204,7 @@
             </p>
         </div>
     </footer>
+    <script src="assets/js/nav.js"></script>
 </body>
 
 </html>

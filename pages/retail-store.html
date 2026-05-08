@@ -41,7 +41,7 @@
 
     <!-- Nav -->
     <nav
-        class="bg-white dark:bg-charcoal py-2 shadow-md border-b border-gray-100 dark:border-gray-800 relative z-10 w-full">
+        class="bg-white dark:bg-charcoal py-2 shadow-md border-b border-gray-100 dark:border-gray-800 relative z-50 w-full">
         <div class="container mx-auto px-6 lg:px-16 flex justify-between items-center">
             <a href="../index.html" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
                 <img src="../assets/images/small-icon.png" alt="Logo Icon" class="h-[5.5rem] w-auto object-contain">
@@ -61,7 +61,19 @@
                 <a class="text-charcoal dark:text-gray-300 hover:text-primary transition-colors"
                     href="../contact.html">CONTACT</a>
             </div>
-            <button class="md:hidden text-charcoal dark:text-white"><span class="material-icons">menu</span></button>
+            <button type="button" id="nav-menu-toggle"
+                class="md:hidden text-charcoal dark:text-white p-2 -mr-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                aria-expanded="false" aria-controls="mobile-nav-panel">
+                <span class="material-icons nav-icon-open text-3xl" aria-hidden="true">menu</span>
+                <span class="material-icons nav-icon-close text-3xl hidden" aria-hidden="true">close</span>
+            </button>
+        </div>
+        <div id="mobile-nav-panel"
+            class="hidden md:hidden flex-col gap-1 px-6 lg:px-16 pb-6 pt-2 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-charcoal text-sm font-semibold tracking-superwide uppercase"
+            role="dialog" aria-label="Main navigation">
+            <a class="text-charcoal dark:text-gray-300 hover:text-primary py-3 block" href="../about.html">ABOUT</a>
+            <a class="text-primary font-bold py-3 block" href="../portfolio.html">PORTFOLIO</a>
+            <a class="text-charcoal dark:text-gray-300 hover:text-primary py-3 block" href="../contact.html">CONTACT</a>
         </div>
     </nav>
 
@@ -318,6 +330,7 @@
                 Hong Kong. All rights reserved.</p>
         </div>
     </footer>
+    <script src="../assets/js/nav.js"></script>
 </body>
 
 </html>
