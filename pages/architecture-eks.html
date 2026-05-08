@@ -55,17 +55,21 @@
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      gap: 0;
+      justify-content: center;
       padding: 0 24px;
       height: 52px;
+      overflow-x: auto;
+      scrollbar-width: none;
     }
+    nav::-webkit-scrollbar { display: none; }
     nav .logo {
       font-weight: 700;
       font-size: 14px;
       color: var(--aws);
       white-space: nowrap;
-      margin-right: 32px;
+      margin-right: 24px;
       letter-spacing: 0.03em;
+      flex-shrink: 0;
     }
     nav a {
       color: var(--text-muted);
@@ -192,8 +196,9 @@
       line-height: 1.7;
     }
     .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       gap: 16px;
       max-width: 800px;
       margin: 0 auto;
@@ -204,6 +209,8 @@
       border-radius: 8px;
       padding: 16px;
       text-align: center;
+      flex: 1 1 160px;
+      max-width: 240px;
     }
     .stat-item .value {
       font-size: 28px;
@@ -223,6 +230,7 @@
       position: relative;
       overflow-x: auto;
       padding: 8px 0 24px;
+      display: flex;
     }
     .flow-row {
       display: flex;
@@ -230,6 +238,7 @@
       gap: 0;
       min-width: max-content;
       padding: 16px 0;
+      margin: auto;
     }
     .flow-node {
       display: flex;
@@ -312,13 +321,27 @@
     /* ── VPC Diagram ─────────────────────────────────────────── */
     .vpc-diagram {
       width: 100%;
+      display: flex;
+      padding: 10px 0;
+      position: relative;
+      margin-top: 20px;
+    }
+
+    .vpc-scroll {
+      width: 100%;
       overflow-x: auto;
+      display: flex;
+      border: 2px solid rgba(255,153,0,0.3);
+      border-radius: 12px;
+      background: rgba(255,153,0,0.03);
+      padding: 20px;
     }
 
     .vpc-wrap {
       min-width: 860px;
       max-width: 1000px;
-      margin: 0 auto;
+      margin: auto;
+      flex-shrink: 0;
     }
 
     /* Internet cloud */
@@ -362,15 +385,7 @@
       color: var(--aws);
     }
 
-    /* VPC outer box */
-    .vpc-outer {
-      border: 2px solid rgba(255,153,0,0.3);
-      border-radius: 12px;
-      background: rgba(255,153,0,0.03);
-      padding: 20px;
-      position: relative;
-      margin-top: 4px;
-    }
+    /* VPC outer box moved to .vpc-scroll */
     .vpc-label {
       position: absolute;
       top: -12px;
@@ -462,11 +477,19 @@
 
     /* ── EKS Cluster Diagram ──────────────────────────────────── */
     .cluster-diagram {
+      position: relative;
+      margin-top: 24px;
+      display: flex;
+    }
+    .cluster-scroll {
+      width: 100%;
+      overflow-x: auto;
       border: 2px solid rgba(59,124,237,0.3);
       border-radius: 12px;
       background: rgba(59,124,237,0.03);
       padding: 20px;
-      position: relative;
+      display: flex;
+      flex-direction: column;
     }
     .cluster-label {
       position: absolute;
@@ -483,6 +506,8 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 12px;
+      min-width: 800px;
+      margin: auto;
     }
     .namespace {
       border: 1px solid var(--border);
@@ -575,12 +600,14 @@
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: 6px;
-      padding: 10px 14px;
+      padding: 8px 12px;
       font-family: 'Courier New', monospace;
-      font-size: 11px;
+      font-size: 9.5px;
       color: #a5d6ff;
       overflow-x: auto;
       white-space: pre;
+      margin: 8px 0;
+      max-width: 100%;
     }
     .code-comment { color: #6e7681; }
     .code-key { color: #ff7b72; }
@@ -596,6 +623,10 @@
     }
     @media (max-width: 600px) {
       .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      #cicd { padding-left: 12px; padding-right: 12px; }
+      #cicd .pipeline-step { gap: 10px; }
+      #cicd .code-block { font-size: 7.5px; padding: 4px 6px; white-space: pre-wrap; word-break: break-all; }
+      #cicd .step-desc { font-size: 11.5px; }
     }
 
     /* ── IAM Roles Table ──────────────────────────────────────── */
@@ -1122,25 +1153,23 @@
   </p>
 
   <div class="vpc-diagram">
-    <div class="vpc-wrap">
+    <span class="vpc-label">VPC — 10.0.0.0/16 · DNS enabled</span>
+    <div class="vpc-scroll">
+      <div class="vpc-wrap">
 
-      <!-- Internet -->
-      <div class="inet-box">
-        <div class="inet-cloud">🌐 Internet</div>
-      </div>
-      <div class="vline-wrap"><div class="vline"></div></div>
-
-      <!-- IGW -->
-      <div class="igw-row">
-        <div class="igw-box" data-tip="Routes public subnet traffic to the Internet">
-          🔀 Internet Gateway<span style="font-weight:400;font-size:10px;margin-left:8px;color:var(--aws-dim)">{cluster_name}-igw</span>
+        <!-- Internet -->
+        <div class="inet-box">
+          <div class="inet-cloud">🌐 Internet</div>
         </div>
-      </div>
-      <div class="vline-wrap"><div class="vline"></div></div>
+        <div class="vline-wrap"><div class="vline"></div></div>
 
-      <!-- VPC -->
-      <div class="vpc-outer">
-        <span class="vpc-label">VPC — 10.0.0.0/16 · DNS enabled</span>
+        <!-- IGW -->
+        <div class="igw-row">
+          <div class="igw-box" data-tip="Routes public subnet traffic to the Internet">
+            🔀 Internet Gateway<span style="font-weight:400;font-size:10px;margin-left:8px;color:var(--aws-dim)">{cluster_name}-igw</span>
+          </div>
+        </div>
+        <div class="vline-wrap"><div class="vline"></div></div>
 
         <div class="az-grid">
 
@@ -1193,9 +1222,8 @@
           </div>
 
         </div><!-- /az-grid -->
-      </div><!-- /vpc-outer -->
-
-    </div><!-- /vpc-wrap -->
+      </div><!-- /vpc-wrap -->
+    </div><!-- /vpc-scroll -->
   </div><!-- /vpc-diagram -->
 
   <!-- Network notes -->
@@ -1233,6 +1261,7 @@
 
   <div class="cluster-diagram">
     <span class="cluster-label">EKS Cluster — Kubernetes v1.35 · ap-southeast-1</span>
+    <div class="cluster-scroll">
 
     <div style="margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
       <span class="badge badge-k8s">Control Plane (AWS Managed)</span>
@@ -1404,6 +1433,7 @@
       </div>
 
     </div><!-- /ns-grid -->
+    </div><!-- /cluster-scroll -->
   </div><!-- /cluster-diagram -->
 
   <!-- Node group details -->
@@ -1611,7 +1641,7 @@ docker push $ECR_REGISTRY/$APP_SLUG:$IMAGE_TAG</div>
   <div class="grid-2" style="margin-bottom:32px">
     <div class="card">
       <div class="card-title" style="color:var(--argo)">Argo CD Application Manifest (staging)</div>
-      <div class="code-block" style="font-size:11px"><span class="code-key">apiVersion</span>: <span class="code-str">argoproj.io/v1alpha1</span>
+      <div class="code-block"><span class="code-key">apiVersion</span>: <span class="code-str">argoproj.io/v1alpha1</span>
 <span class="code-key">kind</span>: <span class="code-str">Application</span>
 <span class="code-key">metadata</span>:
   <span class="code-key">name</span>: <span class="code-str">simple-app-01-staging</span>
@@ -1843,7 +1873,7 @@ docker push $ECR_REGISTRY/$APP_SLUG:$IMAGE_TAG</div>
       </div>
       <details style="margin-top:12px;border:none;background:transparent">
         <summary style="background:transparent;font-size:11px;padding:4px 0">Trust condition details</summary>
-        <div class="code-block" style="margin-top:8px;font-size:10px"><span class="code-comment">// Only repositories listed in var.app_repos can assume the role</span>
+        <div class="code-block" style="margin-top:8px"><span class="code-comment">// Only repositories listed in var.app_repos can assume the role</span>
 <span class="code-key">"Condition"</span>: {
   <span class="code-key">"StringLike"</span>: {
     <span class="code-key">"token.actions.githubusercontent.com:sub"</span>:
